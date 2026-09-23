@@ -81,7 +81,6 @@ export function bindDeck(deck) {
     dx = 0;
     moved = false;
     cancelled = false;
-    pinCardToViewport(front);
     front.classList.add('dragging');
     try {
       front.setPointerCapture(e.pointerId);
@@ -93,6 +92,7 @@ export function bindDeck(deck) {
     const dy = e.clientY - y0;
     if (Math.abs(dx) > 8 || Math.abs(dy) > 8) moved = true;
     if (!moved || Math.abs(dy) > Math.abs(dx)) return;
+    pinCardToViewport(front);
     const t = Math.min(1, Math.abs(dx) / 110);
     imp(front, 'transform', `translate3d(${dx}px,${Math.abs(dx) * .05}px,0) rotate(${dx / 22}deg)`);
     no.style.opacity = dx < 0 ? t : 0;

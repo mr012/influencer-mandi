@@ -38,7 +38,17 @@ export function render(anim) {
   if (a !== "none") {
     wrap.classList.add("entering");
     const body = runtime.root.querySelector(".main") || runtime.root.querySelector(".body") || runtime.root.querySelector(".formside") || runtime.root;
-    body.classList.add("rise-" + a);
+    const riseClass = "rise-" + a;
+    body.classList.add(riseClass);
+    const clearEntryAnimation = event => {
+      if (event && event.target !== body) return;
+      body.classList.remove(riseClass);
+      wrap.classList.remove("entering");
+      body.removeEventListener("animationend", clearEntryAnimation);
+      body.removeEventListener("animationcancel", clearEntryAnimation);
+    };
+    body.addEventListener("animationend", clearEntryAnimation);
+    body.addEventListener("animationcancel", clearEntryAnimation);
   }
   old.forEach(o => {
     if (a === "none") {
