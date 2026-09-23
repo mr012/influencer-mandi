@@ -21,7 +21,7 @@
 .multi-dropdown[open] summary{border-bottom:1px solid var(--line2)}
 .multi-options{max-height:220px;overflow:auto;overscroll-behavior:contain;padding:4px 0}
 .multi-option{display:flex;align-items:center;gap:12px;min-height:44px;padding:10px 14px;cursor:pointer;font-size:15px}
-.multi-option:has(input:checked){background:rgba(var(--srgb),.10)}
+.multi-option:has(input:checked){background:transparent}
 .multi-option input{width:19px;height:19px;flex:none;accent-color:var(--side)}
 .tag-field{grid-column:1 / -1;min-width:0;width:100%}
 .tag-field .multi-dropdown{color-scheme:dark;position:relative;overflow:visible}
@@ -65,7 +65,7 @@
 .dropdown-search::placeholder{color:var(--grey)}
 .tag-field .dropdown-panel .multi-options,.dropdown-panel .multi-options{position:static;inset:auto;min-height:0;max-height:none!important;overflow-y:auto;overscroll-behavior:contain;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;scrollbar-width:thin}
 .dropdown-panel .multi-option{min-height:44px;padding:10px;border-radius:8px;margin:2px 0;border:1px solid transparent;font-size:14px;background:transparent}
-.dropdown-panel .multi-option:has(input:checked){background:rgba(var(--srgb),.17);border-color:rgba(var(--srgb),.38)}
+.dropdown-panel .multi-option:has(input:checked){background:transparent;border-color:transparent}
 .dropdown-panel .multi-option:hover{background:rgba(var(--srgb),.09)}
 .dropdown-panel .multi-option:focus-within{outline:2px solid var(--side);outline-offset:-2px}
 .dropdown-empty{margin:8px;padding:8px;color:var(--grey);font-size:13px}
