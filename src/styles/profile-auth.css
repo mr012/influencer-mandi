@@ -9,6 +9,27 @@
 .auth-footer{flex:none;width:100%;text-align:center;padding:12px 0;position:relative;z-index:2}
 .auth-tagline{font-family:var(--mark);font-size:20px;color:var(--lime);margin:0}
 .auth-impact{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:var(--grey);margin:10px 0 0}
+.proto .ph.home-page{overflow-y:auto;padding:26px 18px 0;gap:0}
+.home-hero{flex:none;margin-bottom:30px}
+.home-logo{font-family:var(--display);font-size:54px;line-height:.94;text-transform:uppercase;letter-spacing:-.02em}
+.home-logo em{color:var(--orange);font-style:normal}
+.home-hero h1{font-family:var(--display);font-size:38px;font-weight:400;line-height:1.03;text-transform:uppercase;margin:4px 0 20px}
+.home-hero p{font-size:12px;line-height:1.8;color:var(--grey);margin:0;max-width:340px}
+.home-choices{display:flex;flex-direction:column;gap:14px;flex:none}
+.home-choices>.lbl{font-size:8px;letter-spacing:.17em}
+.home-choices>h2{font-family:var(--display);font-size:30px;line-height:1.1;text-transform:uppercase;font-weight:400;margin:0}
+.proto .home-choices .role-choice{display:block;width:100%;margin:0;padding:20px 16px 16px;border-radius:14px;text-align:left;color:var(--white);font:inherit;cursor:pointer;background:rgba(255,255,255,.025)}
+.proto .home-choices .role-choice.chosen{border-color:var(--side);background:rgba(var(--srgb),.045)}
+.home-choices .role-choice .lbl{font-size:8px;letter-spacing:.17em}
+.proto .home-choices .role-choice h3{font-family:var(--display);font-size:25px;margin:8px 0;line-height:1.1}
+.proto .home-choices .role-choice p{font-size:10px;line-height:1.5;margin:0;padding-right:22px}
+.proto .home-choices .role-choice>svg{width:21px;height:21px;right:17px}
+.home-choices>.btn{width:100%;min-height:42px}
+.home-choices>.quiet{font-size:9px;color:var(--grey);margin:0 0 20px}
+.home-choices>.quiet span{color:var(--orange);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.proto .ph.home-page>.auth-footer{margin-top:auto;padding:12px 0 calc(18px + env(safe-area-inset-bottom,0px))}
+.home-page .auth-tagline{font-size:18px}
+.home-page .auth-impact{font-size:7px;margin-top:7px;letter-spacing:.14em}
 .proto .ph.auth-layout>.auth-footer{padding:12px 12px calc(16px + env(safe-area-inset-bottom,0px))}
 .proto .ph[data-route="pick"]>.body>.row{flex:1 0 145px!important;justify-content:flex-start!important}
 .proto .ph[data-route="pick"]>.body>.row>small{margin-top:auto}
