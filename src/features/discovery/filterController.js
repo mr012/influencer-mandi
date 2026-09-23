@@ -80,6 +80,15 @@ export function discoveryFilterBar(scope) {
   const bar = scope.querySelector('.crow,.filters');
   if (!bar) return;
   const values = filterValues();
+  const topbar = scope.querySelector('.main > .topbar');
+  const heading = scope.querySelector('.main > .head');
+  if (topbar && heading) {
+    heading.querySelector('p')?.remove();
+    const accountControls = document.createElement('div');
+    accountControls.className = 'discovery-account-controls';
+    accountControls.append(...topbar.childNodes);
+    topbar.append(heading, accountControls);
+  }
 
   if (brand()) {
     scope.querySelector('.ph[data-side="brand"] > .sup')?.remove();

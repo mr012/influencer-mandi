@@ -35,7 +35,10 @@ select.in{color-scheme:dark;cursor:pointer}
 .proto [data-route="discover"] .deck .cd.back2{transform:translateY(16px) scale(.97)!important;filter:brightness(.48);pointer-events:none}
 .proto [data-route="discover"] .acts,.proto [data-route="discover"] .dacts{position:relative;z-index:4}
 @media(min-width:1024px){
- .proto [data-route="discover"] .head{margin-top:-12px;margin-bottom:12px}
+ .proto [data-route="discover"] .topbar{display:grid;grid-template-columns:minmax(170px,1fr) auto minmax(170px,1fr);align-items:center;gap:12px;margin-bottom:20px;min-height:40px}
+ .proto [data-route="discover"] .topbar .head{grid-column:2;margin:0;text-align:center}
+ .proto [data-route="discover"] .topbar .head h2{font-size:clamp(26px,2.3vw,38px);line-height:1.1;white-space:nowrap}
+ .discovery-account-controls{grid-column:3;display:flex;align-items:center;justify-content:flex-end;gap:12px}
  .proto [data-route="discover"] .discovery-content .deck{height:100%;max-height:none;width:min(460px,100%)}
  .proto [data-route="discover"] .arena{margin-top:10px;margin-bottom:24px}
  .proto [data-route="discover"] .dacts{margin-top:0}
