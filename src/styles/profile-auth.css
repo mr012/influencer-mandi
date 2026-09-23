@@ -50,6 +50,7 @@
 .proto [data-route="signup"] .signup-switch{appearance:none;background:transparent;border:0;border-radius:0;color:var(--side);font-size:10.5px;font-weight:600;line-height:1.4;padding:2px 0;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
 .proto [data-route="signup"] .signup-switch:hover{filter:brightness(1.15)}
 .proto [data-route="signup"] .signup-switch:focus-visible{outline:2px solid var(--side);outline-offset:4px}
+.proto [data-route="signup"][data-side="brand"] .creator-only{display:none}
 #pop .logout-item,#overlay .logout-item{margin-top:4px;border-top:1px solid var(--line);border-radius:0;padding-top:14px}
 #pop .logout-item .tx b,#overlay .logout-item .tx b{color:var(--orange)}
 .proto [data-route="profile"] .profile-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
