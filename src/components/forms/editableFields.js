@@ -13,6 +13,51 @@ export function editableFields(scope) {
       lbl = fld.querySelector('.lbl'),
       name = lbl ? lbl.textContent.trim() : 'Field ' + (i + 1);
     const key = side() + ':' + runtime.S.route + ':' + name + ':' + i;
+    if (runtime.S.route === 'signup' && /^languages known$/i.test(name)) {
+      const languages = ['English', 'Hindi', 'Marathi', 'Spanish', 'Gujarati', 'Malayalam', 'Kannada', 'Other'];
+      const stored = runtime.S.forms[key] ?? el.textContent.trim();
+      let selected = (Array.isArray(stored) ? stored : stored.split(',').map(value => value.trim())).filter(value => languages.includes(value));
+      const dropdown = document.createElement('details');
+      dropdown.className = 'multi-dropdown';
+      const summary = document.createElement('summary');
+      summary.id = 'field-' + i;
+      summary.setAttribute('aria-label', 'Languages known');
+      const options = document.createElement('div');
+      options.className = 'multi-options';
+      options.setAttribute('role', 'group');
+      options.setAttribute('aria-label', 'Languages known');
+      const update = () => {
+        summary.textContent = selected.length ? selected.join(', ') : 'Select languages…';
+        runtime.S.forms[key] = selected;
+      };
+      languages.forEach(language => {
+        const option = document.createElement('label');
+        option.className = 'multi-option';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = language;
+        checkbox.checked = selected.includes(language);
+        checkbox.addEventListener('change', () => {
+          selected = languages.filter(value => value === language ? checkbox.checked : selected.includes(value));
+          update();
+        });
+        option.append(checkbox, document.createTextNode(language));
+        options.appendChild(option);
+      });
+      dropdown.append(summary, options);
+      fld.classList.add('tag-field');
+      if (lbl) {
+        const label = document.createElement('label');
+        label.className = lbl.className;
+        label.htmlFor = summary.id;
+        label.textContent = name;
+        lbl.replaceWith(label);
+      }
+      el.replaceWith(dropdown);
+      searchableDropdown(dropdown, 'Search languages…');
+      update();
+      return;
+    }
     if (runtime.S.route === 'signup' && /^phone number$/i.test(name)) {
       const stored = runtime.S.forms[key] ?? el.textContent.trim();
       const parts = stored.match(/^(\+\d{1,3})\s+(.*)$/);
