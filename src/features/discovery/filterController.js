@@ -132,7 +132,7 @@ export function discoveryFilterBar(scope) {
     const filterPrefix = document.createElement('span');
     filterPrefix.textContent = 'Location & category';
     const filterValue = document.createElement('strong');
-    filterValue.textContent = selectedCount ? [...values.city, ...values.category].join(', ') : 'All';
+    filterValue.textContent = [values.city.join(', '), values.category.join(', ')].filter(Boolean).join(' | ') || 'All';
     filterContext.append(filterPrefix, filterValue);
     const filterPill = document.createElement('span');
     filterPill.className = 'creator-filter-pill';
