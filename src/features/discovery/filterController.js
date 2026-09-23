@@ -62,6 +62,21 @@ export function refreshFilterGroup(key) {
     refreshFilterGroup(key);
   });
 }
+function filterIcon() {
+  const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  icon.setAttribute('viewBox', '0 0 24 24');
+  icon.setAttribute('class', 'discovery-filter-icon');
+  icon.setAttribute('fill', 'none');
+  icon.setAttribute('stroke', 'currentColor');
+  icon.setAttribute('stroke-width', '1.8');
+  icon.setAttribute('stroke-linejoin', 'round');
+  icon.setAttribute('aria-hidden', 'true');
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', 'M3 4h18l-7 9v6l-4 2v-8L3 4z');
+  icon.appendChild(path);
+  return icon;
+}
+
 export function discoveryFilterBar(scope) {
   const bar = scope.querySelector('.crow,.filters');
   if (!bar) return;
@@ -93,12 +108,10 @@ export function discoveryFilterBar(scope) {
     filters.className = 'brand-discovery-filter' + (selectedCount ? ' on' : '');
     filters.dataset.act = 'filters';
     filters.setAttribute('aria-label', `Open filters. ${selectedCount} selected`);
-    const filterLabel = document.createElement('span');
-    filterLabel.textContent = 'Filters';
     const filterCount = document.createElement('span');
     filterCount.className = 'brand-filter-count';
     filterCount.textContent = String(selectedCount);
-    filters.append(filterLabel, filterCount);
+    filters.append(filterIcon(), filterCount);
 
     bar.append(campaign, filters);
     return;
@@ -117,13 +130,13 @@ export function discoveryFilterBar(scope) {
     const filterContext = document.createElement('span');
     filterContext.className = 'creator-filter-context';
     const filterPrefix = document.createElement('span');
-    filterPrefix.textContent = 'Looking for:';
+    filterPrefix.textContent = 'Location & category';
     const filterValue = document.createElement('strong');
-    filterValue.textContent = selectedCount ? `${selectedCount} filters selected` : 'All Campaigns';
+    filterValue.textContent = selectedCount ? [...values.city, ...values.category].join(', ') : 'All';
     filterContext.append(filterPrefix, filterValue);
     const filterPill = document.createElement('span');
     filterPill.className = 'creator-filter-pill';
-    filterPill.textContent = 'Filters';
+    filterPill.appendChild(filterIcon());
     if (selectedCount) {
       const filterCount = document.createElement('span');
       filterCount.className = 'brand-filter-count';
