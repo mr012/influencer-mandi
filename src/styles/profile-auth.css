@@ -19,7 +19,7 @@
 .proto [data-route="code"] .sup b,.proto [data-route="code"] .code-email{color:var(--orange)}
 .proto [data-route="editprofile"] .upl{flex:none;min-height:220px;width:100%;max-height:none;margin:8px auto 14px}
 .proto [data-route="editprofile"] .upl.r45{width:min(240px,80%);height:auto!important;min-height:0;max-height:none;aspect-ratio:4/5;align-self:center}
-.proto .filter-summary .summary-pill,.proto .filter-summary .summary-pill.on{background:var(--side);border-color:var(--side);color:#080808;font-weight:600;border-radius:999px}
+.proto .filter-summary .summary-pill,.proto .filter-summary .summary-pill.on{background:var(--ink);border-color:var(--side);color:var(--side);font-weight:600;border-radius:999px}
 .multi-dropdown{border:1px solid var(--line2);border-radius:12px;background:#1b1b1d;color:var(--white);overflow:hidden}
 .multi-dropdown summary{display:flex;justify-content:space-between;gap:12px;align-items:center;min-height:48px;padding:12px 14px;cursor:pointer;list-style:none;font-size:16px}
 .multi-dropdown summary::-webkit-details-marker{display:none}
