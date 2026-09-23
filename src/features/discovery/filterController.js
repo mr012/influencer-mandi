@@ -8,6 +8,7 @@ import { categoryOptions } from "../../config/categories.js";
 import { renderSelections } from "../../components/ui/MultiSelect.js";
 import { CREATORS } from "../../mocks/creators.js";
 import { CAMPAIGNS } from "../../mocks/campaigns.js";
+import { isWide } from "../../config/breakpoints.js";
 
 export const listValue = v => Array.isArray(v) ? v : v ? [v] : [];
 export function filterValues() {
@@ -64,9 +65,68 @@ export function refreshFilterGroup(key) {
 export function discoveryFilterBar(scope) {
   const bar = scope.querySelector('.crow,.filters');
   if (!bar) return;
+  const values = filterValues();
+
+  if (brand() && !isWide()) {
+    scope.querySelector('.ph[data-side="brand"] > .sup')?.remove();
+    bar.className = 'brand-discovery-tools';
+    bar.replaceChildren();
+
+    const campaign = document.createElement('button');
+    campaign.type = 'button';
+    campaign.className = 'camp-pick brand-discovery-campaign';
+    campaign.dataset.act = 'camppick';
+    campaign.setAttribute('aria-label', 'Select campaign. Current campaign: ' + runtime.S.camp);
+    const campaignValue = document.createElement('span');
+    campaignValue.className = 'brand-campaign-value';
+    campaignValue.textContent = runtime.S.camp;
+    campaign.appendChild(campaignValue);
+    const campaignArrow = document.createElement('span');
+    campaignArrow.className = 'brand-campaign-arrow';
+    campaignArrow.setAttribute('aria-hidden', 'true');
+    campaignArrow.textContent = '▾';
+    campaign.appendChild(campaignArrow);
+
+    const selectedCount = values.city.length + values.category.length;
+    const filters = document.createElement('button');
+    filters.type = 'button';
+    filters.className = 'brand-discovery-filter' + (selectedCount ? ' on' : '');
+    filters.dataset.act = 'filters';
+    filters.setAttribute('aria-label', `Open filters. ${selectedCount} selected`);
+    const filterLabel = document.createElement('span');
+    filterLabel.textContent = 'Filters';
+    const filterCount = document.createElement('span');
+    filterCount.className = 'brand-filter-count';
+    filterCount.textContent = String(selectedCount);
+    filters.append(filterLabel, filterCount);
+
+    bar.append(campaign, filters);
+    return;
+  }
+
+  if (!brand() && !isWide()) {
+    const selectedCount = values.city.length + values.category.length;
+    bar.className = 'creator-discovery-tools';
+    bar.replaceChildren();
+
+    const filters = document.createElement('button');
+    filters.type = 'button';
+    filters.className = 'brand-discovery-filter creator-discovery-filter' + (selectedCount ? ' on' : '');
+    filters.dataset.act = 'filters';
+    filters.setAttribute('aria-label', `Open filters. ${selectedCount} selected`);
+    const filterLabel = document.createElement('span');
+    filterLabel.textContent = 'Filters';
+    const filterCount = document.createElement('span');
+    filterCount.className = 'brand-filter-count';
+    filterCount.textContent = String(selectedCount);
+    filters.append(filterLabel, filterCount);
+
+    bar.appendChild(filters);
+    return;
+  }
+
   bar.className = 'filter-summary';
   bar.replaceChildren();
-  const values = filterValues();
   for (const key of ['city', 'category']) {
     const field = document.createElement('div');
     field.className = 'filter-summary-field';
