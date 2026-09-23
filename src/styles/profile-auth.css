@@ -49,4 +49,6 @@
 .campaign-card-link{border-color:rgba(var(--srgb),.55);color:var(--side)}
 .proto [data-route="campaigns"] .table-wrap td:last-child{width:1%;white-space:nowrap}
 .proto .ph[data-route="campaigns"] .row{flex-wrap:wrap}
-.proto .ph[data-route="campaigns"] .campaign-row-actions{flex:0 0 100%;margin-top:-5px}
+.proto .ph[data-route="campaigns"] .campaign-row-actions{display:grid;grid-template-columns:minmax(0,1fr);justify-items:start;gap:4px;flex:0 0 100%;margin-top:-5px;white-space:normal}
+.proto .ph[data-route="campaigns"] .campaign-row-link{width:100%;min-height:34px;padding:8px 12px;border-width:2px;border-radius:10px;font-size:8px}
+.proto .ph[data-route="campaigns"] .campaign-card-link{width:auto;min-height:0;margin-left:8px;padding:3px 8px;border-width:1px;border-radius:999px}
