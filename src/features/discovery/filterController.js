@@ -8,7 +8,6 @@ import { categoryOptions } from "../../config/categories.js";
 import { renderSelections } from "../../components/ui/MultiSelect.js";
 import { CREATORS } from "../../mocks/creators.js";
 import { CAMPAIGNS } from "../../mocks/campaigns.js";
-import { isWide } from "../../config/breakpoints.js";
 
 export const listValue = v => Array.isArray(v) ? v : v ? [v] : [];
 export function filterValues() {
@@ -82,8 +81,9 @@ export function discoveryFilterBar(scope) {
   if (!bar) return;
   const values = filterValues();
 
-  if (brand() && !isWide()) {
+  if (brand()) {
     scope.querySelector('.ph[data-side="brand"] > .sup')?.remove();
+    scope.querySelector('.head p:has(.camp-pick)')?.remove();
     bar.className = 'brand-discovery-tools';
     bar.replaceChildren();
 
@@ -117,7 +117,7 @@ export function discoveryFilterBar(scope) {
     return;
   }
 
-  if (!brand() && !isWide()) {
+  if (!brand()) {
     const selectedCount = values.city.length + values.category.length;
     bar.className = 'creator-discovery-tools';
     bar.replaceChildren();
