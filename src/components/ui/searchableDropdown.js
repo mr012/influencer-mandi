@@ -1,5 +1,5 @@
 // Shared searchable popup for category and location choices.
-export function searchableDropdown(dropdown, placeholder = 'Search options…') {
+export function searchableDropdown(dropdown, placeholder = 'Search options…', widthAnchor = null) {
   const summary = dropdown.querySelector('summary');
   const options = dropdown.querySelector('.multi-options');
   const panel = document.createElement('div');
@@ -27,6 +27,7 @@ export function searchableDropdown(dropdown, placeholder = 'Search options…') 
   search.addEventListener('input', filter);
   const position = () => {
     const rect = summary.getBoundingClientRect();
+    const panelWidth = Math.min((widthAnchor || summary).getBoundingClientRect().width, innerWidth - 16);
     const viewport = window.visualViewport;
     const top = (viewport?.offsetTop || 0) + 8;
     const bottom = (viewport?.offsetTop || 0) + (viewport?.height || innerHeight) - 8;
@@ -34,9 +35,9 @@ export function searchableDropdown(dropdown, placeholder = 'Search options…') 
     const above = rect.top - top - 6;
     const up = below < 290 && above > below;
     const height = Math.max(80, Math.min(290, up ? above : below));
-    panel.style.width = Math.min(rect.width, innerWidth - 16) + 'px';
+    panel.style.width = panelWidth + 'px';
     panel.style.maxHeight = height + 'px';
-    panel.style.left = Math.max(8, Math.min(rect.left, innerWidth - rect.width - 8)) + 'px';
+    panel.style.left = Math.max(8, Math.min(rect.left, innerWidth - panelWidth - 8)) + 'px';
     panel.style.top = (up ? Math.max(top, rect.top - panel.getBoundingClientRect().height - 6) : rect.bottom + 6) + 'px';
     dropdown.classList.toggle('opens-up', up);
   };

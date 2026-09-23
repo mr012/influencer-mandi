@@ -64,8 +64,7 @@ export function editableFields(scope) {
       const group = document.createElement('div');
       group.className = 'signup-phone-fields';
       const country = document.createElement('input');
-      country.className = 'in';
-      country.type = 'tel';
+      country.type = 'hidden';
       country.name = 'countryCode';
       country.autocomplete = 'tel-country-code';
       country.setAttribute('aria-label', 'Country code');
@@ -91,10 +90,34 @@ export function editableFields(scope) {
         runtime.S.forms[key + ':number'] = number.value;
         runtime.S.forms[key] = country.value + ' ' + number.value;
       };
-      country.addEventListener('input', () => {
-        country.value = '+' + country.value.replace(/\D/g, '').slice(0, 3);
-        save();
+      const countryDropdown = document.createElement('details');
+      countryDropdown.className = 'multi-dropdown country-code-dropdown';
+      const countrySummary = document.createElement('summary');
+      countrySummary.textContent = country.value;
+      countrySummary.setAttribute('aria-label', 'Select country code');
+      const countryOptions = document.createElement('div');
+      countryOptions.className = 'multi-options';
+      const countries = [['India', '+91'], ['United States', '+1'], ['United Kingdom', '+44'], ['Australia', '+61'], ['Spain', '+34'], ['United Arab Emirates', '+971'], ['Singapore', '+65']];
+      countries.forEach(([countryName, code]) => {
+        const option = document.createElement('label');
+        option.className = 'multi-option';
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'signup-country-' + i;
+        radio.value = code;
+        radio.checked = country.value === code;
+        radio.addEventListener('change', () => {
+          country.value = code;
+          countrySummary.textContent = code;
+          countrySummary.setAttribute('aria-label', `Select country code: ${countryName} ${code}`);
+          save();
+          countryDropdown.open = false;
+          countrySummary.focus();
+        });
+        option.append(radio, document.createTextNode(`${countryName} (${code})`));
+        countryOptions.appendChild(option);
       });
+      countryDropdown.append(countrySummary, countryOptions);
       number.addEventListener('input', () => {
         number.value = number.value.replace(/\D/g, '').slice(0, 10);
         save();
@@ -106,8 +129,9 @@ export function editableFields(scope) {
         label.textContent = name;
         lbl.replaceWith(label);
       }
-      group.append(country, number);
+      group.append(countryDropdown, number, country);
       el.replaceWith(group);
+      searchableDropdown(countryDropdown, 'Search country or code…', group);
       return;
     }
     const isCategory = /^category$/i.test(name);
