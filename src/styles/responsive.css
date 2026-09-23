@@ -19,6 +19,10 @@
 .proto .ph .crow .chip{flex-shrink:0}
 .proto .row .tx{min-width:0;overflow-wrap:anywhere}
 .proto .row .meta{flex-shrink:0}
+.proto .chat-search{flex:none}
+.proto .chat-search-input{appearance:none;-webkit-appearance:none;color:var(--white);caret-color:var(--side)}
+.proto .chat-search-input::placeholder{color:var(--dim);opacity:1}
+.proto .chat-search-input::-webkit-search-cancel-button{cursor:pointer;filter:invert(1);opacity:.55}
 .stamp{transform:translate(-50%,-50%) rotate(-12deg)}
 .stamp.yes{transform:translate(-50%,-50%) rotate(10deg)}
 #overlay.detail .mgal{width:100%;margin:12px 0 0;aspect-ratio:4/5}

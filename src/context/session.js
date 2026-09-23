@@ -41,6 +41,10 @@ export const fresh = () => ({
     creator: "All",
     brand: "All"
   },
+  chatSearch: {
+    creator: "",
+    brand: ""
+  },
   readChats: []
 });
 export const admin = () => runtime.S.mode === "admin";

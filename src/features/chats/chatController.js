@@ -83,8 +83,54 @@ export function chatMatches(id) {
   const campaign = x.title || (/Food|Baking/.test(x.cat) ? 'Monsoon menu' : /Fashion/.test(x.cat) ? 'Festive edit' : 'Airdopes');
   return campaign.toLowerCase().includes(f.toLowerCase());
 }
+function chatSearchMatches(id) {
+  const query = (runtime.S.chatSearch?.[side()] || '').trim().toLowerCase();
+  if (!query) return true;
+  const x = byId(id),
+    messages = runtime.S.threads[id] || [],
+    campaign = brand() ? id === 'u1' ? 'Monsoon menu' : 'Festive edit' : x.title;
+  return [
+    brand() ? x.name : x.brand,
+    campaign,
+    x.title,
+    x.cat,
+    ...(x.tags || []),
+    ...messages.map(message => message.t)
+  ].filter(Boolean).join(' ').toLowerCase().includes(query);
+}
+function ensureChatSearch() {
+  const container = isWide() ? runtime.root.querySelector('.chat-list') : runtime.root.querySelector('.body');
+  if (!container) return;
+  runtime.S.chatSearch ||= { creator: '', brand: '' };
+  let field = container.querySelector('.chat-search');
+  if (!field) {
+    field = isWide() ? container.querySelector('.fld') : null;
+    if (!field) {
+      field = document.createElement('div');
+      field.innerHTML = '<span class="lbl">Search conversations</span>';
+      container.prepend(field);
+    }
+    field.classList.add('fld', 'chat-search');
+  }
+  let input = field.querySelector('.chat-search-input');
+  if (!input) {
+    input = document.createElement('input');
+    input.type = 'search';
+    input.className = 'in chat-search-input';
+    input.placeholder = 'Search name or campaign';
+    input.setAttribute('aria-label', 'Search conversations');
+    const placeholder = field.querySelector('.in');
+    if (placeholder) placeholder.replaceWith(input); else field.appendChild(input);
+    input.addEventListener('input', () => {
+      runtime.S.chatSearch[side()] = input.value;
+      fill_chats();
+    });
+  }
+  if (input.value !== runtime.S.chatSearch[side()]) input.value = runtime.S.chatSearch[side()];
+}
 export function fill_chats() {
-  const list = runtime.S.matches[side()].filter(id => chatMatches(id));
+  ensureChatSearch();
+  const list = runtime.S.matches[side()].filter(id => chatMatches(id) && chatSearchMatches(id));
   if (!runtime.S.openChat || !list.includes(runtime.S.openChat)) runtime.S.openChat = list[0] || null;
   const row = id => {
     const x = byId(id),
@@ -93,11 +139,12 @@ export function fill_chats() {
     const name = brand() ? x.name : x.brand,
       sub = brand() ? `${x.followers} · ${x.tags[0]}` : x.title;
     const tagCamp = brand() ? id === "u1" ? "Monsoon menu" : "Festive edit" : "";
-    return `<div class="row${isWide() && id === runtime.S.openChat ? " sel" : ""}" data-act="chat:${id}"><div class="av">${name[0]}</div>
+    return `<div class="row${isWide() && id === runtime.S.openChat ? " sel" : ""}" data-act="chat:${id}" role="button" tabindex="0"><div class="av">${name[0]}</div>
        <div class="tx"><b>${name}</b><small>${esc(last ? last.t : sub).slice(0, 46)}</small>
        ${tagCamp ? `<span class="ctag">${tagCamp}</span>` : ""}</div><span class="meta">${last ? last.at : ""}</span></div>`;
   };
-  fillRows(isWide() ? runtime.root.querySelector(".chat-list") : runtime.root.querySelector(".body"), list.map(row).join(""), `<div class="ph-empty"><span class="mk">no chats here.</span><p>Try another filter, or discover more matches.</p></div>`);
+  const hasSearch = Boolean((runtime.S.chatSearch?.[side()] || '').trim());
+  fillRows(isWide() ? runtime.root.querySelector(".chat-list") : runtime.root.querySelector(".body"), list.map(row).join(""), `<div class="ph-empty"><span class="mk">no chats here.</span><p>${hasSearch ? 'Try a different search.' : 'Try another filter, or discover more matches.'}</p></div>`);
   if (isWide()) paintThread(runtime.root.querySelector(".conversation"), runtime.S.openChat);
 }
 export function fill_convo() {

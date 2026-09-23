@@ -26,7 +26,9 @@ export function wire(scope) {
     if (!crow) {
       crow = document.createElement('div');
       crow.className = 'crow';
-      (scope.querySelector('.chat-list') || scope.querySelector('.body')).prepend(crow);
+      const container = scope.querySelector('.chat-list') || scope.querySelector('.body');
+      const search = container.querySelector('.chat-search');
+      if (search) search.after(crow); else container.prepend(crow);
     }
     const options = brand() ? ['All', 'Monsoon menu', 'Festive edit', 'Airdopes'] : ['All', 'Unread'];
     crow.innerHTML = options.map(v => `<span class="chip ${runtime.S.chatFilter[side()] === v ? 'on' : ''}" data-act="chatfilter:${v}">${v}</span>`).join('');
