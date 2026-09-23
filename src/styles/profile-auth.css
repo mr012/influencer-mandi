@@ -44,11 +44,9 @@
 .proto [data-route="profile"] .profile-tags{margin:0 0 2px}
 .proto .admin-tabs{grid-template-columns:repeat(5,minmax(0,1fr))}
 .proto .admin-tabs>div{min-width:0;font-size:7px}
-.campaign-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;white-space:nowrap}
-.campaign-row-link{display:inline-flex;align-items:center;justify-content:center;padding:4px 8px;border:1px solid var(--line2);border-radius:999px;color:var(--white);font-size:8px;font-weight:700;letter-spacing:.05em;line-height:1.2;text-transform:uppercase;white-space:nowrap}
+.campaign-row-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:8px;width:100%}
+.campaign-row-link{display:inline-flex;align-items:center;justify-content:center;min-width:0;min-height:40px;padding:8px 12px;border:2px solid var(--line2);border-radius:10px;color:var(--white);font-size:8px;font-weight:700;letter-spacing:.05em;line-height:1.2;text-transform:uppercase;white-space:nowrap}
 .campaign-card-link{border-color:rgba(var(--srgb),.55);color:var(--side)}
-.proto [data-route="campaigns"] .table-wrap td:last-child{width:1%;white-space:nowrap}
+.proto [data-route="campaigns"] .table-wrap td:last-child{width:32%;min-width:240px;white-space:nowrap}
 .proto .ph[data-route="campaigns"] .row{flex-wrap:wrap}
-.proto .ph[data-route="campaigns"] .campaign-row-actions{display:grid;grid-template-columns:minmax(0,1fr);justify-items:start;gap:4px;flex:0 0 100%;margin-top:-5px;white-space:normal}
-.proto .ph[data-route="campaigns"] .campaign-row-link{width:100%;min-height:34px;padding:8px 12px;border-width:2px;border-radius:10px;font-size:8px}
-.proto .ph[data-route="campaigns"] .campaign-card-link{width:auto;min-height:0;margin-left:8px;padding:3px 8px;border-width:1px;border-radius:999px}
+.proto .ph[data-route="campaigns"] .campaign-row-actions{flex:0 0 100%;margin-top:-5px}
