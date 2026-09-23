@@ -1,5 +1,17 @@
 
 /* Final profile and authentication refinements. */
+.proto .auth-layout .formside{flex-direction:column;justify-content:flex-start;gap:24px}
+.proto .auth-layout .formcard{margin-block:auto;flex-shrink:0}
+.auth-footer{flex:none;width:100%;text-align:center;padding:12px 0;position:relative;z-index:2}
+.auth-tagline{font-family:var(--mark);font-size:20px;color:var(--lime);margin:0}
+.auth-impact{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:var(--grey);margin:10px 0 0}
+.proto .ph.auth-layout>.auth-footer{padding:12px 12px calc(16px + env(safe-area-inset-bottom,0px))}
+.proto .dsplit[data-route="pick"] .formcard{flex:1;margin:0;min-height:460px;max-width:430px}
+.proto .dsplit[data-route="pick"] .role-choice{display:flex;flex-direction:column;flex:1;min-height:145px}
+.proto .dsplit[data-route="pick"] .role-choice p{margin-top:auto;padding-top:14px}
+.proto .ph[data-route="pick"]>.body>.row{flex:1 0 145px!important;justify-content:flex-start!important}
+.proto .ph[data-route="pick"]>.body>.row>small{margin-top:auto}
+.proto .ph[data-route="pick"]>.body>.btn{flex-shrink:0}
 .proto .top .ava{font:inherit;font-weight:700;background:var(--ink2);color:var(--grey);border:1px solid var(--line2);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
 .proto [data-route="code"] .otp-field{width:220px!important;max-width:100%;align-self:center;margin:0 auto 2px}
 .proto [data-route="code"] .otp-input{height:68px;text-align:center;font-family:var(--display);font-size:28px;letter-spacing:.26em;padding:12px 6px 12px 14px;color:var(--white);border-color:var(--orange);background:rgba(255,61,0,.06);box-shadow:0 0 0 3px rgba(255,61,0,.12)}
