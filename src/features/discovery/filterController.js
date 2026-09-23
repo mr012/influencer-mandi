@@ -114,12 +114,23 @@ export function discoveryFilterBar(scope) {
     filters.className = 'brand-discovery-filter creator-discovery-filter' + (selectedCount ? ' on' : '');
     filters.dataset.act = 'filters';
     filters.setAttribute('aria-label', `Open filters. ${selectedCount} selected`);
-    const filterLabel = document.createElement('span');
-    filterLabel.textContent = 'Filters';
-    const filterCount = document.createElement('span');
-    filterCount.className = 'brand-filter-count';
-    filterCount.textContent = String(selectedCount);
-    filters.append(filterLabel, filterCount);
+    const filterContext = document.createElement('span');
+    filterContext.className = 'creator-filter-context';
+    const filterPrefix = document.createElement('span');
+    filterPrefix.textContent = 'Looking for:';
+    const filterValue = document.createElement('strong');
+    filterValue.textContent = selectedCount ? `${selectedCount} filters selected` : 'All Campaigns';
+    filterContext.append(filterPrefix, filterValue);
+    const filterPill = document.createElement('span');
+    filterPill.className = 'creator-filter-pill';
+    filterPill.textContent = 'Filters';
+    if (selectedCount) {
+      const filterCount = document.createElement('span');
+      filterCount.className = 'brand-filter-count';
+      filterCount.textContent = String(selectedCount);
+      filterPill.appendChild(filterCount);
+    }
+    filters.append(filterContext, filterPill);
 
     bar.appendChild(filters);
     return;
