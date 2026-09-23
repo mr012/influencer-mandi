@@ -1,5 +1,7 @@
 
 /* Final profile and authentication refinements. */
+.signup-phone-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:10px;width:100%}
+.signup-phone-fields input:first-child{text-align:center}
 .proto .ph.auth-layout>.top{margin-bottom:20px}
 .proto .ph[data-route="signup"] .signup-role-pill{font-size:14px;padding:10px 17px}
 .proto .ph[data-route="signup"] .signup-switch{font-size:14px;min-height:40px}
