@@ -3,6 +3,7 @@ import { brand, side } from "../../context/session.js";
 import { runtime } from "../../context/runtime.js";
 import { BRAND_CATEGORIES } from "../../config/categories.js";
 import { CREATORS } from "../../mocks/creators.js";
+import { searchableDropdown } from "../ui/searchableDropdown.js";
 
 export function editableFields(scope) {
   setupTagFields(scope);
@@ -35,5 +36,34 @@ export function editableFields(scope) {
       lbl.replaceWith(l);
     }
     el.replaceWith(input);
+    if (input.tagName === 'SELECT') {
+      const dropdown = document.createElement('details');
+      dropdown.className = 'multi-dropdown';
+      const summary = document.createElement('summary');
+      summary.id = input.id;
+      summary.textContent = input.value;
+      summary.setAttribute('aria-label', name);
+      const options = document.createElement('div');
+      options.className = 'multi-options';
+      Array.from(input.options).forEach(option => {
+        const label = document.createElement('label');
+        label.className = 'multi-option';
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'choice-' + input.id;
+        radio.checked = option.value === input.value;
+        radio.addEventListener('change', () => {
+          runtime.S.forms[key] = option.value;
+          summary.textContent = option.textContent;
+          dropdown.open = false;
+          summary.focus();
+        });
+        label.append(radio, document.createTextNode(option.textContent));
+        options.append(label);
+      });
+      dropdown.append(summary, options);
+      input.replaceWith(dropdown);
+      searchableDropdown(dropdown, 'Search ' + name.toLowerCase() + '…');
+    }
   });
 }

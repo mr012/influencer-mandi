@@ -57,3 +57,15 @@
 .proto [data-route="campaigns"] .table-wrap td:last-child{width:32%;min-width:240px;white-space:nowrap}
 .proto .ph[data-route="campaigns"] .row{flex-wrap:wrap}
 .proto .ph[data-route="campaigns"] .campaign-row-actions{flex:0 0 100%;margin-top:-5px}
+/* Searchable dropdowns render above scroll containers without extending the page. */
+.dropdown-panel{position:fixed;inset:auto;margin:0;padding:8px;box-sizing:border-box;border:1px solid var(--line2);border-radius:14px;background:#151517;color:var(--white);box-shadow:0 16px 48px #0009;overflow:hidden;flex-direction:column;gap:8px}
+.dropdown-panel:popover-open{display:flex}
+.dropdown-search{flex:none;width:100%;box-sizing:border-box;min-height:42px;padding:10px 12px;border:1px solid var(--line2);border-radius:9px;background:#232326;color:var(--white);font:inherit;font-size:14px;outline:none}
+.dropdown-search:focus{border-color:var(--side)}
+.dropdown-search::placeholder{color:var(--grey)}
+.tag-field .dropdown-panel .multi-options,.dropdown-panel .multi-options{position:static;inset:auto;min-height:0;max-height:none!important;overflow-y:auto;overscroll-behavior:contain;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;scrollbar-width:thin}
+.dropdown-panel .multi-option{min-height:44px;padding:10px;border-radius:8px;margin:2px 0;border:1px solid transparent;font-size:14px;background:transparent}
+.dropdown-panel .multi-option:has(input:checked){background:rgba(var(--srgb),.17);border-color:rgba(var(--srgb),.38)}
+.dropdown-panel .multi-option:hover{background:rgba(var(--srgb),.09)}
+.dropdown-panel .multi-option:focus-within{outline:2px solid var(--side);outline-offset:-2px}
+.dropdown-empty{margin:8px;padding:8px;color:var(--grey);font-size:13px}

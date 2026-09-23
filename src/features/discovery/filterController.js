@@ -1,3 +1,4 @@
+import { searchableDropdown } from "../../components/ui/searchableDropdown.js";
 import { filterDiscovery } from '../../utils/discoveryFilters.js';
 import { runtime } from "../../context/runtime.js";
 import { brand, side } from "../../context/session.js";
@@ -43,6 +44,7 @@ export function openFilters(focusKey) {
       label.append(input, text);
       options.appendChild(label);
     });
+    searchableDropdown(dropdown, key === 'city' ? 'Search locations…' : 'Search categories…');
     refreshFilterGroup(key);
   }
   if (focusKey) overlay.querySelector('#filter-' + focusKey + ' summary')?.focus({
@@ -52,7 +54,7 @@ export function openFilters(focusKey) {
 export function refreshFilterGroup(key) {
   const dropdown = overlay.querySelector('#filter-' + key),
     tags = overlay.querySelector('[data-selected="' + key + '"]');
-  dropdown.querySelectorAll('input').forEach(input => input.checked = runtime.filterDraft[key].includes(input.value));
+  dropdown.querySelectorAll('input[type=checkbox]').forEach(input => input.checked = runtime.filterDraft[key].includes(input.value));
   dropdown.querySelector('summary span').textContent = runtime.filterDraft[key].length ? runtime.filterDraft[key].length + ' selected' : key === 'city' ? 'Select locations…' : 'Select categories…';
   renderSelections(tags, runtime.filterDraft[key], value => {
     runtime.filterDraft[key] = runtime.filterDraft[key].filter(v => v !== value);

@@ -1,3 +1,4 @@
+import { searchableDropdown } from "../../components/ui/searchableDropdown.js";
 import { runtime } from "../../context/runtime.js";
 import { brand, side } from "../../context/session.js";
 import { renderSelections } from "../../components/ui/MultiSelect.js";
@@ -47,15 +48,7 @@ export function setupTagFields(scope) {
       return input;
     });
     select.append(summary, options);
-    select.addEventListener('toggle', () => {
-      if (!select.open) return;
-      const rect = summary.getBoundingClientRect();
-      const below = window.innerHeight - rect.bottom - 12;
-      const above = rect.top - 12;
-      const upward = below < 220 && above > below;
-      select.classList.toggle('opens-up', upward);
-      options.style.maxHeight = Math.max(48, Math.min(220, upward ? above : below)) + 'px';
-    });
+    searchableDropdown(select, 'Search categories…');
     select.addEventListener('keydown', event => {
       if (event.key === 'Escape') { select.open = false; summary.focus(); }
     });
