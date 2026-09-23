@@ -1,0 +1,25 @@
+
+/* Location and category multi-selects; show only selected tags. */
+.filter-group{display:flex;flex-direction:column;gap:10px;margin-top:20px;min-width:0}
+.filter-select{width:100%;min-width:0;min-height:48px;padding:12px 38px 12px 14px;border:1px solid var(--line2);border-radius:12px;background:#1b1b1d;color:var(--white);font:inherit;font-size:16px;color-scheme:dark}
+.filter-select:focus{outline:2px solid var(--side);outline-offset:2px}
+select.in{color-scheme:dark;cursor:pointer}
+.filter-summary{display:flex;gap:8px;flex:none;align-items:stretch;min-width:0;margin-bottom:2px}
+.filter-summary-field{display:flex;flex:1 1 0;min-width:0;flex-direction:column;gap:6px}
+.filter-summary-label{padding-left:4px;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--grey)}
+.filter-summary .summary-pill{width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere;text-align:left;font:inherit;font-size:12px;line-height:1.45;padding:9px 12px;background:transparent;color:var(--grey);border:1px solid var(--line2);border-radius:16px;cursor:pointer}
+.filter-summary .summary-pill.on{background:rgba(var(--srgb),.12);border-color:rgba(var(--srgb),.5);color:var(--side)}
+.selected-tags{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
+.selected-tags:empty{display:none}
+.selected-tag{font:inherit;font-size:12px;cursor:pointer;white-space:normal;line-height:1.4}
+.proto .ph[data-route="discover"]>.body{padding-bottom:12px;gap:10px}
+.proto .ph[data-route="discover"] .deck{flex:1 0 350px;max-height:none;height:auto;min-height:350px;margin-bottom:22px}
+.proto .ph[data-route="discover"] .acts{margin-top:0;padding:6px 0 4px;min-height:66px;align-items:center}
+.proto [data-route="discover"] .deck .cd.back{transform:translateY(8px) scale(.985)!important;filter:brightness(.68);pointer-events:none}
+.proto [data-route="discover"] .deck .cd.back2{transform:translateY(16px) scale(.97)!important;filter:brightness(.48);pointer-events:none}
+.proto [data-route="discover"] .acts,.proto [data-route="discover"] .dacts{position:relative;z-index:4}
+@media(min-width:1024px){
+ .proto [data-route="discover"] .discovery-content .deck{height:100%;max-height:none;width:min(460px,100%)}
+ .proto [data-route="discover"] .arena{margin-top:10px;margin-bottom:24px}
+ .proto [data-route="discover"] .dacts{margin-top:0}
+}

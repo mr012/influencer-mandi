@@ -1,0 +1,14 @@
+:root{
+  --ink:#090909;--ink2:#0e0e0f;--card:#141416;--panel:#0d0d0f;
+  --line:rgba(245,243,239,.09);--line2:rgba(245,243,239,.16);
+  --orange:#FF3D00;--lime:#C6FF00;--white:#F5F3EF;--grey:#9d9c99;--dim:#6a6a68;
+  --display:'Anton',Impact,sans-serif;--mark:'Permanent Marker',cursive;--body:'Inter',system-ui,sans-serif;
+  --r:16px;--rs:12px;
+}
+:root{
+  --ink:#090909;--ink2:#0e0e0f;--card:#141416;--panel:#0d0d0f;
+  --line:rgba(245,243,239,.09);--line2:rgba(245,243,239,.16);
+  --orange:#FF3D00;--lime:#C6FF00;--white:#F5F3EF;--grey:#9d9c99;--dim:#6a6a68;
+  --display:'Anton',Impact,sans-serif;--mark:'Permanent Marker',cursive;--body:'Inter',system-ui,sans-serif;
+  --r:16px;--ease:cubic-bezier(.22,1,.36,1);
+}

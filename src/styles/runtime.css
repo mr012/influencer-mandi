@@ -1,0 +1,126 @@
+
+html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;overscroll-behavior:none}
+body{padding:0!important}
+/* the phone address bar overlaps a fixed full-height box, so use the dynamic viewport */
+#stage{position:fixed;left:0;top:0;width:100%;height:100vh;height:100dvh;overflow:hidden}
+#overlay{height:100vh;height:100dvh}
+.proto > .ph .tabs{padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))}
+#stage .scr,#stage .scr-m{position:absolute;inset:0}
+.proto.preview-canvas{position:absolute;inset:0;width:100%;height:100%;transform:none;pointer-events:auto;user-select:auto}
+/* the mockup frames carry the design's fixed size and aspect ratio — the live app fills the window instead */
+#stage .scr-m,#stage .scr .proto,.proto > .mock,.proto > .dsplit,.proto > .ph{
+  aspect-ratio:auto!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important}
+#stage .scr-m{position:absolute;inset:0;width:100%;height:100%;display:block;padding:0;margin:0}
+.proto > .mock,.proto > .dsplit{width:100%;height:100%;border-radius:0;border:0}
+.proto > .ph{width:100%;height:100%;border-radius:0;border:0;margin:0}
+.proto .main{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none}
+.proto .main::-webkit-scrollbar{display:none}
+.proto .ph .body{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+.proto .ph .body::-webkit-scrollbar{display:none}
+.proto .formside{overflow-y:auto}
+.proto [data-act],.proto [data-tab]{cursor:pointer}
+.proto .comp input.in{font:inherit;color:var(--white);border:1px solid var(--line2);outline:0}
+.proto .comp input.in:focus{border-color:var(--side)}
+@media(max-width:1023px){.proto .comp input.in{font-size:16px}}
+
+/* ---------- screen transitions: crossfade + content glides in ---------- */
+.scr.entering{animation:scrIn .26s ease both}
+.scr.leaving{animation:scrOut .2s ease both;pointer-events:none;z-index:0}
+@keyframes scrIn{from{opacity:0}}
+@keyframes scrOut{to{opacity:0}}
+.rise-fwd{animation:riseR .36s cubic-bezier(.22,1,.36,1) both}
+.rise-back{animation:riseL .36s cubic-bezier(.22,1,.36,1) both}
+.rise-tabR{animation:tabR .32s cubic-bezier(.22,1,.36,1) both}
+.rise-tabL{animation:tabL .32s cubic-bezier(.22,1,.36,1) both}
+.rise-fade{animation:riseU .38s cubic-bezier(.22,1,.36,1) both}
+@keyframes riseR{from{opacity:0;transform:translateX(28px)}}
+@keyframes riseL{from{opacity:0;transform:translateX(-28px)}}
+@keyframes tabR{from{opacity:0;transform:translateX(14px)}}
+@keyframes tabL{from{opacity:0;transform:translateX(-14px)}}
+@keyframes riseU{from{opacity:0;transform:translateY(12px)}}
+
+/* ---------- colour changes ease instead of snapping ---------- */
+.proto *,#overlay *,#pop *{transition:color .35s ease,background-color .35s ease,border-color .35s ease,box-shadow .35s ease,fill .35s ease,stroke .35s ease}
+.proto .glow,.proto .g-o,.proto .g-l{transition:opacity .3s ease}
+.proto .btn,.proto .dact,.proto .acts b,.proto .chip,.proto .role-choice,#overlay .btn,#overlay .chip,#overlay .row{
+  transition:transform .14s ease,color .35s ease,background-color .35s ease,border-color .35s ease,box-shadow .35s ease}
+.proto .btn:active,.proto .dact:active,.proto .acts b:active,.proto .chip:active,#overlay .btn:active,#overlay .chip:active{transform:scale(.95)}
+.proto .role-choice:active{transform:scale(.985)}
+
+/* the design only drew the creator card selected; the brand card selects in lime */
+.proto .dsplit[data-side="brand"] .role-choice.chosen,.proto .ph[data-side="brand"] .body > .row.sel{
+  border-color:var(--lime)!important;background:rgba(198,255,0,.05)!important}
+/* ---------- deck ---------- */
+.proto .deck .cd{transition:transform .34s cubic-bezier(.22,1,.36,1),opacity .3s ease,filter .34s ease}
+.proto .deck .cd.dragging{transition:none}
+.proto .deck .cd.flying{transition:transform .36s cubic-bezier(.4,.1,.6,1),opacity .34s ease}
+.proto .deck .cd.front{cursor:grab;touch-action:pan-y}
+.proto .deck .cd.front.dragging{cursor:grabbing}
+.proto .deck .cd.arrive{animation:arrive .36s ease both}
+@keyframes arrive{from{opacity:0}}
+.stamp{position:absolute;top:42%;left:50%;z-index:9;font-family:var(--display);font-size:40px;text-transform:uppercase;
+  padding:6px 18px;border:4px solid;border-radius:12px;opacity:0;pointer-events:none;background:rgba(8,8,8,.4);
+  transform:translate(-50%,-50%);transition:opacity .15s linear}
+.stamp.no{color:var(--orange);border-color:var(--orange)} .stamp.yes{color:var(--lime);border-color:var(--lime)}
+
+/* ---------- sheets & popups ---------- */
+#overlay{position:fixed;inset:0;z-index:50;display:none}
+#overlay.on{display:block}
+#overlay .sheetwrap{position:absolute;inset:0;border-radius:0;animation:bdIn .24s ease both}
+#overlay .sheet{max-height:92%;overflow-y:auto;scrollbar-width:none;animation:sheetUp .36s cubic-bezier(.22,1,.36,1) both}
+#overlay .sheet::-webkit-scrollbar{display:none}
+#overlay.closing .sheetwrap{animation:bdOut .22s ease both}
+#overlay.closing .sheet{animation:sheetDown .22s ease both}
+@keyframes bdIn{from{background-color:transparent}} @keyframes bdOut{to{background-color:transparent}}
+@keyframes sheetUp{from{transform:translateY(100%)}} @keyframes sheetDown{to{transform:translateY(100%)}}
+.xclose{position:sticky;top:0;float:right;width:32px;height:32px;border-radius:50%;border:1px solid var(--line2);background:var(--card);
+  color:var(--grey);display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;z-index:5;margin:-2px -2px 6px auto;align-self:flex-end;flex:none}
+.dt-acts{display:flex;gap:9px;margin-top:14px}.dt-acts .btn{flex:1}
+.marrow{transition:opacity .2s ease,background-color .2s ease}.marrow.off{opacity:.25;pointer-events:none}
+.marrow:hover{background:rgba(8,8,8,.85)}
+.mdots i{transition:width .25s ease,background-color .25s ease}
+.pick-list{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.pick-list .row.sel{border-color:var(--side)}
+@media(min-width:1024px){
+  #overlay .sheetwrap{align-items:center;justify-content:center}
+  #overlay .sheet{width:min(560px,92vw);max-height:86vh;border-radius:22px;border:1px solid var(--line2);animation:popIn .3s cubic-bezier(.22,1,.36,1) both}
+  #overlay.closing .sheet{animation:popOut .2s ease both}
+  #overlay .sheet .grab{display:none}
+  #overlay.detail .sheet{width:min(940px,94vw);padding:22px}
+  .dt{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:26px;align-items:start}
+  .dt-media{position:sticky;top:0}
+  .dt-media .mgal{width:100%!important;height:auto!important;margin:0}
+}
+@keyframes popIn{from{opacity:0;transform:translateY(10px) scale(.97)}}
+@keyframes popOut{to{opacity:0;transform:translateY(6px) scale(.98)}}
+#pop{position:fixed;top:64px;right:26px;z-index:60;display:none;transform-origin:top right}
+#pop.on{display:block;animation:popIn .22s cubic-bezier(.22,1,.36,1) both}
+#pop.closing{animation:popOut .16s ease both}
+#pop .acct-menu{position:static}
+.acct-item{cursor:pointer}.acct-item:hover{background:rgba(var(--srgb),.08)}
+.bub.pop{animation:bubIn .32s cubic-bezier(.22,1,.36,1) both}
+@keyframes bubIn{from{opacity:0;transform:translateY(8px)}}
+#toast{position:fixed;left:50%;top:18px;z-index:80;transform:translate(-50%,-160%);background:var(--lime);color:#0b0b0b;padding:11px 18px;
+  border-radius:12px;font-size:13px;font-weight:600;transition:transform .32s cubic-bezier(.22,1,.36,1),opacity .2s;pointer-events:none;
+  max-width:90vw;opacity:0;visibility:hidden}
+#toast.on{transform:translate(-50%,0);opacity:1;visibility:visible}
+
+/* ---------- prototype-only mode switcher ---------- */
+#modeSw{position:fixed;right:18px;bottom:18px;z-index:45;font-family:var(--body,Inter,system-ui,sans-serif)}
+@media(max-width:1023px){#modeSw{right:10px;bottom:80px}}
+.msw-toggle{border:1px dashed rgba(245,243,239,.4);background:rgba(20,20,22,.92);color:#f5f3ef;border-radius:999px;
+  padding:9px 15px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;backdrop-filter:blur(8px)}
+.msw-panel{position:absolute;right:0;bottom:calc(100% + 8px);width:250px;background:rgba(20,20,22,.97);border:1px dashed rgba(245,243,239,.3);
+  border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:9px;opacity:0;transform:translateY(6px) scale(.98);
+  pointer-events:none;transition:opacity .2s ease,transform .2s ease;transform-origin:bottom right}
+#modeSw.open .msw-panel{opacity:1;transform:none;pointer-events:auto}
+.msw-t{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8d8b86}
+.msw-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:#0c0c0d;border-radius:10px;padding:3px}
+.msw-seg button,.msw-admin button,.msw-restart{font:inherit;font-size:12px;border:0;cursor:pointer;border-radius:8px;padding:8px 6px;
+  background:transparent;color:#bdbab4;transition:background-color .2s,color .2s}
+.msw-seg button[aria-pressed="true"]{background:#f5f3ef;color:#0b0b0b;font-weight:700}
+.msw-admin{display:flex;flex-direction:column;gap:2px}
+.msw-admin[hidden]{display:none}
+.msw-admin button{text-align:left;padding:7px 9px}.msw-admin button.on,.msw-admin button:hover{background:#1d1d20;color:#f5f3ef}
+.msw-restart{border:1px solid #2a2a2d;color:#f5f3ef}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}

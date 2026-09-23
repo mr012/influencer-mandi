@@ -1,0 +1,48 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Mandi — Source comparison</title>
+<style>body{margin:0;background:#171719;color:#eee;font:14px Arial,sans-serif}header{padding:14px;position:sticky;top:0;background:#171719;z-index:2}button,select{padding:9px;margin-right:8px}#pair{display:flex;gap:20px;padding:12px;align-items:start}iframe{border:0;background:#0b0b0d}h2{font-size:14px;margin:0 0 8px}pre{white-space:pre-wrap;padding:14px}label{margin-right:10px}</style>
+<header><b>Original / separated React project</b><p>
+<button id="run">Run full comparison</button>
+<label>Width <select id="width"><option>393</option><option>320</option><option>768</option><option>1440</option></select></label>
+<label>Role <select id="role"><option>creator</option><option>brand</option><option>admin</option></select></label>
+<label>Screen <select id="route"></select></label><button id="show">Show screen</button><button id="details">Open details</button><button id="filters">Open filters</button>
+</p><div id="status">Loading both versions…</div></header>
+<div id="pair"><section><h2>ORIGINAL PROTOTYPE</h2><iframe id="original" src="/reference/mandi-prototype.html" width="393" height="852"></iframe></section><section><h2>SEPARATED REACT PROJECT</h2><iframe id="project" src="/" width="393" height="852"></iframe></section></div><pre id="report"></pre>
+<script type="module">
+import {MAP} from '/src/config/routes.js';
+const $=s=>document.querySelector(s), frames=[$('#original'),$('#project')];
+const sleep=n=>new Promise(r=>setTimeout(r,n));
+const rows=[],errors=[];
+for(const r of Object.keys(MAP))$('#route').add(new Option(r,r));$('#route').value='discover';
+async function ready(){for(let i=0;i<200;i++){if(frames.every(f=>f.contentWindow.__proto?.fresh)){await Promise.all(frames.map(f=>f.contentDocument.fonts.ready));return;}await sleep(50);}throw Error('App startup timed out');}
+function state(role,route){for(const f of frames){const w=f.contentWindow,p=w.__proto;p.closeAll();f.contentDocument.querySelector('#overlay').className='';f.contentDocument.querySelector('#overlay').innerHTML='';f.contentDocument.querySelector('#pop').className='';const s=p.fresh();Object.assign(s,{mode:role,side:role==='admin'?'creator':role,pickSide:role==='admin'?'creator':role,authed:!['pick','signup','login','code','forgot','reset','onboard'].includes(route),subscribed:true,adminAuthed:role==='admin',route,ctx:role==='brand'?'u1':'c1',openChat:role==='brand'?'u1':'c1'});p.S=s;p.render('none');}}
+async function size(width){frames.forEach(f=>f.width=width);await sleep(40);}
+function snapshot(f){const d=f.contentDocument;const root=d.querySelector('.scr:not(.leaving)');if(!root)throw Error('Missing screen');const text=root.textContent.replace(/\s+/g,' ').trim();const elements=[...root.querySelectorAll('*')].map(el=>{const r=el.getBoundingClientRect(),c=f.contentWindow.getComputedStyle(el);return {tag:el.tagName,cls:el.className?.baseVal??el.className,rect:[r.x,r.y,r.width,r.height].map(v=>Math.round(v*10)/10),style:[c.fontFamily,c.fontSize,c.fontWeight,c.lineHeight,c.letterSpacing,c.color,c.backgroundColor,c.borderRadius,c.display]};});return {text,elements};}
+function compare(){const a=snapshot(frames[0]),b=snapshot(frames[1]);const diffs=[];if(a.text!==b.text)diffs.push('Visible text differs');if(a.elements.length!==b.elements.length)diffs.push(`Element count ${a.elements.length} / ${b.elements.length}`);for(let i=0;i<Math.min(a.elements.length,b.elements.length);i++){if(JSON.stringify(a.elements[i])!==JSON.stringify(b.elements[i])){diffs.push({index:i,source:a.elements[i],project:b.elements[i]});if(diffs.length>=4)break;}}return diffs;}
+function assert(ok,label){rows.push({test:label,passed:!!ok});if(!ok)errors.push(label);}
+async function interactions(){
+ for(const role of ['creator','brand']){
+  state(role,'discover');await sleep(60);
+  for(const f of frames){f.contentDocument.querySelector('.deck .front').click();}
+  await sleep(50);assert(frames.every(f=>f.contentDocument.querySelector('#overlay.on .mgal')),role+' card tap keeps details open');
+  state(role,'discover');await sleep(60);
+  for(const f of frames){const d=f.contentDocument;d.querySelector('.summary-pill').click();d.querySelector('#filter-city input').click();d.querySelector('[data-act="applyfilters"]').click();}
+  await sleep(60);assert(frames.every(f=>f.contentWindow.__proto.S.filters[role].city.length===1),role+' filters apply');assert(frames.every(f=>!f.contentWindow.__proto.S.filters[role==='creator'?'brand':'creator'].city),role+' filters isolated');
+  state(role,'code');await sleep(60);for(const f of frames){f.contentDocument.querySelector('.body,.formside')?.click();}assert(frames.every(f=>f.contentWindow.__proto.S.route==='code'),role+' blank verification tap inert');
+  for(const f of frames){f.contentDocument.querySelector('[data-act="go:onboard"]').click();}assert(frames.every(f=>f.contentWindow.__proto.S.route==='onboard'),role+' Verify navigates');
+  state(role,'profile');await sleep(60);assert(frames.every(f=>!f.contentDocument.querySelector('.scr:not(.leaving)').textContent.includes('Waiting on you')),role+' removed profile section');
+  for(const f of frames){f.contentDocument.querySelector('[data-act="viewcard"]').click();}assert(frames.every(f=>f.contentDocument.querySelector('#overlay .profile-card-preview .cd')),role+' profile main card preview');
+  for(const f of frames){f.contentDocument.querySelector('[data-act^="profiledetails:"]').click();}await sleep(280);assert(frames.every(f=>f.contentDocument.querySelector('#overlay.on .mgal')),role+' preview to details survives old close timer');
+  state(role,'convo');await sleep(60);for(const f of frames){const d=f.contentDocument;d.querySelector('.comp input').value='Mandi test message';d.querySelector('[data-act="send"]').click();}assert(frames.every(f=>f.contentWindow.__proto.S.threads[role==='brand'?'u1':'c1'].some(m=>m.t==='Mandi test message')),role+' send updates intended conversation');
+  await sleep(1200);
+ }
+}
+$('#show').onclick=async()=>{await ready();await size(+$('#width').value);state($('#role').value,$('#route').value);await sleep(80);$('#status').textContent='Selected screen: '+JSON.stringify(compare());};
+$('#details').onclick=()=>{for(const f of frames)f.contentWindow.__proto.openDetail($('#role').value==='brand'?'u1':'c1',true);};
+$('#filters').onclick=()=>{for(const f of frames)f.contentDocument.querySelector('.summary-pill')?.click();};
+$('#run').onclick=async()=>{try{await ready();rows.length=0;errors.length=0;$('#run').disabled=true;
+ for(const width of [320,393,768,1440]){await size(width);for(const role of ['creator','brand','admin']){for(const route of Object.keys(MAP).filter(r=>role==='admin'?r.startsWith('a_'):!r.startsWith('a_'))){state(role,route);await sleep(25);const differences=compare();rows.push({width,role,route,passed:!differences.length,differences});$('#status').textContent=`Comparing ${width}px / ${role} / ${route} (${rows.length})`;}}}
+ await size(393);await interactions();
+ const failures=rows.filter(r=>!r.passed);$('#report').textContent=JSON.stringify({total:rows.length,passed:rows.length-failures.length,failures,errors},null,2);$('#status').textContent=`Finished: ${rows.length-failures.length}/${rows.length} checks passed`;await size(393);state('creator','discover');
+}catch(e){$('#report').textContent=e.stack;$('#status').textContent='Comparison failed';}finally{$('#run').disabled=false;}};
+await ready();frames.forEach(f=>f.contentWindow.addEventListener('error',e=>errors.push(e.message)));state('creator','discover');$('#status').textContent='Ready. Use Run full comparison.';
+</script></html>
