@@ -36,3 +36,24 @@
 
 .proto > .landing.mock{display:block;grid-template-columns:none}.landing.mock::after{content:none}
 
+
+/* Motion exploration: same layout, animated light and role selection. */
+.landing .lp-page{--pointer-x:0px;--pointer-y:0px}
+.landing .lp-glow{inset:-5%;background-size:110% 110%;animation:glow-drift 12s ease-in-out infinite alternate;transform:translate(var(--pointer-x),var(--pointer-y));transition:opacity 1.2s ease,transform 1.4s ease-out}
+.landing .lp-brand-glow{animation-direction:alternate-reverse}
+@keyframes glow-drift{0%{background-position:0% 0%;filter:brightness(.85)}100%{background-position:100% 100%;filter:brightness(1.3)}}
+@media(min-width:1024px){.landing .lp-glow{right:54%;left:0;top:0;bottom:0}.landing .lp-page{overflow:hidden}}
+.landing .lp-role{transition:transform .6s cubic-bezier(.22,1,.36,1),border-color .6s,background-color .6s,box-shadow .6s;transform-origin:center}
+.landing .lp-role[aria-pressed=true]{box-shadow:0 0 26px rgba(var(--rgb),.09),inset 0 0 30px rgba(var(--rgb),.035)}
+.landing .lp-role[aria-pressed=false]{transform:scale(.975)}
+.landing .lp-role svg{transition:filter .5s}
+.landing .lp-role[aria-pressed=true] svg{filter:drop-shadow(0 0 7px currentColor)}
+.landing .lp-role.lp-just-selected svg{animation:icon-pop .7s cubic-bezier(.22,1,.36,1)}
+@keyframes icon-pop{0%{transform:translateY(-50%) scale(.85) rotate(-10deg)}55%{transform:translateY(-50%) scale(1.2) rotate(5deg)}100%{transform:translateY(-50%) scale(1) rotate(0)}}
+
+
+
+
+@media(prefers-reduced-motion:reduce){.landing .lp-glow,.landing .lp-role svg{animation:none!important}.landing .lp-role[aria-pressed=false]{transform:none}}
+
+.landing .lp-role:hover h3{transform:none}.landing .lp-role[aria-pressed=true]{transform:scale(1)}
