@@ -14,7 +14,13 @@
 .auth-footer{flex:none;width:100%;text-align:center;padding:12px 0;position:relative;z-index:2}
 .auth-tagline{font-family:var(--mark);font-size:20px;color:var(--lime);margin:0}
 .auth-impact{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:var(--grey);margin:10px 0 0}
-.proto .ph.home-page{overflow:hidden;padding:clamp(12px,3dvh,26px) 18px 0;gap:0;background:radial-gradient(ellipse at 100% 0%,rgba(var(--srgb),.16),transparent 55%),radial-gradient(ellipse at 0% 100%,rgba(var(--srgb),.09),transparent 50%),var(--ink)}
+.proto .ph.home-page{overflow:hidden;isolation:isolate;padding:clamp(12px,3dvh,26px) 18px 0;gap:0;background:var(--ink)}
+.proto .ph.home-page::before,.proto .ph.home-page::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;transition:opacity .65s ease-in-out}
+.proto .ph.home-page::before{background:radial-gradient(ellipse at 100% 0%,rgba(255,61,0,.16),transparent 55%),radial-gradient(ellipse at 0% 100%,rgba(198,255,0,.09),transparent 50%);opacity:1}
+.proto .ph.home-page::after{background:radial-gradient(ellipse at 100% 0%,rgba(198,255,0,.16),transparent 55%),radial-gradient(ellipse at 0% 100%,rgba(255,61,0,.09),transparent 50%);opacity:0}
+.proto .ph.home-page[data-side="brand"]::before{opacity:0}
+.proto .ph.home-page[data-side="brand"]::after{opacity:1}
+@media(prefers-reduced-motion:reduce){.proto .ph.home-page::before,.proto .ph.home-page::after{transition:none}}
 .home-hero{flex:none;margin-bottom:30px}
 .home-logo{font-family:var(--display);font-size:54px;line-height:.94;text-transform:uppercase;letter-spacing:-.02em}
 .home-logo em{color:var(--orange);font-style:normal}
