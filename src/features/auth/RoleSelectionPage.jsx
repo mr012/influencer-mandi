@@ -10,7 +10,6 @@ export default function RoleSelectionPage({
       <p>Creators find campaigns worth their time. Brands find creators worth their budget.</p>
     </header>
     <div className="home-choices">
-      <span className="lbl">Welcome to Influencer Mandi</span>
       <h2>Pick your side</h2>
       <button type="button" className="role-choice chosen" data-act="side:creator">
         <span className="lbl">For the storytellers</span>

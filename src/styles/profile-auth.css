@@ -14,7 +14,7 @@
 .auth-footer{flex:none;width:100%;text-align:center;padding:12px 0;position:relative;z-index:2}
 .auth-tagline{font-family:var(--mark);font-size:20px;color:var(--lime);margin:0}
 .auth-impact{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:var(--grey);margin:10px 0 0}
-.proto .ph.home-page{overflow-y:auto;padding:26px 18px 0;gap:0}
+.proto .ph.home-page{overflow:hidden;padding:clamp(12px,3dvh,26px) 18px 0;gap:0;background:radial-gradient(ellipse at 100% 0%,rgba(255,61,0,.16),transparent 55%),radial-gradient(ellipse at 0% 100%,rgba(198,255,0,.09),transparent 50%),var(--ink)}
 .home-hero{flex:none;margin-bottom:30px}
 .home-logo{font-family:var(--display);font-size:54px;line-height:.94;text-transform:uppercase;letter-spacing:-.02em}
 .home-logo em{color:var(--orange);font-style:normal}
@@ -32,10 +32,48 @@
 .proto .home-choices .role-choice>svg{width:21px;height:21px;right:17px}
 .home-choices>.btn{width:100%;min-height:42px}
 .home-choices>.quiet{font-size:12px;color:var(--grey);margin:0 0 20px}
-.home-choices>.quiet span{color:var(--orange);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.proto .home-page .home-choices>.quiet span{color:var(--side);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .proto .ph.home-page>.auth-footer{margin-top:auto;padding:12px 0 calc(18px + env(safe-area-inset-bottom,0px))}
 .home-page .auth-tagline{font-size:18px}
 .home-page .auth-impact{font-size:9px;margin-top:10px;letter-spacing:.1em;line-height:1.6}
+@media(max-width:1023px) and (max-height:900px){
+ .home-hero{margin-bottom:18px}
+ .home-logo{font-size:44px}
+ .home-hero h1{font-size:26px;margin:8px 0 12px}
+ .home-hero p{font-size:13px;line-height:1.6}
+ .home-choices{gap:12px}
+ .home-choices>h2{font-size:26px}
+ .proto .home-choices .role-choice{padding:14px 14px 12px}
+ .proto .home-choices .role-choice h3{margin:7px 0}
+ .proto .home-choices .role-choice p{font-size:12px;line-height:1.5}
+ .home-choices>.quiet{margin-bottom:6px}
+ .proto .ph.home-page>.auth-footer{padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px))}
+}
+@media(max-width:1023px) and (max-height:650px){
+ .home-logo{font-size:34px}
+ .home-hero{margin-bottom:12px}
+ .home-hero h1{font-size:23px;margin:6px 0 8px}
+ .home-hero p{font-size:12px;line-height:1.45}
+ .home-choices{gap:9px}
+ .proto .home-choices .role-choice{padding:10px 12px}
+ .proto .home-choices .role-choice h3{font-size:21px;margin:5px 0}
+ .home-choices .role-choice .lbl{font-size:9px}
+ .home-choices>.btn{min-height:38px;height:38px}
+ .home-page .auth-tagline{font-size:16px}
+ .home-page .auth-impact{font-size:8px;margin-top:5px}
+}
+@media(max-width:1023px) and (max-height:480px) and (orientation:landscape){
+ .proto .ph.home-page{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr auto;column-gap:24px;padding-top:10px}
+ .home-hero{align-self:center;margin:0}
+ .home-choices{gap:6px;align-self:center}
+ .home-choices>h2{font-size:23px}
+ .proto .home-choices .role-choice{padding:7px 10px}
+ .proto .home-choices .role-choice h3{margin:3px 0;font-size:20px}
+ .proto .home-choices .role-choice p{font-size:11px;line-height:1.3}
+ .proto .home-choices .role-choice>svg{top:22px}
+ .home-choices>.quiet{font-size:10px;margin:0}
+ .proto .ph.home-page>.auth-footer{grid-column:1 / -1;padding:5px 0}
+}
 .proto .ph.auth-layout>.auth-footer{padding:12px 12px calc(16px + env(safe-area-inset-bottom,0px))}
 .proto .ph[data-route="pick"]>.body>.row{flex:1 0 145px!important;justify-content:flex-start!important}
 .proto .ph[data-route="pick"]>.body>.row>small{margin-top:auto}
