@@ -57,3 +57,10 @@
 @media(prefers-reduced-motion:reduce){.landing .lp-glow,.landing .lp-role svg{animation:none!important}.landing .lp-role[aria-pressed=false]{transform:none}}
 
 .landing .lp-role:hover h3{transform:none}.landing .lp-role[aria-pressed=true]{transform:scale(1)}
+
+/* Tilt and selected size animate independently, including when the pointer exits. */
+.landing .lp-role[aria-pressed]{transform:perspective(1200px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg));transition:transform .7s cubic-bezier(.22,1,.36,1),scale .6s cubic-bezier(.22,1,.36,1),border-color .6s,background-color .6s,box-shadow .6s}
+.landing .lp-role[aria-pressed=true]{scale:1}
+.landing .lp-role[aria-pressed=false]{scale:.975}
+.landing .lp-role.tilt-tracking{transition:transform .12s ease-out,scale .6s cubic-bezier(.22,1,.36,1),border-color .6s,background-color .6s,box-shadow .6s}
+@media(prefers-reduced-motion:reduce){.landing .lp-role[aria-pressed]{transform:none;scale:1;transition:none}}

@@ -51,6 +51,13 @@
 @media(prefers-reduced-motion:reduce){.glow,.role svg{animation:none!important}.role[aria-pressed=false]{transform:none}}
 
 .role:hover h3{transform:none}.role[aria-pressed=true]{transform:scale(1)}
+
+/* Tilt and selected size animate independently, including when the pointer exits. */
+.role[aria-pressed]{transform:perspective(1200px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg));transition:transform .7s cubic-bezier(.22,1,.36,1),scale .6s cubic-bezier(.22,1,.36,1),border-color .6s,background-color .6s,box-shadow .6s}
+.role[aria-pressed=true]{scale:1}
+.role[aria-pressed=false]{scale:.975}
+.role.tilt-tracking{transition:transform .12s ease-out,scale .6s cubic-bezier(.22,1,.36,1),border-color .6s,background-color .6s,box-shadow .6s}
+@media(prefers-reduced-motion:reduce){.role[aria-pressed]{transform:none;scale:1;transition:none}}
 </style></head><body data-role="creator"><main class="page"><div class="glow creator-glow"></div><div class="glow brand-glow"></div><section class="hero"><div class="logo" aria-label="Influencer Mandi"><span aria-hidden="true">Influencer</span><span class="logo-line" aria-hidden="true"><span class="flip"><span class="face en">Mandi</span><span class="face hi" lang="hi">मंडी</span></span></span></div><div class="intro"><h1>Find your<br> people.</h1><p>Creators find campaigns worth their time. Brands find creators worth their budget.</p><div class="tagline">Creators. Brands. Ideas.</div></div><p class="impact">Real people. Real stories. Real impact.</p></section><section class="choices" aria-labelledby="pick-title"><span class="eyebrow">Welcome to Influencer Mandi</span><h2 id="pick-title">Pick your side</h2><button class="role creator" type="button" data-choice="creator" aria-pressed="true"><span class="eyebrow">For the storytellers</span><h3>I'm a <em>creator</em></h3><p>Discover campaigns. Show your work. Connect with brands.</p><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.7-5.5 7.2-5.5s6.3 1.9 7.2 5.5"/></svg></button><button class="role brand" type="button" data-choice="brand" aria-pressed="false"><span class="eyebrow">For the businesses</span><h3>I'm a <em>brand</em></h3><p>Find creators. Share your brief. Start a collaboration.</p><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M4 10v4h3l7 4V6l-7 4H4zM18 9.2a4 4 0 010 5.6"/></svg></button><button class="continue" type="button">Continue</button><p class="login">Already part of the mandi? <a href="#login">Log in</a></p></section><footer class="mobile-footer"><p class="tagline">Creators. Brands. Ideas.</p><p class="impact">Real people. Real stories. Real impact.</p></footer></main><dialog><h2>Local preview</h2><p id="preview-message"></p><button type="button" id="close-preview">Close</button></dialog><script>
 const el=document,page=el.querySelector('.page'),reduced=matchMedia('(prefers-reduced-motion:reduce)'),fine=matchMedia('(hover:hover) and (pointer:fine)');
 let angle=180,interval;const flip=()=>{if(!reduced.matches&&!document.hidden){angle+=180;el.querySelector('.flip').style.transform=`perspective(4em) rotateX(${angle}deg)`}};
@@ -61,4 +68,12 @@ page.addEventListener('pointermove',move);page.addEventListener('pointerleave',l
 
 el.querySelectorAll('.role').forEach(card=>card.addEventListener('click',()=>{const changed=card.getAttribute('aria-pressed')!=='true';document.body.dataset.role=card.dataset.choice;el.querySelectorAll('.role').forEach(c=>{c.setAttribute('aria-pressed',String(c===card));c.classList.remove('just-selected')});if(changed&&!reduced.matches){void card.offsetWidth;card.classList.add('just-selected')}}));
 const dialog=el.querySelector('dialog');el.querySelector('.continue').addEventListener('click',()=>{el.querySelector('#preview-message').textContent='Landing-page preview only.';dialog.showModal()});el.querySelector('.login a').addEventListener('click',e=>{e.preventDefault();el.querySelector('#preview-message').textContent='Login is not connected in this local preview.';dialog.showModal()});el.querySelector('#close-preview').addEventListener('click',()=>dialog.close());
+
+const tiltCleanups=[];
+el.querySelectorAll('.role').forEach(card=>{
+ const tilt=e=>{if(!fine.matches||reduced.matches)return;const r=card.getBoundingClientRect();card.classList.add('tilt-tracking');card.style.setProperty('--tilt-x',(-((e.clientY-r.top)/r.height-.5)*8)+'deg');card.style.setProperty('--tilt-y',(((e.clientX-r.left)/r.width-.5)*10)+'deg')};
+ const reset=()=>{card.classList.remove('tilt-tracking');card.style.setProperty('--tilt-x','0deg');card.style.setProperty('--tilt-y','0deg')};
+ card.addEventListener('pointermove',tilt);card.addEventListener('pointerleave',reset);card.addEventListener('pointercancel',reset);
+ tiltCleanups.push(()=>{card.removeEventListener('pointermove',tilt);card.removeEventListener('pointerleave',reset);card.removeEventListener('pointercancel',reset)});
+});
 </script></body></html>
