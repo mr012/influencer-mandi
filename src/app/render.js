@@ -1,3 +1,4 @@
+import { setupAuthFeedback } from '../features/auth/authFeedback.js';
 import {mountScreen, unmountScreen} from './mountScreen.jsx';
 import { runtime } from "../context/runtime.js";
 import { isWide, reduced } from "../config/breakpoints.js";
@@ -33,6 +34,24 @@ export function render(anim) {
   editableFields(runtime.root);
   if (runtime.S.route === 'code') setupCodeScreen();
   if (runtime.S.route === 'profile') removeWaitingSection();
+  // Desktop authentication shares one back control in the right-hand form panel.
+  if (!admin() && AUTH.includes(runtime.S.route) && runtime.S.route !== 'pick') {
+    const panel = runtime.root.querySelector('.formside');
+    if (panel && !panel.querySelector('.auth-desktop-back')) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'auth-desktop-back';
+      button.dataset.act = 'back';
+      button.setAttribute('aria-label', 'Go back');
+      button.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg>';
+      const heading = panel.querySelector('.formcard > h3');
+      if (heading) {
+        const row = document.createElement('div'); row.className = 'auth-heading-row';
+        heading.before(row); row.append(button, heading);
+      } else (panel.querySelector('.formcard') || panel).prepend(button);
+    }
+  }
+  setupAuthFeedback(runtime.root, runtime.S.route);
   wire(runtime.root);
   const a = reduced ? "none" : anim || "none";
   if (a !== "none") {
