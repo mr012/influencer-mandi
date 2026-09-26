@@ -26,7 +26,7 @@ export function render(anim) {
   stage.appendChild(wrap);
   runtime.root = wrap.querySelector(".mock,.dsplit,.ph");
   runtime.root.dataset.route = runtime.S.route;
-  if (!admin()) runtime.root.setAttribute("data-side", side());
+  if (!admin()) runtime.root.setAttribute("data-side", runtime.S.route === "login" ? "creator" : side());
   if (!admin() && !AUTH.includes(runtime.S.route)) chrome();
   if (admin()) adminChrome();
   const fill = FILL[runtime.S.route];
