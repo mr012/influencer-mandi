@@ -30,6 +30,13 @@ export function onClick(e) {
   const [a, v] = el.dataset.act.split(/:(.*)/s);
   switch (a) {
     case "go":
+      if (v === "code" && runtime.S.route === "signup") {
+        const password = runtime.root.querySelector('input[type="password"]');
+        if (password && !password.checkValidity()) {
+          password.focus();
+          return toast("Use 8+ characters with uppercase, lowercase, a number and a special character.");
+        }
+      }
       return go(v);
     case "campaignpreview":
       runtime.S.previewCampaignId = v;
