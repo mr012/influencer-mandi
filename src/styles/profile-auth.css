@@ -87,7 +87,7 @@
 .proto .ph[data-route="pick"]>.body>.row>small{margin-top:auto}
 .proto .ph[data-route="pick"]>.body>.btn{flex-shrink:0}
 .proto .top .ava{font:inherit;font-weight:700;background:var(--ink2);color:var(--grey);border:1px solid var(--line2);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
-.proto [data-route="code"] .otp-field{width:220px!important;max-width:100%;align-self:center;margin:0 auto 2px}
+.proto [data-route="code"] .otp-field{width:100%!important;max-width:100%;align-self:stretch;margin:0 0 2px}
 .proto [data-route="code"] .otp-input{height:68px;text-align:center;font-family:var(--display);font-size:28px;letter-spacing:.26em;padding:12px 6px 12px 14px;color:var(--white);border-color:var(--orange);background:rgba(255,61,0,.06);box-shadow:0 0 0 3px rgba(255,61,0,.12)}
 .proto [data-route="code"] .sup b,.proto [data-route="code"] .code-email{color:var(--orange)}
 .proto [data-route="editprofile"] .upl{flex:none;min-height:220px;width:100%;max-height:none;margin:8px auto 14px}

@@ -30,7 +30,7 @@
  .landing .lp-choices{padding-bottom:6px}
 }
 
-.proto > .landing.mock{background:#090909;color:#f5f3ef;overflow:auto;font-family:Inter,Arial,sans-serif}.landing .lp-role{text-transform:none;letter-spacing:normal}.landing .lp-role h3{color:#f5f3ef}.landing .lp-logo{font-weight:400}.landing .lp-page{width:100%}@media(min-width:1024px){.proto > .landing.mock{background:#101010}}
+.proto > .landing.mock{background:#090909;color:#f5f3ef;overflow:auto;font-family:Inter,Arial,sans-serif}.landing .lp-role{text-transform:none;letter-spacing:normal}.landing .lp-role h3{color:#f5f3ef}.landing .lp-logo{font-weight:400}.landing .lp-page{width:100%}@media(min-width:1024px){.proto > .landing.mock{background:var(--ink)}}
 
 @font-face{font-family:Marker;src:url('/fonts/reference-font-6.ttf')}
 
