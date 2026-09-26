@@ -1,5 +1,8 @@
 
 /* Final profile and authentication refinements. */
+.proto [data-route="onboard"] .upl{width:160px;height:160px;min-height:160px;max-height:none;max-width:100%;align-self:center;margin:0 auto 12px;box-sizing:border-box;padding:12px;text-align:center}
+.proto [data-route="onboard"] .upl.r45{width:160px;height:200px!important;min-height:200px;max-height:none;aspect-ratio:4/5}
+.proto [data-route="onboard"] .upl span{line-height:1.5;letter-spacing:.08em}
 .signup-phone-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:10px;width:100%}
 .signup-phone-fields input:first-child{text-align:center}
 .country-code-dropdown{min-width:0}

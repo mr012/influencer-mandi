@@ -45,9 +45,16 @@ export function setupCodeScreen() {
   const message = document.createElement('p');
   message.className = 'code-delivery';
   message.append(document.createTextNode('We sent an email to '));
-  const address = document.createElement('b');
+  const address = document.createElement('span');
   address.className = 'code-email';
   address.textContent = email;
   message.appendChild(address);
   wrapper.before(message);
+  if (runtime.root.matches('.ph')) {
+    const changeEmail = document.createElement('button');
+    changeEmail.type = 'button';
+    changeEmail.className = 'btn ghost';
+    changeEmail.textContent = 'Change email';
+    runtime.root.querySelector('.body').appendChild(changeEmail);
+  }
 }

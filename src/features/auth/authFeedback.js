@@ -40,6 +40,7 @@ export function setupAuthFeedback(scope, route) {
  });
  if(route==='reset')return;
  const host=scope.querySelector('.formcard')||scope.querySelector('.body');if(!host)return;
+ if(route==='onboard')host.querySelectorAll('.steps').forEach(steps=>steps.remove());
  const fields=[...host.querySelectorAll('.fld')].filter(f=>!(scope.dataset.side==='brand'&&f.classList.contains('creator-only')));
  if(!fields.length)return;
  const progress=document.createElement('div');progress.className='auth-completion';
