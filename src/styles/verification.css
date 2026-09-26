@@ -1,8 +1,13 @@
 
-.proto [data-route="code"] .otp-input{display:block;width:100%;height:64px;margin:18px 0 24px;padding:0 20px;border:1px solid var(--side);border-radius:10px;background:rgba(var(--srgb),.06);box-shadow:0 0 0 3px rgba(var(--srgb),.12);color:var(--white);caret-color:var(--side);text-align:center;font-family:var(--display);font-size:27px;font-weight:700;letter-spacing:.3em;text-transform:uppercase}
-.proto [data-route="code"] .otp-input::placeholder{color:#858585;opacity:1;font-size:29px;font-weight:900;letter-spacing:.24em}
-.proto [data-route="code"] .otp-input:focus{outline:2px solid var(--side);outline-offset:3px}
+.proto [data-route="code"] .otp-input-wrap{position:relative;display:grid;place-items:center;width:100%;height:64px;margin:18px 0 24px;border:1px solid var(--side);border-radius:10px;background:rgba(var(--srgb),.06);box-shadow:0 0 0 3px rgba(var(--srgb),.12)}
+.proto [data-route="code"] .otp-input-wrap:focus-within{outline:2px solid var(--side);outline-offset:3px}
+.proto [data-route="code"] .otp-input{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:transparent;color:transparent;caret-color:transparent;font-size:16px;opacity:.02;cursor:text}
+.proto [data-route="code"] .otp-input:focus{outline:0}
+.proto [data-route="code"] .otp-visual{display:grid;grid-template-columns:repeat(6,1.05em);gap:.28em;align-items:center;justify-content:center;font-family:var(--display);font-size:29px;font-weight:800;line-height:1;letter-spacing:0;text-align:center;pointer-events:none}
+.proto [data-route="code"] .otp-visual span{display:block;color:var(--white)}
+.proto [data-route="code"] .otp-visual .empty{color:#858585;font-size:1.05em;font-weight:900}
+.proto [data-route="code"] .otp-input-wrap:focus-within .otp-visual span.filled:last-of-type{color:var(--side)}
 .proto [data-route="code"] .code-email{color:var(--side)}
 .code-delivery{font-size:12px;color:var(--grey);text-align:center;line-height:1.6;margin:0 0 4px;overflow-wrap:anywhere}
 
-@media(max-width:400px){.proto [data-route="code"] .otp-input{height:56px;font-size:24px}.proto [data-route="code"] .otp-input::placeholder{font-size:26px}}
+@media(max-width:400px){.proto [data-route="code"] .otp-input-wrap{height:56px}.proto [data-route="code"] .otp-visual{font-size:26px}}

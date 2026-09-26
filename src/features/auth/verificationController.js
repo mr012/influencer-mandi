@@ -8,7 +8,6 @@ export function setupCodeScreen() {
   const input = document.createElement('input');
   input.type = 'text';
   input.className = 'otp-input';
-  input.placeholder = '- - - - - -';
   input.value = (runtime.S.forms[key] || '').replace(/\s/g, '').slice(0, 6);
   input.maxLength = 6;
   input.spellcheck = false;
@@ -16,15 +15,29 @@ export function setupCodeScreen() {
   input.inputMode = 'text';
   input.setAttribute('autocapitalize', 'characters');
   input.setAttribute('aria-label', 'Six-character verification code');
+  const wrapper = document.createElement('div');
+  wrapper.className = 'otp-input-wrap';
+  const visual = document.createElement('div');
+  visual.className = 'otp-visual';
+  visual.setAttribute('aria-hidden', 'true');
+  const render = () => {
+    const characters = [...input.value];
+    visual.innerHTML = Array.from({length:6}, (_, index) =>
+      `<span class="${characters[index] ? 'filled' : 'empty'}">${characters[index] || '-'}</span>`
+    ).join('');
+  };
   input.addEventListener('input', () => {
     input.value = input.value.replace(/[^a-z0-9]/gi, '').toUpperCase().slice(0, 6);
     runtime.S.forms[key] = input.value;
+    render();
   });
+  wrapper.append(visual, input);
+  render();
   const field = target.closest('.fld');
   if (field) {
     field.classList.add('otp-field');
-    target.replaceWith(input);
-  } else target.replaceWith(input);
+    target.replaceWith(wrapper);
+  } else target.replaceWith(wrapper);
   const email = Object.entries(runtime.S.forms).find(([key]) => key.startsWith(side() + ':signup:Email:'))?.[1] || 'ananya@example.com';
   runtime.root.querySelectorAll('.sup,.formcard p').forEach(el => {
     if (el.textContent.includes('@')) el.remove();
@@ -36,5 +49,5 @@ export function setupCodeScreen() {
   address.className = 'code-email';
   address.textContent = email;
   message.appendChild(address);
-  input.before(message);
+  wrapper.before(message);
 }
