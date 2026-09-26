@@ -87,7 +87,7 @@ function markup() {
  <div class="imf-markwrap"></div>
  <section class="imf-scene imf-match">${door('l', 'Creators')}${door('r', 'Brands')}</section>
 </div>
-<div class="imf-ui"><div class="imf-progress"><i></i></div><button class="imf-skip" type="button">Skip intro ${ICON.skip}</button></div>`;
+<div class="imf-ui"><div class="imf-progress"><i></i></div><button class="imf-skip" type="button" aria-label="Skip intro"><span>Skip intro</span> ${ICON.skip}</button></div>`;
 }
 
 export function createIntro(landing, {onStart, onEnd} = {}) {
@@ -370,4 +370,3 @@ export function createIntro(landing, {onStart, onEnd} = {}) {
   get duration() { return R(TOTAL); }
  };
 }
-
