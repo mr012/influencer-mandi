@@ -28,7 +28,7 @@ export function render(anim) {
   runtime.root.dataset.route = runtime.S.route;
   if (!admin()) {
     runtime.root.setAttribute("data-side", side());
-    runtime.root.classList.toggle("auth-orange-theme", AUTH.includes(runtime.S.route) && runtime.S.route !== "pick");
+    runtime.root.classList.toggle("auth-orange-theme", ["login", "forgot", "reset"].includes(runtime.S.route));
   }
   if (!admin() && !AUTH.includes(runtime.S.route)) chrome();
   if (admin()) adminChrome();
