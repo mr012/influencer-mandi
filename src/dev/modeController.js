@@ -1,7 +1,6 @@
 import { runtime } from "../context/runtime.js";
 import { closeAll } from "../components/ui/overlays.js";
 import { render } from "../app/render.js";
-import { admin } from "../context/session.js";
 import { screenShortcuts } from './screenShortcuts.js';
 
 export function pickSide(v) {
@@ -32,9 +31,14 @@ export function setMode(m) {
   syncSwitcher();
 }
 export const sw = document.getElementById("modeSw");
-export function syncSwitcher() {
-  sw.querySelectorAll("[data-mode]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mode === runtime.S.mode)));
+export function syncSwitcher(mode = runtime.S.mode) {
+  sw.dataset.selectedMode = mode;
+  sw.querySelectorAll("[data-mode]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
   const list = sw.querySelector(".msw-admin");
   list.hidden = false;
-  list.innerHTML = `<span class="msw-t">${admin() ? 'Admin' : runtime.S.mode === 'brand' ? 'Brand' : 'Creator'} screens</span>` + screenShortcuts(runtime.S.mode).map(([route, label]) => `<button data-screen="${route}" class="${route === runtime.S.route ? 'on' : ''}" aria-current="${route === runtime.S.route ? 'page' : 'false'}">${label}</button>`).join('');
+  list.innerHTML = `<span class="msw-t">${mode === 'admin' ? 'Admin' : mode === 'brand' ? 'Brand' : 'Creator'} screens</span>` + screenShortcuts(mode).map(([route, label]) => {
+    const active = mode === runtime.S.mode && route === runtime.S.route;
+    return `<button data-screen="${route}" class="${active ? 'on' : ''}" aria-current="${active ? 'page' : 'false'}">${label}</button>`;
+  }).join('');
+  list.scrollTop = 0;
 }

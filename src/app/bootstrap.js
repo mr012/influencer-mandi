@@ -21,12 +21,12 @@ sw.addEventListener("click", e => {
     return;
   }
   if (t.dataset.mode) {
-    sw.classList.remove("open");
-    setMode(t.dataset.mode);
+    syncSwitcher(t.dataset.mode);
     return;
   }
   if (t.dataset.screen) {
     sw.classList.remove("open");
+    runtime.S.mode = sw.dataset.selectedMode || runtime.S.mode;
     runtime.S.adminAuthed = true;
     runtime.S.stack = [];
     runtime.S.route = t.dataset.screen;
@@ -45,8 +45,9 @@ sw.addEventListener("click", e => {
     return;
   }
   if (t.dataset.restart) {
-    const keep = runtime.S.mode;
+    const keep = sw.dataset.selectedMode || runtime.S.mode;
     runtime.S = fresh();
+    runtime.S.mode = keep;
     if (keep === "admin") {
       runtime.S.mode = "admin";
       runtime.S.route = "a_login";
