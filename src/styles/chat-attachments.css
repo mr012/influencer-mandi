@@ -2,6 +2,15 @@
 .comp input.in{min-width:0}
 .chat-add{width:44px;height:44px;flex:none;padding:0;font:30px/1 sans-serif;border-radius:12px;color:var(--white);background:var(--panel);border:1px solid var(--line2)}
 .chat-add:hover,.chat-add[aria-expanded=true]{color:var(--side);border-color:var(--side)}
+.chat-add{transition:color .2s,border-color .2s,transform .22s cubic-bezier(.22,1,.36,1)}
+.chat-add[aria-expanded=true]{transform:rotate(45deg)}
+.chat-list .row{transition:background .22s,border-color .22s}
+.thread>.bub{flex-shrink:0}
+.conversation .thread,.ph[data-route=convo] .thread{overflow-y:auto;overflow-x:hidden;justify-content:flex-start;overflow-anchor:none}
+.thread .chat-date{flex-shrink:0}
+.chat-attach-preview:not([hidden]){animation:chat-attach-enter .2s ease-out}
+.chat-attach-menu{animation:none!important}
+@media(prefers-reduced-motion:reduce){.chat-add,.chat-list .row{transition:none}.chat-attach-preview:not([hidden]){animation:none}}
 .chat-attach-menu{position:absolute;bottom:calc(100% + 8px);left:0;z-index:20;width:190px;max-width:calc(100vw - 32px);padding:6px;background:var(--panel);border:1px solid var(--line2);border-radius:14px;box-shadow:0 12px 35px #0005;transform-origin:bottom left;animation:chat-attach-enter .16s ease-out}
 .chat-attach-menu button{display:flex;align-items:center;gap:11px;width:100%;min-height:38px;padding:9px 10px;border:0;border-radius:8px;background:transparent;text-align:left;color:var(--white);font-size:12px;font-weight:500;line-height:20px;transition:background .15s ease}
 .chat-attach-menu button:hover,.chat-attach-menu button:focus-visible{background:rgba(var(--srgb),.1)}

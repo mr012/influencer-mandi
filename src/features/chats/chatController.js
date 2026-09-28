@@ -8,6 +8,7 @@ import { isWide } from "../../config/breakpoints.js";
 import { FILL } from "../../app/screenControllers.js";
 import { attachmentMarkup, setupAttachments } from './attachments.js';
 import { setupMessageMenu, closeMessageMenu } from './messageMenu.js';
+import { updateThread } from './chatMotion.js';
 
 
 
@@ -17,6 +18,8 @@ export function paintThread(scope, id) {
   if (!th) return;
   const x = byId(id);
   if (!x) {
+    delete th.dataset.signature;
+    delete th.dataset.chatId;
     th.innerHTML = `<div class="ph-empty"><span class="mk">pick a chat.</span></div>`;
     return;
   }
@@ -28,10 +31,9 @@ export function paintThread(scope, id) {
   }
   const msgs = runtime.S.threads[id] || [];
   closeMessageMenu();
-  th.innerHTML = `<span class="chat-date">Matched · ${brand() ? runtime.S.camp : x.title}</span>` + msgs.map((m, k) => `<div data-message-index="${k}" class="bub ${m.me ? "me" : "them"}${m.fresh ? " pop" : ""}${m.deleted ? " message-deleted" : ""}">${attachmentMarkup(m.attachments)}${esc(m.t)}<small>${m.at}</small></div>`).join("");
-  setupMessageMenu(th, msgs, () => repaintThread(id));
+  const threadChanged = updateThread(th, id, msgs, `<span class="chat-date">Matched · ${brand() ? runtime.S.camp : x.title}</span>` + msgs.map((m, k) => `<div data-message-index="${k}" class="bub ${m.me ? "me" : "them"}${m.deleted ? " message-deleted" : ""}">${attachmentMarkup(m.attachments)}${esc(m.t)}<small>${m.at}</small></div>`).join(""));
+  if (threadChanged) setupMessageMenu(th, msgs, () => repaintThread(id));
   msgs.forEach(m => delete m.fresh);
-  th.scrollTop = th.scrollHeight;
   const comp = scope.querySelector(".comp");
   if (comp) {
     const box = comp.querySelector(".in");
@@ -85,8 +87,8 @@ export function send(id, inp) {
 }
 export function repaintThread(id) {
   const scope = isWide() ? runtime.root.querySelector(".conversation") : runtime.root;
-  paintThread(scope, id);
   if (isWide()) FILL.chats.call(null);
+  else if ((runtime.S.ctx || runtime.S.openChat) === id) paintThread(scope, id);
   const inp = runtime.root.querySelector(".comp input.in");
   if (inp && !("ontouchstart" in window)) inp.focus();
 }
@@ -181,4 +183,5 @@ export function fill_matches() {
   }).join("");
   fillRows(runtime.root.querySelector(".workspace") || runtime.root.querySelector(".body"), html);
 }
+
 

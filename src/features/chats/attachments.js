@@ -1,4 +1,5 @@
 import { esc } from '../../components/ui/dom.js';
+import { reduceChatMotion } from './chatMotion.js';
 
 export function attachmentMarkup(files = []) {
   return files.map(file => `<div class="chat-file">${file.type.startsWith('image/') ? `<img src="${file.url}" alt="${esc(file.name)}">` : file.type.startsWith('video/') ? `<video src="${file.url}" controls preload="metadata"></video>` : ''}<a href="${file.url}" download="${esc(file.name)}">${esc(file.name)}</a></div>`).join('');
@@ -22,7 +23,15 @@ export function setupAttachments(comp, id) {
   menu.className = 'chat-attach-menu'; menu.hidden = true;
   const preview = document.createElement('div');
   preview.className = 'chat-attach-preview'; preview.hidden = true;
-  const close = () => { menu.hidden = true; add.setAttribute('aria-expanded', 'false'); };
+  let menuAnimation;
+  const close = () => {
+    if (add.getAttribute('aria-expanded') !== 'true') return;
+    add.setAttribute('aria-expanded', 'false');
+    menuAnimation?.cancel();
+    if (reduceChatMotion()) { menu.hidden = true; return; }
+    menuAnimation = menu.animate([{ opacity: 1, transform: 'translateY(0) scale(1)' }, { opacity: 0, transform: 'translateY(6px) scale(.97)' }], { duration: 140, easing: 'ease-in' });
+    menuAnimation.onfinish = () => { menu.hidden = true; };
+  };
   comp.paintAttachments = () => {
     preview.replaceChildren();
     preview.hidden = !comp.attachments.length;
@@ -53,7 +62,12 @@ export function setupAttachments(comp, id) {
     button.onclick = () => { close(); picker.click(); };
     menu.append(button, picker);
   }
-  add.onclick = () => { menu.hidden = !menu.hidden; add.setAttribute('aria-expanded', String(!menu.hidden)); if (!menu.hidden) menu.querySelector('button').focus(); };
+  add.onclick = () => {
+    if (add.getAttribute('aria-expanded') === 'true') return close();
+    menuAnimation?.cancel(); menu.hidden = false; add.setAttribute('aria-expanded', 'true');
+    if (!reduceChatMotion()) menuAnimation = menu.animate([{ opacity: 0, transform: 'translateY(8px) scale(.96)' }, { opacity: 1, transform: 'translateY(0) scale(1)' }], { duration: 220, easing: 'cubic-bezier(.22,1,.36,1)' });
+    menu.querySelector('button').focus();
+  };
   comp.addEventListener('keydown', event => { if (event.key === 'Escape' && !menu.hidden) { event.stopPropagation(); close(); add.focus(); } });
   comp.addEventListener('focusout', event => { if (!comp.contains(event.relatedTarget)) close(); });
   comp.prepend(add); comp.append(menu, preview);
