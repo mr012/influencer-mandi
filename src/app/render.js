@@ -12,9 +12,25 @@ import { editableFields } from "../components/forms/editableFields.js";
 import { setupCodeScreen } from "../features/auth/verificationController.js";
 import { removeWaitingSection } from "../features/profile/profileController.js";
 import { wire } from "./actionBindings.js";
+import { adminModules } from '../dev/screenShortcuts.js';
 
 export const stage = document.getElementById("stage");
 export function render(anim) {
+  if (admin() && runtime.S.route !== 'a_login') {
+    const module = adminModules[runtime.S.route] || 'overview';
+    let host = stage.querySelector('.admin-artifact-host');
+    if (!host) {
+      [...stage.querySelectorAll('.scr')].forEach(unmountScreen);
+      host = document.createElement('div'); host.className = 'scr admin-artifact-host';
+      host.innerHTML = '<div class="admin-artifact-root"><iframe title="Mandi Admin" src="/admin/index.html#' + module + '"></iframe></div>';
+      stage.append(host);
+    } else {
+      const frame = host.querySelector('iframe');
+      frame.contentWindow?.postMessage({ type: 'mandi-admin-navigate', module }, location.origin);
+    }
+    runtime.root = host.firstElementChild;
+    return;
+  }
   if (runtime.S.route === "convo" && isWide()) {
     runtime.S.openChat = runtime.S.ctx || runtime.S.openChat;
     runtime.S.route = "chats";

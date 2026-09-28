@@ -178,7 +178,7 @@ export function onClick(e) {
     case "adminlogin":
       runtime.S.adminAuthed = true;
       runtime.S.stack = [];
-      runtime.S.route = "a_users";
+      runtime.S.route = "a_overview";
       render("fade");
       return toast("Signed in to the admin console");
     case "adm":

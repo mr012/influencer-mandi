@@ -8,6 +8,7 @@ import { back, go, tab } from "./routes.js";
 import { swipe } from "../features/discovery/deckController.js";
 import { wideQ } from "../config/breakpoints.js";
 import { openDetail } from "../components/details/detailsController.js";
+import { AUTH } from '../config/navigationItems.js';
 
 runtime.S = fresh();
 
@@ -24,11 +25,20 @@ sw.addEventListener("click", e => {
     setMode(t.dataset.mode);
     return;
   }
-  if (t.dataset.adm) {
+  if (t.dataset.screen) {
     sw.classList.remove("open");
     runtime.S.adminAuthed = true;
     runtime.S.stack = [];
-    runtime.S.route = t.dataset.adm;
+    runtime.S.route = t.dataset.screen;
+    runtime.S.ctx = null;
+    if (!admin()) {
+      runtime.S.side = runtime.S.mode;
+      runtime.S.pickSide = runtime.S.mode;
+      runtime.S.authed = !AUTH.includes(runtime.S.route);
+      runtime.S.subscribed = true;
+      if (['convo', 'publicprofile'].includes(runtime.S.route)) runtime.S.ctx = runtime.S.mode === 'brand' ? 'u1' : 'c1';
+      if (runtime.S.route === 'convo') runtime.S.openChat = runtime.S.ctx;
+    }
     closeAll();
     render("fade");
     syncSwitcher();
