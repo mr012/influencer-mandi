@@ -37,12 +37,12 @@ export function setupAttachments(comp, id) {
     });
   };
   for (const [label, icon, accept, capture] of [
-    ['Camera', '◎', 'image/*', true],
-    ['Document', '▤', '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip', false],
-    ['Images / Video', '▧', 'image/*,video/*', false]
+    ['Document', '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>', '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip', false],
+    ['Photos & videos', '<rect x="5" y="3" width="16" height="15" rx="2"/><path d="m5 14 5-5 4 4 3-3 4 4M2 8v12a1 1 0 0 0 1 1h13"/><circle cx="16" cy="7" r="1"/>', 'image/*,video/*', false],
+    ['Camera', '<path d="M8 6 9.5 3h5L16 6h4a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/>', 'image/*', true]
   ]) {
     const button = document.createElement('button');
-    button.type = 'button'; button.innerHTML = `<span aria-hidden="true">${icon}</span>${label}`;
+    button.type = 'button'; button.innerHTML = `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icon}</svg>${label}`;
     const picker = document.createElement('input');
     picker.type = 'file'; picker.accept = accept; picker.hidden = true; picker.multiple = !capture;
     if (capture) picker.setAttribute('capture', 'environment');

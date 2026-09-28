@@ -2,10 +2,13 @@
 .comp input.in{min-width:0}
 .chat-add{width:44px;height:44px;flex:none;padding:0;font:30px/1 sans-serif;border-radius:12px;color:var(--white);background:var(--panel);border:1px solid var(--line2)}
 .chat-add:hover,.chat-add[aria-expanded=true]{color:var(--side);border-color:var(--side)}
-.chat-attach-menu{position:absolute;bottom:calc(100% + 10px);left:0;z-index:20;width:220px;padding:8px;background:var(--panel);border:1px solid var(--line2);border-radius:16px;box-shadow:0 12px 35px #0005}
-.chat-attach-menu button{display:flex;align-items:center;gap:14px;width:100%;padding:12px;border:0;background:transparent;text-align:left;color:var(--white);font-size:13px}
-.chat-attach-menu button:hover{background:var(--ink2)}
-.chat-attach-menu button span{color:var(--side);font-size:24px;width:28px;text-align:center}
+.chat-attach-menu{position:absolute;bottom:calc(100% + 8px);left:0;z-index:20;width:190px;max-width:calc(100vw - 32px);padding:6px;background:var(--panel);border:1px solid var(--line2);border-radius:14px;box-shadow:0 12px 35px #0005;transform-origin:bottom left;animation:chat-attach-enter .16s ease-out}
+.chat-attach-menu button{display:flex;align-items:center;gap:11px;width:100%;min-height:38px;padding:9px 10px;border:0;border-radius:8px;background:transparent;text-align:left;color:var(--white);font-size:12px;font-weight:500;line-height:20px;transition:background .15s ease}
+.chat-attach-menu button:hover,.chat-attach-menu button:focus-visible{background:rgba(var(--srgb),.1)}
+.chat-attach-menu button svg{color:var(--side);width:18px;height:18px;flex:none}
+@keyframes chat-attach-enter{from{opacity:0;transform:translateY(5px) scale(.97)}to{opacity:1;transform:none}}
+@media(pointer:coarse){.chat-attach-menu button{min-height:44px}}
+@media(prefers-reduced-motion:reduce){.chat-attach-menu{animation:none}.chat-attach-menu button{transition:none}}
 .chat-attach-preview{order:-1;width:100%;display:flex;gap:10px;overflow:auto;max-height:150px;padding:8px;background:var(--panel);border:1px solid var(--line2);border-radius:12px}
 .chat-attach-preview>div{display:flex;align-items:flex-start;gap:6px;min-width:130px;max-width:220px;flex:none}
 .chat-file{min-width:0;overflow-wrap:anywhere}
