@@ -1,0 +1,22 @@
+.comp{position:relative;flex-wrap:wrap;align-items:center}
+.comp input.in{min-width:0}
+.chat-add{width:44px;height:44px;flex:none;padding:0;font:30px/1 sans-serif;border-radius:12px;color:var(--white);background:var(--panel);border:1px solid var(--line2)}
+.chat-add:hover,.chat-add[aria-expanded=true]{color:var(--side);border-color:var(--side)}
+.chat-attach-menu{position:absolute;bottom:calc(100% + 10px);left:0;z-index:20;width:220px;padding:8px;background:var(--panel);border:1px solid var(--line2);border-radius:16px;box-shadow:0 12px 35px #0005}
+.chat-attach-menu button{display:flex;align-items:center;gap:14px;width:100%;padding:12px;border:0;background:transparent;text-align:left;color:var(--white);font-size:13px}
+.chat-attach-menu button:hover{background:var(--ink2)}
+.chat-attach-menu button span{color:var(--side);font-size:24px;width:28px;text-align:center}
+.chat-attach-preview{order:-1;width:100%;display:flex;gap:10px;overflow:auto;max-height:150px;padding:8px;background:var(--panel);border:1px solid var(--line2);border-radius:12px}
+.chat-attach-preview>div{display:flex;align-items:flex-start;gap:6px;min-width:130px;max-width:220px;flex:none}
+.chat-file{min-width:0;overflow-wrap:anywhere}
+.chat-file img,.chat-file video{display:block;max-width:100%;width:260px;max-height:240px;object-fit:contain;border-radius:8px;margin-bottom:7px}
+.chat-file a{display:block;text-decoration:underline;font-size:12px}
+.chat-message-menu{position:fixed;z-index:10000;min-width:140px;padding:5px;background:var(--panel,#171717);border:1px solid var(--line2,#333);border-radius:12px;box-shadow:0 8px 30px #0005}
+.chat-message-menu button{width:100%;min-height:44px;text-align:left;padding:10px 14px;border:0;background:transparent;color:var(--white,#f5f3ef);font-size:13px;border-radius:8px}
+.chat-message-menu button:hover,.chat-message-menu button:focus-visible{background:var(--ink2,#222)}
+@media(pointer:coarse){.message-actions{-webkit-touch-callout:none;user-select:none}}
+.bub.message-deleted{font-style:italic;background:var(--panel);color:var(--grey);border:1px solid var(--line2)}
+.chat-attach-preview .chat-file img,.chat-attach-preview .chat-file video{height:70px;width:110px;object-fit:cover}
+.chat-attach-preview button{padding:3px 8px;font-size:20px}
+.chat-attach-menu[hidden],.chat-attach-preview[hidden]{display:none}
+@media(max-width:500px){.comp{gap:7px}.comp .btn{padding:0 12px}.chat-add{width:40px;height:44px}}

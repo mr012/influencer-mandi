@@ -6,6 +6,10 @@ import { now } from "../../utils/formatDate.js";
 import { replyFor } from "../../mocks/conversations.js";
 import { isWide } from "../../config/breakpoints.js";
 import { FILL } from "../../app/screenControllers.js";
+import { attachmentMarkup, setupAttachments } from './attachments.js';
+import { setupMessageMenu, closeMessageMenu } from './messageMenu.js';
+
+
 
 export function paintThread(scope, id) {
   if (!scope) return;
@@ -23,7 +27,9 @@ export function paintThread(scope, id) {
     if (small) small.textContent = "Re: " + (brand() ? runtime.S.camp : x.title);
   }
   const msgs = runtime.S.threads[id] || [];
-  th.innerHTML = `<span class="chat-date">Matched · ${brand() ? runtime.S.camp : x.title}</span>` + msgs.map((m, k) => `<div class="bub ${m.me ? "me" : "them"}${m.fresh ? " pop" : ""}">${esc(m.t)}<small>${m.at}</small></div>`).join("");
+  closeMessageMenu();
+  th.innerHTML = `<span class="chat-date">Matched · ${brand() ? runtime.S.camp : x.title}</span>` + msgs.map((m, k) => `<div data-message-index="${k}" class="bub ${m.me ? "me" : "them"}${m.fresh ? " pop" : ""}${m.deleted ? " message-deleted" : ""}">${attachmentMarkup(m.attachments)}${esc(m.t)}<small>${m.at}</small></div>`).join("");
+  setupMessageMenu(th, msgs, () => repaintThread(id));
   msgs.forEach(m => delete m.fresh);
   th.scrollTop = th.scrollHeight;
   const comp = scope.querySelector(".comp");
@@ -34,10 +40,12 @@ export function paintThread(scope, id) {
       inp.className = box.className;
       inp.placeholder = "Write a message…";
       inp.addEventListener("keydown", e => {
-        if (e.key === "Enter") send(id, inp);
+        if (e.key === "Enter") send(comp.dataset.threadId, inp);
       });
       box.replaceWith(inp);
     }
+    setupAttachments(comp, id);
+    comp.paintAttachments();
     const btn = comp.querySelector(".btn");
     if (btn) {
       btn.dataset.act = "send";
@@ -49,16 +57,23 @@ export function send(id, inp) {
   inp = inp || runtime.root.querySelector(".comp input.in");
   if (!inp) return;
   const v = inp.value.trim();
-  if (!v) return;
+  const comp = inp.closest('.comp');
+  const attachments = comp.attachments || [];
+  if (!v && !attachments.length) return;
   (runtime.S.threads[id] = runtime.S.threads[id] || []).push({
     me: true,
     t: v,
+    attachments,
+    sentAt: Date.now(),
     at: now(),
     fresh: true
   });
   inp.value = "";
+  comp.attachments = [];
+  const sentMessage = runtime.S.threads[id].at(-1);
   repaintThread(id);
-  setTimeout(() => {
+  if (v) setTimeout(() => {
+    if (sentMessage.deleted) return;
     (runtime.S.threads[id] = runtime.S.threads[id] || []).push({
       me: false,
       t: replyFor(v),
@@ -166,3 +181,4 @@ export function fill_matches() {
   }).join("");
   fillRows(runtime.root.querySelector(".workspace") || runtime.root.querySelector(".body"), html);
 }
+
