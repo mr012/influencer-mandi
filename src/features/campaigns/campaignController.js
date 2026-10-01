@@ -17,7 +17,7 @@ export function fill_likedby() {
 export function fill_campaigns() {
   const ids=[...campaignPreviewIds];
   const extra=CAMPAIGNS.filter(c=>!campaignPreviewIds.includes(c.id));
-  const template=runtime.root.querySelector('tbody tr') || runtime.root.querySelector('.workspace .row');
+  const template=runtime.root.querySelector('tbody tr') || runtime.root.querySelector('.body .row');
   for(const c of extra) {
     if(!template)break;
     const row=template.cloneNode(true);template.parentElement.append(row);
@@ -27,9 +27,10 @@ export function fill_campaigns() {
     delete row.dataset.act;
     const id = ids[index];
     if (!id) return;
+    row.classList.add("campaign-list-row");
     row.onclick=event=>{if(event.target.closest("button,[data-act]"))return;runtime.S.previewCampaignId=id;go("campaign",id);};
     const status=campaignStatus(campaignPreviews.find(c=>c.id===id));
-    const statusElement=row.matches("tr")?row.querySelector("td:nth-child(2)"):row.querySelector(".badge,.tag");
+    const statusElement=row.matches("tr")?row.querySelector("td:nth-child(2)"):row.querySelector(".badge,.tag,.meta");
     if(statusElement){statusElement.replaceChildren();const badge=document.createElement('span');badge.className='campaign-list-status '+(status==='Live'?'live':status==='Paused'?'paused':'removed');const dot=document.createElement('i');dot.setAttribute('aria-hidden','true');badge.append(dot,document.createTextNode(status));statusElement.append(badge);}
     const title = campaignPreviews.find(campaign => campaign.id === id)?.title || "campaign";
     const titleElement = row.matches("tr") ? row.querySelector("td:first-child") : row.querySelector(".tx b");
@@ -54,8 +55,11 @@ export function fill_campaigns() {
     edit.onclick = event => { event.stopPropagation(); runtime.S.previewCampaignId = id; go('editcampaign', id); };
 
     if (row.matches("tr")) row.lastElementChild.replaceChildren(actions);
-    else row.appendChild(actions);
+    else {row.appendChild(actions);const badge=row.querySelector('.campaign-list-status');if(badge){row.querySelector('.tx b')?.append(badge);row.querySelector('.meta')?.remove();}}
   });
+  const hasCampaigns=!!runtime.root.querySelector('.campaign-list-row');
+  runtime.root.querySelectorAll('.ph-empty').forEach(el=>el.hidden=hasCampaigns);
+  if(!hasCampaigns&&!runtime.root.querySelector('.ph-empty')){const empty=document.createElement('div');empty.className='ph-empty';empty.textContent='Post your first campaign so creators can find you.';(runtime.root.querySelector('.workspace,.body')||runtime.root).append(empty);}
 }
 export function fill_campaign() {
   runtime.root.querySelectorAll(".chips .chip").forEach(c => {

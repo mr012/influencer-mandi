@@ -8,7 +8,8 @@ export function searchableDropdown(dropdown, placeholder = 'Search options…', 
   const search = document.createElement('input');
   search.type = 'search';
   search.className = 'dropdown-search';
-  search.placeholder = placeholder;
+  search.placeholder = placeholder || '';
+  search.hidden = placeholder === null;
   search.setAttribute('aria-label', placeholder);
   const empty = document.createElement('p');
   empty.className = 'dropdown-empty';
@@ -27,7 +28,7 @@ export function searchableDropdown(dropdown, placeholder = 'Search options…', 
   search.addEventListener('input', filter);
   const position = () => {
     const rect = summary.getBoundingClientRect();
-    const panelWidth = Math.min((widthAnchor || summary).getBoundingClientRect().width, innerWidth - 16);
+    const panelWidth = Math.min(Math.max(placeholder === null ? 180 : 0, (widthAnchor || summary).getBoundingClientRect().width), innerWidth - 16);
     const viewport = window.visualViewport;
     const top = (viewport?.offsetTop || 0) + 8;
     const bottom = (viewport?.offsetTop || 0) + (viewport?.height || innerHeight) - 8;
