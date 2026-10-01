@@ -14,9 +14,8 @@ export function campCard(c, cls) {
   <div class="cbody"><div class="bl"><span class="lg">${c.brand[0]}</span><b>${c.brand} <span class="tick">✓</span></b></div>
     <div class="ttl">${c.title}</div><span class="sub">${c.cat}</span>
     <div class="stats"><div class="stat"><strong>${c.budget}</strong><span>Budget</span></div>
-      <div class="stat"><strong>${c.time}</strong><span>Timeline</span></div>
-      <div class="stat"><strong>${c.apply}</strong><span>Apply by</span></div></div>
-    <div class="pills">${c.del.map(d => `<span class="pill">${d}</span>`).join("")}<span class="pill">${c.loc}</span><span class="pill">${c.min}+</span></div></div></div>`;
+      <div class="stat"><strong>${c.window || c.time}</strong><span>Timeline</span></div></div>
+    <div class="pills">${c.del.map(d => `<span class="pill">${d}</span>`).join("")}<span class="pill">${c.loc}</span></div></div></div>`;
 }
 export function creaCard(u, cls) {
   return `<div class="cd ${cls} grad" data-id="${u.id}"><div class="vb">✓</div>
