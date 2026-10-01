@@ -199,3 +199,5 @@
  .proto .ph .campaign-list-row .campaign-list-status{font-size:9px;line-height:1;padding:4px 6px;color:var(--status-color);background:color-mix(in srgb,var(--status-color) 12%,transparent);border-radius:20px;}
  .proto .ph .campaign-list-row .campaign-list-status i{display:none;}
 }
+/* Campaign details keeps direct status pills on every screen. */
+@media(max-width:1023px){.ce-panel>.ce-filters{display:flex;flex-wrap:wrap;gap:6px;}.ce-panel>.ce-filters .ce-filter{padding:8px 10px;font-size:11px;}.ce-toolbar input{width:100%;}}
