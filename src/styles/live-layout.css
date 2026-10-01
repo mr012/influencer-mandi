@@ -37,3 +37,33 @@
 .discovery-clear-icon svg{width:18px;height:18px}
 .filter-with-clear>.discovery-clear-icon:hover{color:var(--side);background:rgba(var(--srgb),.1)}
 .filter-with-clear>.discovery-clear-icon:focus-visible{outline:2px solid var(--side);outline-offset:-3px}
+/* Consistent portrait cards and floating media/date editors. */
+.proto [data-route="discover"] .arena{flex:none;height:auto;min-height:0;width:100%;}
+.proto [data-route="discover"] .discovery-content .deck,.proto .ph[data-route="discover"] .deck,.proto [data-route="cardpreview"] .deck,.proto .solo-card{width:min(460px,100%);height:auto!important;aspect-ratio:4/5;flex:none!important;min-height:0!important;max-height:none!important;margin-left:auto;margin-right:auto;}
+.proto [data-route="discover"] .cd,.proto [data-route="cardpreview"] .cd{aspect-ratio:4/5;}
+.proto [data-route="discover"] .discovery-content{overflow:visible;}
+.campaign-images .image-previews>div{width:128px;height:160px;overflow:hidden;position:relative;}
+.campaign-images .image-previews img{width:100%;height:100%;object-fit:cover;}
+.onboarding-media-tile>button,.image-previews button{z-index:2;}
+.media-crop-dialog,.date-range-dialog,.campaign-confirm{box-sizing:border-box;background:#141414;color:#f5f3ef;border:1px solid #393939;border-radius:20px;padding:24px;width:min(640px,calc(100vw - 24px));max-height:calc(100dvh - 32px);overflow:auto;margin:auto;font-family:Inter,Arial,sans-serif;}
+.media-crop-dialog::backdrop,.date-range-dialog::backdrop,.campaign-confirm::backdrop{background:rgb(0 0 0 / .72);backdrop-filter:blur(4px);}
+.media-crop-dialog{width:min(440px,calc(100vw - 24px));}
+.media-crop-dialog h3,.date-range-dialog h3,.campaign-confirm h3{margin:0;font-size:24px;}
+.media-crop-dialog p,.range-hint,.range-selection,.campaign-confirm p{font-size:13px;color:#aaa;line-height:1.6;}
+.media-crop-frame{width:min(240px,100%);aspect-ratio:4/5;overflow:hidden;position:relative;margin:16px auto;background:#080808;border:1px solid #555;border-radius:10px;touch-action:none;cursor:grab;}
+.media-crop-frame img,.media-crop-frame video{width:100%;height:100%;object-fit:cover;pointer-events:none;}
+.crop-controls{display:grid;gap:10px;font-size:12px;}.crop-controls label{display:flex;align-items:center;justify-content:space-between;gap:12px;}.crop-controls input{width:55%;accent-color:#ff4b00;}
+.crop-actions,.range-actions,.range-heading,.range-month-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;}.crop-actions,.range-actions{margin-top:18px;}
+.media-crop-dialog button,.date-range-dialog button{border:1px solid #383838;border-radius:8px;background:#1d1d1d;color:inherit;padding:10px 14px;cursor:pointer;}
+.media-crop-dialog [data-save],.date-range-dialog [data-apply]{background:#d5ff4b;color:#111;border-color:transparent;font-weight:600;}
+.media-crop-dialog button:disabled,.date-range-dialog button:disabled{opacity:.35;cursor:default;}
+.range-month-nav{font-size:12px;color:#aaa;}.range-months{display:grid;grid-template-columns:1fr 1fr;gap:24px;}.range-months h4{text-align:center;font-size:14px;}.range-days{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}.range-days>span{text-align:center;font-size:11px;padding:8px 0;color:#999;}.range-days button{padding:0;height:34px;border:0;font-size:12px;background:transparent;}.range-days button:hover{background:#353535;}.range-days button.in-range{background:#344019;border-radius:0;}.range-days button.endpoint{background:#d5ff4b;color:#111;}
+.campaign-control-actions{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0;}.campaign-status-tag{display:inline-block;font-size:11px;border:1px solid #393939;border-radius:30px;padding:6px 10px;}.campaign-people .row{margin:16px 0;padding:16px;border:1px solid #272727;border-radius:12px;}.campaign-people p{color:#999;font-size:12px;}.campaign-danger.btn{color:#ff6969!important;border:1px solid #9c3c3c!important;background:#331515!important;}.danger-text{color:#ff6969;}.campaign-detail-layout{align-items:start;}.campaign-people-tabs button{cursor:pointer;}.campaign-people-tabs .sel{background:#d5ff4b;color:#111;}
+@media(max-width:560px){.range-months{grid-template-columns:1fr;gap:8px;}.date-range-dialog{padding:18px;}.campaign-detail-layout{display:grid;grid-template-columns:1fr;}.proto [data-route="discover"] .cd .ttl{font-size:25px;}.proto [data-route="discover"] .cd .cbody{padding:14px;}}
+/* The shade belongs to the card UI, never the uploaded media. */
+.cd .shot{overflow:hidden;}
+.card-source-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.cd.grad .shot::after{z-index:1;pointer-events:none;}
+.cd.grad .cbody{z-index:2;}
+.profile-card-preview{width:min(460px,100%)!important;height:auto!important;aspect-ratio:4/5;}
+.campaign-detail-layout .campaign-status-tag{align-self:flex-start;width:fit-content;}

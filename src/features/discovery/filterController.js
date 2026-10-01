@@ -1,3 +1,4 @@
+import { campaignStatus } from '../campaigns/campaignState.js';
 import { searchableDropdown } from "../../components/ui/searchableDropdown.js";
 import { filterDiscovery } from '../../utils/discoveryFilters.js';
 import { runtime } from "../../context/runtime.js";
@@ -187,5 +188,5 @@ export function discoveryFilterBar(scope) {
   }
 }
 export function discoveryItems() {
-  return filterDiscovery(brand() ? CREATORS : CAMPAIGNS, side(), filterValues());
+  return filterDiscovery(brand() ? CREATORS : CAMPAIGNS.filter(c=>campaignStatus(c)==='Live'), side(), filterValues());
 }

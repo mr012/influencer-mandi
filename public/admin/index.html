@@ -2610,6 +2610,14 @@ window.addEventListener('message', event => {
  if (event.source !== parent || event.origin !== location.origin || event.data?.type !== 'mandi-admin-navigate') return;
  if (MODULES.some(m => m.id === event.data.module)) go(event.data.module);
 });
+// Synchronize prototype campaign moderation with the product screens.
+for (const campaign of D.campaigns) {
+ let records={};try{records=JSON.parse(localStorage.getItem('mandi:campaign-status:v1')||'{}');}catch{}
+ let status=records[campaign.title]?.status||campaign.status;
+ if(status==='Removed by admin')status='Removed';
+ Object.defineProperty(campaign,'status',{enumerable:true,configurable:true,get(){return status;},set(value){status=value;let current={};try{current=JSON.parse(localStorage.getItem('mandi:campaign-status:v1')||'{}');}catch{}current[campaign.title]={status:value,source:'admin',updatedAt:new Date().toISOString()};localStorage.setItem('mandi:campaign-status:v1',JSON.stringify(current));}});
+}
+render();
 window.__cr = {D, go, S, render};
 })();
 

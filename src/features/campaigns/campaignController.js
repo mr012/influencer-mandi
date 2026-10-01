@@ -1,3 +1,4 @@
+import { campaignStatus } from './campaignState.js';
 import { runtime } from "../../context/runtime.js";
 import { CREATORS } from "../../mocks/creators.js";
 import { ARCHIVED_CAMPAIGNS, CAMPAIGNS } from "../../mocks/campaigns.js";
@@ -23,9 +24,13 @@ export function fill_campaigns() {
     ids.push(c.id);if(!campaignPreviews.some(item=>item.id===c.id))campaignPreviews.push(c);
   }
   runtime.root.querySelectorAll(".row, tbody tr").forEach((row, index) => {
-    row.dataset.act = "go:campaign";
+    delete row.dataset.act;
     const id = ids[index];
     if (!id) return;
+    row.onclick=event=>{if(event.target.closest("button,[data-act]"))return;runtime.S.previewCampaignId=id;go("campaign",id);};
+    const status=campaignStatus(campaignPreviews.find(c=>c.id===id));
+    const statusElement=row.matches("tr")?row.querySelector("td:nth-child(2)"):row.querySelector(".badge,.tag");
+    if(statusElement)statusElement.textContent=status;
     const title = campaignPreviews.find(campaign => campaign.id === id)?.title || "campaign";
     const titleElement = row.matches("tr") ? row.querySelector("td:first-child") : row.querySelector(".tx b");
     if(titleElement){const textNode=[...titleElement.childNodes].find(node=>node.nodeType===3 && node.textContent.trim());if(textNode)textNode.textContent=title;}
@@ -34,7 +39,7 @@ export function fill_campaigns() {
     const detailsAction = document.createElement("span");
     detailsAction.className = "campaign-row-link";
     detailsAction.textContent = "View details";
-    detailsAction.dataset.act = "go:campaign";
+    detailsAction.onclick=event=>{event.stopPropagation();runtime.S.previewCampaignId=id;go("campaign",id);};
     detailsAction.setAttribute("aria-label", `View ${title} details`);
     const cardAction = document.createElement("span");
     cardAction.className = "campaign-row-link campaign-card-link";
