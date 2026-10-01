@@ -30,10 +30,13 @@ export function fill_campaigns() {
     row.onclick=event=>{if(event.target.closest("button,[data-act]"))return;runtime.S.previewCampaignId=id;go("campaign",id);};
     const status=campaignStatus(campaignPreviews.find(c=>c.id===id));
     const statusElement=row.matches("tr")?row.querySelector("td:nth-child(2)"):row.querySelector(".badge,.tag");
-    if(statusElement)statusElement.textContent=status;
+    if(statusElement){statusElement.replaceChildren();const badge=document.createElement('span');badge.className='campaign-list-status '+(status==='Live'?'live':status==='Paused'?'paused':'removed');const dot=document.createElement('i');dot.setAttribute('aria-hidden','true');badge.append(dot,document.createTextNode(status));statusElement.append(badge);}
     const title = campaignPreviews.find(campaign => campaign.id === id)?.title || "campaign";
     const titleElement = row.matches("tr") ? row.querySelector("td:first-child") : row.querySelector(".tx b");
     if(titleElement){const textNode=[...titleElement.childNodes].find(node=>node.nodeType===3 && node.textContent.trim());if(textNode)textNode.textContent=title;}
+    const campaign=campaignPreviews.find(item=>item.id===id);
+    const categoryHost=row.matches('tr')?row.querySelector('td:first-child'):row.querySelector('.tx');
+    if(categoryHost){const sub=categoryHost.querySelector('small,.sub');if(sub)sub.textContent=[campaign.cat,campaign.loc].filter(Boolean).join(' · ');else{const category=document.createElement('small');category.className='campaign-category';category.textContent=campaign.cat||'Uncategorized';categoryHost.append(category);}}
     const actions = document.createElement("div");
     actions.className = "campaign-row-actions";
     const detailsAction = document.createElement("span");

@@ -5,6 +5,9 @@ import { IC } from "../ui/icons.js";
 import { isWide } from "../../config/breakpoints.js";
 
 export function chrome() {
+  const logo=runtime.root.querySelector('.side .logo');
+  if(logo){logo.classList.add('mandi-sidebar-logo');logo.innerHTML='<span class="mandi-monogram" aria-hidden="true"><i>i</i>M</span><span class="mandi-wordmark">INFLUENCER<br><b>MANDI</b></span>';logo.setAttribute('aria-label','Influencer Mandi');}
+
   const tagline = runtime.root.querySelector('.side .tagline');
   if (tagline) tagline.innerHTML = '<div class="rule"></div>Real people.<br>Real stories.<br>Real impact.';
   const tabs = brand() ? TABS_B : TABS_C,

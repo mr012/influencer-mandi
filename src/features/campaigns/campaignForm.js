@@ -12,7 +12,7 @@ export function setupCampaignForm(root, route) {
   const id = route === 'editcampaign' ? runtime.S.ctx || runtime.S.previewCampaignId || 'c1' : 'new';
   runtime.S.campaignDrafts ||= {};
   const source = [...CAMPAIGNS,...ARCHIVED_CAMPAIGNS].find(c => c.id === id);
-  const draft = runtime.S.campaignDrafts[id] ||= {title:source?.title || '', brief:source?.brief || '', location:source?.loc || '', start:source?.start || '', end:source?.end || '', budget:source?.approxBudget || '', deliverables:source?.del?.join(', ') || '', platforms:source?.plat?.split(/,\s*/) || [], images:[...(source?.images || [])]};
+  const draft = runtime.S.campaignDrafts[id] ||= {category:source?.cat || '', title:source?.title || '', brief:source?.brief || '', location:source?.loc || '', start:source?.start || '', end:source?.end || '', budget:source?.approxBudget || '', deliverables:source?.del?.join(', ') || '', platforms:source?.plat?.split(/,\s*/) || [], images:[...(source?.images || [])]};
   host.replaceChildren(); host.classList.add('campaign-form-host');
   const form = document.createElement('form'); form.className = 'surface campaign-form'; form.innerHTML = '<div class="panel-label">Campaign details</div><div class="campaign-form-grid"></div><p role="status"></p><div class="action-row"><button type="button" class="btn ghost">Cancel</button><button type="submit" class="btn solid"></button></div>';
   form.querySelector('[type=submit]').textContent = route === 'editcampaign' ? 'Save changes' : 'Publish campaign';
@@ -26,6 +26,7 @@ export function setupCampaignForm(root, route) {
     wrap.append(caption,input);grid.append(wrap);return input;
   };
   field('Title','title','text',true).required=true;
+  field('Category','category','text',true).placeholder='e.g. Food & beverage';
   const uploads=document.createElement('div');uploads.className='span-all campaign-images';
   uploads.innerHTML='<span class="lbl">Campaign images</span><div class="campaign-upload-row"><div class="image-previews"></div><label class="campaign-upload-tile"><span class="campaign-upload-plus" aria-hidden="true">+</span><span>Upload</span><small>Photos · 4:5</small><input type="file" accept="image/*" multiple hidden></label></div>';
   const uploadLabel=uploads.querySelector('label');uploadLabel.tabIndex=0;uploadLabel.setAttribute('role','button');uploadLabel.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();uploads.querySelector('input').click();}};
@@ -73,7 +74,7 @@ export function setupCampaignForm(root, route) {
     if(!draft.start||!draft.end){dateButton.click();return;}
     const escape=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
     const campaign=source || {id:'c'+Date.now(),brand:'Chai Point',cat:'',hue:'#292d17',media:[]};
-    Object.assign(campaign,{title:escape(draft.title),brief:escape(draft.brief),loc:escape(draft.location),start:draft.start,end:draft.end,approxBudget:draft.budget,budget:draft.budget?'₹'+Number(draft.budget).toLocaleString('en-IN'):'Not specified',time:draft.start+' — '+draft.end,window:draft.start+' — '+draft.end,del:draft.deliverables?draft.deliverables.split(',').map(item=>escape(item.trim())):[],plat:draft.platforms.join(', '),images:draft.images});
+    Object.assign(campaign,{cat:escape(draft.category),title:escape(draft.title),brief:escape(draft.brief),loc:escape(draft.location),start:draft.start,end:draft.end,approxBudget:draft.budget,budget:draft.budget?'₹'+Number(draft.budget).toLocaleString('en-IN'):'Not specified',time:draft.start+' — '+draft.end,window:draft.start+' — '+draft.end,del:draft.deliverables?draft.deliverables.split(',').map(item=>escape(item.trim())):[],plat:draft.platforms.join(', '),images:draft.images});
     if(!source)CAMPAIGNS.push(campaign);
     runtime.S.campaignDrafts[id]=undefined;
     if(route==='editcampaign' && runtime.S.stack.length)back();else go('campaigns');

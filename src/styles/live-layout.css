@@ -132,3 +132,20 @@
  .proto .ph[data-route=campaign]>.body.campaign-experience{overflow-y:auto;display:block;padding-bottom:28px;}
  .ce-header{display:block;}.ce-header h2{font-size:30px;}.ce-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:18px;}.ce-controls .btn{min-width:0;padding:0 5px;font-size:10px;}.ce-panel{padding:14px;border-radius:16px;}.ce-previews{display:block;}.ce-previews[data-view=card] .ce-details-pane,.ce-previews[data-view=details] .ce-card-pane{display:none;}.ce-label{display:none;}.ce-card{max-width:440px;margin:auto;}.ce-switch{display:flex;background:#080808;padding:4px;border-radius:30px;}.ce-switch button{background:none;border:0;color:#aaa;padding:8px 12px;border-radius:30px;font-size:12px;cursor:pointer;}.ce-switch button[aria-selected=true]{color:#fff;background:#292929;}.ce-detail{grid-template-columns:1fr;}.ce-gallery{display:block;}.ce-toolbar{flex-wrap:wrap;}.ce-toolbar input{flex-basis:100%;}.ce-toolbar select{width:100%;}.ce-person{grid-template-columns:36px minmax(0,1fr);gap:9px;padding:12px;}.ce-avatar{width:36px;height:36px;}.ce-person-meta{gap:8px;font-size:11px;flex-wrap:wrap;}.ce-person-actions{grid-column:1/-1;}.ce-person-actions .btn{flex:1;}.ce-info{padding:16px;}
 }
+.campaign-list-status{display:inline-flex;align-items:center;gap:8px;font-size:inherit;white-space:nowrap;}
+.campaign-list-status i{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--status-color);box-shadow:0 0 0 3px color-mix(in srgb,var(--status-color) 22%,transparent);margin:0 3px;flex:none;}
+.campaign-list-status.live{--status-color:#b9ef36;}.campaign-list-status.paused{--status-color:#ffc44d;}.campaign-list-status.removed{--status-color:#ff6767;}
+.side .logo.mandi-sidebar-logo{display:flex;align-items:center;gap:10px;line-height:1;padding:0;}
+.mandi-monogram{font-size:44px;letter-spacing:-4px;line-height:1;}.mandi-monogram i{font-style:normal;color:var(--side);font-size:38px;}.mandi-wordmark{font-size:19px;line-height:1.05;letter-spacing:0;}.mandi-wordmark b{color:var(--side);}
+@keyframes uploaded-media-in{from{opacity:0;translate:0 8px;}to{opacity:1;translate:0 0;}}
+.onboarding-media-tile,.campaign-images .image-previews>div,.brand-profile-image img{animation:uploaded-media-in .3s ease-out both;}
+@keyframes date-dialog-in{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes date-dialog-out{to{opacity:0;transform:translateY(8px) scale(.98)}}
+@keyframes calendar-backdrop-in{from{opacity:0}to{opacity:1}}
+.date-range-dialog[open]{animation:date-dialog-in .22s ease-out both;}.date-range-dialog[open]::backdrop{animation:calendar-backdrop-in .22s ease-out both;}
+.date-range-dialog.closing{animation:date-dialog-out .18s ease-in both;}.date-range-dialog.closing::backdrop{animation:calendar-backdrop-in .18s ease-in reverse both;}
+.range-days button.in-range,.range-days button.endpoint{border-radius:7px;}
+@keyframes range-fill-in{from{background-color:transparent;box-shadow:inset 0 0 0 1px transparent;}to{}}
+.range-days button.range-reveal{animation:range-fill-in .22s ease-out both;animation-delay:var(--range-delay,0ms);}
+@media(prefers-reduced-motion:reduce){.onboarding-media-tile,.campaign-images .image-previews>div,.brand-profile-image img,.date-range-dialog[open],.date-range-dialog[open]::backdrop,.range-days button.range-reveal{animation:none!important;}}
+.campaign-category{display:block;color:#999;font-size:11px;margin-top:5px;}

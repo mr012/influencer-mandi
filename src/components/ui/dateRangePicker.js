@@ -7,7 +7,7 @@ export function openDateRange({start='',end='',onApply}) {
   dialog.setAttribute('aria-label','Select campaign date range');
   dialog.innerHTML='<div class="range-heading"><h3>Campaign timeline</h3><button type="button" aria-label="Close calendar">×</button></div><p class="range-hint" aria-live="polite"></p><div class="range-month-nav"><button type="button" data-prev aria-label="Previous month">‹</button><span>Choose a start and end date</span><button type="button" data-next aria-label="Next month">›</button></div><div class="range-months"></div><p class="range-selection" aria-live="polite"></p><div class="range-actions"><button type="button" data-clear>Clear</button><button type="button" data-apply>Apply dates</button></div>';
   let first=start,last=end, month=start?fromISO(start):new Date();month=new Date(month.getFullYear(),month.getMonth(),1);
-  const render = () => {
+  const render = (animateRange=false) => {
     const months=dialog.querySelector('.range-months');months.replaceChildren();
     dialog.querySelector('.range-hint').textContent=first&&!last?'Choose your end date.':'Choose your start date, then your end date.';
     for(let offset=0;offset<2;offset++) {
@@ -21,14 +21,19 @@ export function openDateRange({start='',end='',onApply}) {
         const value=iso(new Date(date.getFullYear(),date.getMonth(),day));const b=document.createElement('button');b.type='button';b.textContent=day;
         b.setAttribute('aria-label',fromISO(value).toLocaleDateString(undefined,{dateStyle:'full'}));
         const selected=value===first||value===last;b.className=selected?'endpoint':first&&last&&value>first&&value<last?'in-range':'';b.setAttribute('aria-pressed',String(selected));
-        b.onclick=()=>{if(!first||last){first=value;last='';}else if(value<first){last=first;first=value;}else last=value;render();dialog.querySelector(`[data-date="${value}"]`)?.focus();};b.dataset.date=value;grid.append(b);
+        b.onclick=()=>{if(!first||last){first=value;last='';}else if(value<first){last=first;first=value;}else last=value;render(true);dialog.querySelector(`[data-date="${value}"]`)?.focus();};b.dataset.date=value;grid.append(b);
       }
       section.append(heading,grid);months.append(section);
+    }
+    if(animateRange&&first&&last&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+      const cells=[...dialog.querySelectorAll('.endpoint,.in-range')];
+      cells.forEach((cell,index)=>{cell.style.setProperty('--range-delay',Math.min(index*24,400)+'ms');cell.classList.add('range-reveal');});
     }
     dialog.querySelector('.range-selection').textContent=first&&last?rangeLabel(first,last):first?'Start: '+rangeLabel(first,first).split(' – ')[0]:'No dates selected';
     dialog.querySelector('[data-apply]').disabled=!(first&&last);
   };
-  const close=()=>{dialog.close();dialog.remove();};
+  let closing=false;
+  const close=()=>{if(closing)return;closing=true;const done=()=>{dialog.close();dialog.remove();};if(matchMedia('(prefers-reduced-motion: reduce)').matches){done();return;}dialog.classList.add('closing');setTimeout(done,180);};
   dialog.querySelector('[aria-label="Close calendar"]').onclick=close;
   dialog.oncancel=e=>{e.preventDefault();close();};dialog.onkeydown=e=>e.stopPropagation();
   for(const [selector,delta] of [['[data-prev]',-1],['[data-next]',1]])dialog.querySelector(selector).onclick=()=>{month=new Date(month.getFullYear(),month.getMonth()+delta,1);render();};
