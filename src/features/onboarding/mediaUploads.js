@@ -47,7 +47,7 @@ function setupBrandImage(root){
  const input=document.createElement('input');input.type='file';input.accept='image/*';input.className='brand-profile-file';input.setAttribute('aria-label','Upload brand profile image');
  const button=document.createElement('button');button.type='button';button.className='brand-profile-image';button.setAttribute('aria-label','Upload brand profile image');
  const caption=document.createElement('span');caption.className='brand-image-caption';
- const paint=()=>{button.replaceChildren();const item=runtime.S.brandProfileImage;if(item){const img=document.createElement('img');img.src=item.url;img.alt='Brand profile image';applyMediaCrop(img,item.crop);button.append(img);caption.textContent='Change image · 1:1';}else{button.textContent='Upload profile image';caption.textContent='One image · 1:1';}};
+ const paint=()=>{button.replaceChildren();const item=runtime.S.brandProfileImage;if(item){const img=document.createElement('img');img.src=item.url;img.alt='Brand profile image';applyMediaCrop(img,item.crop);button.append(img);caption.textContent='Change image · 1:1';}else{button.innerHTML='<span class="brand-upload-plus" aria-hidden="true">+</span><span>Upload</span><small>Photo · 1:1</small>';caption.textContent='';}};
  // Native file input covers the tile so touch and mouse open the picker directly.
  const target=document.createElement('div');target.className='brand-upload-target';target.append(button,input);
  button.tabIndex=-1;button.setAttribute('aria-hidden','true');

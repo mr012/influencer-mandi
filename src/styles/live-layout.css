@@ -77,4 +77,9 @@
 .tag-field.category-layout .selected-tags{margin-top:12px;margin-bottom:4px;}
 .brand-upload-target{position:relative;width:160px;height:160px;}
 .brand-profile-file{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2;}
-.brand-upload-target:focus-within{outline:2px solid var(--lime,#d5ff4b);outline-offset:4px;border-radius:16px;}
+.brand-upload-target:has(.brand-profile-file:focus-visible){outline:2px solid var(--lime,#d5ff4b);outline-offset:4px;border-radius:16px;}
+
+.brand-profile-image{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;font:inherit;font-size:13px;}
+.brand-upload-plus{font-size:28px;line-height:1;color:var(--lime,#d5ff4b);}
+.brand-profile-image small{font-size:11px;color:#999;}
+.brand-image-caption:empty{display:none;}
