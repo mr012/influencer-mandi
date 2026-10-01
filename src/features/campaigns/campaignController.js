@@ -46,7 +46,7 @@ export function fill_campaigns() {
     cardAction.textContent = "View card";
     cardAction.dataset.act = `campaignpreview:${id}`;
     cardAction.setAttribute("aria-label", `View ${title} card`);
-    actions.append(detailsAction, cardAction);
+    actions.append(detailsAction);
     const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'campaign-row-link'; edit.textContent = 'Edit';
     edit.onclick = event => { event.stopPropagation(); runtime.S.previewCampaignId = id; go('editcampaign', id); };
     actions.append(edit);
