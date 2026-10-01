@@ -9,6 +9,10 @@ export function chrome() {
     on = TAB_OF[runtime.S.route];
   const nav = runtime.root.querySelector(".side .nav");
   if (nav) nav.innerHTML = tabs.map(t => `<span class="${t === on ? "on" : ""}" data-tab="${t}">${IC[t]}${LABEL[t]}</span>`).join("");
+  if (nav) {
+    nav.insertAdjacentHTML('beforeend', `<span data-act="go:billing">${IC.campaigns}Billing</span><span data-act="go:help">${IC.chats}Support</span>`);
+    runtime.root.querySelector('.side-links')?.remove();
+  }
   let tb = runtime.root.querySelector(".tabs");
   if (!tb && !isWide() && runtime.S.authed && runtime.S.route !== "convo") {
     tb = document.createElement("nav");

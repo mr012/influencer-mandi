@@ -13,6 +13,8 @@ import { setupCodeScreen } from "../features/auth/verificationController.js";
 import { removeWaitingSection } from "../features/profile/profileController.js";
 import { wire } from "./actionBindings.js";
 import { adminModules } from '../dev/screenShortcuts.js';
+import { setupAccountLifecycle } from '../features/account/accountLifecycle.js';
+import { setupCampaignForm } from '../features/campaigns/campaignForm.js';
 
 export const stage = document.getElementById("stage");
 export function render(anim) {
@@ -71,7 +73,9 @@ export function render(anim) {
     }
   }
   setupAuthFeedback(runtime.root, runtime.S.route);
+  setupAccountLifecycle(runtime.root, runtime.S.route);
   wire(runtime.root);
+  setupCampaignForm(runtime.root, runtime.S.route);
   const a = reduced ? "none" : anim || "none";
   if (a !== "none") {
     wrap.classList.add("entering");

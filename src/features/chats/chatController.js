@@ -9,6 +9,7 @@ import { FILL } from "../../app/screenControllers.js";
 import { attachmentMarkup, setupAttachments } from './attachments.js';
 import { setupMessageMenu, closeMessageMenu } from './messageMenu.js';
 import { updateThread } from './chatMotion.js';
+import { accountState, restricted, chatRestriction, statusLabel, resumeAccount } from '../account/accountLifecycle.js';
 
 
 
@@ -48,6 +49,22 @@ export function paintThread(scope, id) {
     }
     setupAttachments(comp, id);
     comp.paintAttachments();
+    scope.querySelector('.chat-account-notice')?.remove();
+    const restriction = chatRestriction(id) || (runtime.S.blockedChats?.includes(id) ? { status:'Blocked' } : null);
+    comp.hidden = Boolean(restriction);
+    if (restriction) {
+      const banner = document.createElement('div'); banner.className = 'chat-account-notice';
+      const heading = document.createElement('strong'); heading.textContent = restriction.status === 'Blocked' ? 'Account blocked' : statusLabel(restriction);
+      const text = document.createElement('p');
+      text.textContent = restricted(accountState()) ? 'Messaging is unavailable while your account is inactive. Your conversations remain here.' : restriction.deletionStatus === 'Pending' ? 'This account is pending deletion. Your conversation remains available for reporting.' : 'This account is temporarily paused. Your conversation will remain here, and you can continue chatting when they return.';
+      banner.append(heading,text);
+      if (accountState().status === 'Paused' && !['Pending','Under review'].includes(accountState().deletionStatus)) {
+        const resume = document.createElement('button'); resume.textContent = 'Resume account'; resume.onclick = resumeAccount; banner.append(resume);
+      }
+      const report = document.createElement('button'); report.textContent = 'Report'; report.dataset.act = 'go:contact'; banner.append(report);
+      const block = document.createElement('button'); block.textContent = 'Block'; block.onclick = () => { runtime.S.blockedChats ||= []; runtime.S.blockedChats.push(id); text.textContent = 'Account blocked. Messaging is unavailable.'; block.disabled = true; }; banner.append(block);
+      comp.before(banner);
+    }
     const btn = comp.querySelector(".btn");
     if (btn) {
       btn.dataset.act = "send";
@@ -56,6 +73,7 @@ export function paintThread(scope, id) {
   }
 }
 export function send(id, inp) {
+  if (chatRestriction(id) || runtime.S.blockedChats?.includes(id)) return;
   inp = inp || runtime.root.querySelector(".comp input.in");
   if (!inp) return;
   const v = inp.value.trim();
@@ -75,7 +93,7 @@ export function send(id, inp) {
   const sentMessage = runtime.S.threads[id].at(-1);
   repaintThread(id);
   if (v) setTimeout(() => {
-    if (sentMessage.deleted) return;
+    if (sentMessage.deleted || chatRestriction(id) || runtime.S.blockedChats?.includes(id)) return;
     (runtime.S.threads[id] = runtime.S.threads[id] || []).push({
       me: false,
       t: replyFor(v),
@@ -157,7 +175,7 @@ export function fill_chats() {
       sub = brand() ? `${x.followers} · ${x.tags[0]}` : x.title;
     const tagCamp = brand() ? id === "u1" ? "Monsoon menu" : "Festive edit" : "";
     return `<div class="row${isWide() && id === runtime.S.openChat ? " sel" : ""}" data-act="chat:${id}" role="button" tabindex="0"><div class="av">${name[0]}</div>
-       <div class="tx"><b>${name}</b><small>${esc(last ? last.t : sub).slice(0, 46)}</small>
+       <div class="tx"><b>${name}</b>${chatRestriction(id) ? `<span class="account-paused-badge">${statusLabel(chatRestriction(id))}</span>` : ''}<small>${esc(last ? last.t : sub).slice(0, 46)}</small>
        ${tagCamp ? `<span class="ctag">${tagCamp}</span>` : ""}</div><span class="meta">${last ? last.at : ""}</span></div>`;
   };
   const hasSearch = Boolean((runtime.S.chatSearch?.[side()] || '').trim());
@@ -178,7 +196,7 @@ export function fill_matches() {
   const html = runtime.S.matches[side()].map(id => {
     const x = byId(id);
     const n = brand() ? x.name : x.brand;
-    return `<div class="row" data-act="chat:${id}"><div class="av">${n[0]}</div><div class="tx"><b>${n}</b>
+    return `<div class="row" data-act="chat:${id}"><div class="av">${n[0]}</div><div class="tx"><b>${n}</b>${chatRestriction(id) ? `<span class="account-paused-badge">${statusLabel(chatRestriction(id))}</span>` : ''}
        <small>${brand() ? x.tags[0] : x.title}</small></div><span class="meta">Open</span></div>`;
   }).join("");
   fillRows(runtime.root.querySelector(".workspace") || runtime.root.querySelector(".body"), html);

@@ -2,6 +2,7 @@ import { runtime } from "../../context/runtime.js";
 import { CREATORS } from "../../mocks/creators.js";
 import { ARCHIVED_CAMPAIGNS, CAMPAIGNS } from "../../mocks/campaigns.js";
 import { campCard } from "../../components/cards/cardMarkup.js";
+import { go } from '../../app/routes.js';
 
 const campaignPreviewIds = ["c1", "c2", "c3", "c7"];
 const campaignPreviews = [...CAMPAIGNS, ...ARCHIVED_CAMPAIGNS];
@@ -13,11 +14,21 @@ export function fill_likedby() {
   });
 }
 export function fill_campaigns() {
+  const ids=[...campaignPreviewIds];
+  const extra=CAMPAIGNS.filter(c=>!campaignPreviewIds.includes(c.id));
+  const template=runtime.root.querySelector('tbody tr') || runtime.root.querySelector('.workspace .row');
+  for(const c of extra) {
+    if(!template)break;
+    const row=template.cloneNode(true);template.parentElement.append(row);
+    ids.push(c.id);if(!campaignPreviews.some(item=>item.id===c.id))campaignPreviews.push(c);
+  }
   runtime.root.querySelectorAll(".row, tbody tr").forEach((row, index) => {
     row.dataset.act = "go:campaign";
-    const id = campaignPreviewIds[index];
+    const id = ids[index];
     if (!id) return;
     const title = campaignPreviews.find(campaign => campaign.id === id)?.title || "campaign";
+    const titleElement = row.matches("tr") ? row.querySelector("td:first-child") : row.querySelector(".tx b");
+    if(titleElement){const textNode=[...titleElement.childNodes].find(node=>node.nodeType===3 && node.textContent.trim());if(textNode)textNode.textContent=title;}
     const actions = document.createElement("div");
     actions.className = "campaign-row-actions";
     const detailsAction = document.createElement("span");
@@ -31,6 +42,9 @@ export function fill_campaigns() {
     cardAction.dataset.act = `campaignpreview:${id}`;
     cardAction.setAttribute("aria-label", `View ${title} card`);
     actions.append(detailsAction, cardAction);
+    const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'campaign-row-link'; edit.textContent = 'Edit';
+    edit.onclick = event => { event.stopPropagation(); runtime.S.previewCampaignId = id; go('editcampaign', id); };
+    actions.append(edit);
     if (row.matches("tr")) row.lastElementChild.replaceChildren(actions);
     else row.appendChild(actions);
   });

@@ -38,7 +38,7 @@ export function setupAuthFeedback(scope, route) {
   };
   input.addEventListener('input',update);update();
  });
- if(route==='reset')return;
+ if(route==='reset'||route==='signup')return;
  const host=scope.querySelector('.formcard')||scope.querySelector('.body');if(!host)return;
  if(route==='onboard')host.querySelectorAll('.steps').forEach(steps=>steps.remove());
  const fields=[...host.querySelectorAll('.fld')].filter(f=>!(scope.dataset.side==='brand'&&f.classList.contains('creator-only')));

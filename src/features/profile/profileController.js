@@ -58,6 +58,19 @@ export function fill_profile() {
         : '<div class="box"><strong>3</strong><span>Matches</span></div><div class="box"><strong>5</strong><span>Interested</span></div><div class="box"><strong>6</strong><span>Liked</span></div>';
     }
   }
+  if (!brand()) {
+    const root = runtime.root;
+    const metrics = root.querySelector('.g4,.profile-detail-grid');
+    if(metrics) metrics.innerHTML = '<div class="box"><strong>84.2K</strong><span>Followers</span></div><div class="box"><strong>25K</strong><span>Avg views</span></div><div class="box"><strong>Instagram</strong><span>Platform</span></div><div class="box"><strong>₹18K</strong><span>Per reel</span></div>';
+    root.querySelectorAll('.panel-label,.body>.lbl').forEach(label => {if(label.textContent === 'Your week')label.textContent='Activity';});
+    const bottom = root.querySelector('.workspace>.two-col');
+    if(bottom && !bottom.querySelector('.profile-about')) {
+      const about=document.createElement('section');about.className='surface profile-about';
+      about.innerHTML='<div class="panel-label">About</div><p>Cafe hopping across Mumbai. I shoot and edit my own content.</p>';bottom.append(about);
+    }
+    const tags = root.querySelector('.workspace>.surface .chips');
+    if(tags) {tags.parentElement.classList.add('profile-card-actions');tags.parentElement.removeAttribute('style');}
+  }
   runtime.root.querySelectorAll(".row").forEach(r => {
     const b = r.querySelector(".btn");
     if (!b) return;

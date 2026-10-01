@@ -8,6 +8,7 @@ import { openLocked } from "../billing/subscriptionController.js";
 import { reduced } from "../../config/breakpoints.js";
 import { now } from "../../utils/formatDate.js";
 import { toast } from "../../components/ui/toast.js";
+import { accountState, restricted } from '../account/accountLifecycle.js';
 
 const pinnedCardProperties = ["position", "inset", "left", "top", "width", "height", "z-index"];
 
@@ -128,6 +129,7 @@ export function bindDeck(deck) {
   });
 }
 export function swipe(dir) {
+  if (restricted(accountState())) return toast('Resume your account or cancel your deletion request from Profile before making new matches.');
   const deck = runtime.root && runtime.root.querySelector(".deck"),
     front = deck && deck.querySelector(".cd.front");
   if (!runtime.S.subscribed) {

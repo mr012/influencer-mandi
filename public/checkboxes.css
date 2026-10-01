@@ -1,0 +1,21 @@
+/* Shared by the product and the isolated admin dashboard. Toggle switches keep their own styling. */
+input[type="checkbox"]:not(.sw):not([role="switch"]){
+  -webkit-appearance:none;appearance:none;box-sizing:border-box;
+  display:inline-grid;place-content:center;vertical-align:middle;
+  width:19px;height:19px;min-width:19px;flex-shrink:0;padding:0;
+  border:1.5px solid var(--grey,var(--muted,#9d9c99));border-radius:4px;
+  background:transparent;color:var(--side,var(--orange,#ff3d00));cursor:pointer;
+  transition:border-color .15s ease,background-color .15s ease;
+}
+input[type="checkbox"]:not(.sw):not([role="switch"])::after{
+  content:"";width:10px;height:6px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;
+  transform:translateY(-1px) rotate(-45deg);opacity:0;
+}
+input[type="checkbox"]:not(.sw):not([role="switch"]):checked{border-color:currentColor;background:transparent}
+input[type="checkbox"]:not(.sw):not([role="switch"]):checked::after{opacity:1}
+input[type="checkbox"]:not(.sw):not([role="switch"]):indeterminate{border-color:currentColor}
+input[type="checkbox"]:not(.sw):not([role="switch"]):indeterminate::after{height:0;border-left:0;transform:none;opacity:1}
+input[type="checkbox"]:not(.sw):not([role="switch"]):focus-visible{outline:2px solid currentColor;outline-offset:3px}
+input[type="checkbox"]:not(.sw):not([role="switch"]):disabled{opacity:.45;cursor:not-allowed}
+@media(prefers-reduced-motion:reduce){input[type="checkbox"]{transition:none!important}}
+@media(forced-colors:active){input[type="checkbox"]:not(.sw):not([role="switch"]){appearance:auto}input[type="checkbox"]::after{display:none}}

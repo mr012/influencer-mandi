@@ -15,7 +15,7 @@ export function creaCard(u, cls) {
   return `<div class="cd ${cls} grad" data-id="${u.id}"><div class="vb">✓</div>
   <div class="shot" style="background:linear-gradient(152deg,${u.hue},#101210 64%)"><div class="gr"></div><div class="gl"></div>
     <div class="ic">${PHOTO}<span>Creator photo</span></div></div>
-  <div class="cbody"><div class="ttl">${u.name}</div><span class="sub">${u.cat} · ${u.loc}</span>
+  <div class="cbody"><div class="ttl">${u.name}</div><span class="sub">${u.loc}</span>
     <div class="stats"><div class="stat"><strong>${u.followers}</strong><span>Audience</span></div>
       <div class="stat"><strong>${u.eng}</strong><span>Engagement</span></div>
       <div class="stat"><strong>${u.plat}</strong><span>Platforms</span></div></div>
