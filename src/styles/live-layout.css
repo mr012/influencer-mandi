@@ -201,3 +201,14 @@
 }
 /* Campaign details keeps direct status pills on every screen. */
 @media(max-width:1023px){.ce-panel>.ce-filters{display:flex;flex-wrap:wrap;gap:6px;}.ce-panel>.ce-filters .ce-filter{padding:8px 10px;font-size:11px;}.ce-toolbar input{width:100%;}}
+/* Native number arrows are unnecessary for typed campaign budgets. */
+input[type=number]{appearance:textfield;-moz-appearance:textfield;}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+/* Body-mounted dialogs must not depend on a page's inherited theme. */
+.campaign-confirm{--side:#d5ff4b;--srgb:213,255,75;width:min(460px,calc(100vw - 32px));padding:24px;}
+.campaign-confirm h3{font-size:24px;line-height:1.25;}.campaign-confirm p{margin:12px 0 22px;}
+.campaign-confirm .action-row{display:flex;gap:10px;margin:0;}
+.campaign-confirm .btn{flex:1;min-height:44px;border-radius:10px;padding:12px 16px;cursor:pointer;}
+.campaign-confirm .btn.ghost{background:#191919;color:#eee;border:1px solid #ffffff26;}
+.campaign-confirm .btn.solid{background:#d5ff4b;color:#111;border:1px solid transparent;}
+.campaign-confirm .btn.campaign-danger{background:#331515!important;color:#ff8989!important;border:1px solid #803737!important;}

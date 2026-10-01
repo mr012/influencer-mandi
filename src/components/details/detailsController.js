@@ -1,3 +1,4 @@
+import { campaignTimeline } from '../../features/campaigns/campaignDates.js';
 import { byId } from "../../mocks/mockApi.js";
 import { openSheet } from "../ui/overlays.js";
 import { isWide } from "../../config/breakpoints.js";
@@ -9,7 +10,7 @@ export function openDetail(id, fromDeck) {
   if (!x) return;
   const acts = fromDeck ? `<div class="dt-acts"><div class="btn ghost" data-act="dswipe:left">Pass</div><div class="btn solid" data-act="dswipe:right">Interested</div></div>` : `<div class="dt-acts"><div class="btn ghost" data-act="close">Close</div></div>`;
   const head = x.title ? `<div class="ttl">${x.title}</div><span class="sub">${x.brand} <span class="tick">✓</span> · ${x.cat}</span>` : `<div class="ttl">${x.name} <span class="tick">✓</span></div><span class="sub">${x.handle} · ${x.loc}</span>`;
-  const facts = x.title ? `<p class="para">${x.brief}</p>${KV("Budget", x.budget)}${KV("Shoot window", x.window)}${KV("Apply by", x.apply)}${KV("Deliverables", x.del.join(", "))}${KV("Platforms", x.plat)}${KV("Location", x.loc)}${KV("Minimum audience", x.min)}${KV("Usage rights", x.rights)}` : `<p class="para">${x.bio}</p>${KV("Instagram", x.ig)}${KV("YouTube", x.yt)}${KV("Engagement", x.eng)}${KV("Reel", x.reel)}${KV("Post", x.post)}${KV("What can I make", `<span class="pills">${x.tags.map(tag => `<span class="pill">${tag}</span>`).join("")}</span>`)}`;
+  const facts = x.title ? `<p class="para">${x.brief}</p>${KV("Budget", x.budget)}${KV("Shoot window", campaignTimeline(x))}${KV("Apply by", x.apply)}${KV("Deliverables", x.del.join(", "))}${KV("Platforms", x.plat)}${KV("Location", x.loc)}${KV("Minimum audience", x.min)}${KV("Usage rights", x.rights)}` : `<p class="para">${x.bio}</p>${KV("Instagram", x.ig)}${KV("YouTube", x.yt)}${KV("Engagement", x.eng)}${KV("Reel", x.reel)}${KV("Post", x.post)}${KV("What can I make", `<span class="pills">${x.tags.map(tag => `<span class="pill">${tag}</span>`).join("")}</span>`)}`;
   openSheet(`<div class="dt">${isWide() ? `<div class="dt-media">${gallery(x.images?.length ? x.images : x.media)}</div><div class="dt-info">${head}${facts}${acts}</div>` : `${head}${gallery(x.images?.length ? x.images : x.media)}${facts}${acts}`}</div>`, "detail");
 }
 
