@@ -28,6 +28,7 @@ export function setupTagFields(scope) {
     select.className = 'multi-dropdown';
     const summary = document.createElement('summary');
     summary.id = label.htmlFor;
+    summary.style.whiteSpace = 'nowrap';
     summary.setAttribute('aria-label', 'Select categories');
     const options = document.createElement('div');
     options.className = 'multi-options';
@@ -66,7 +67,7 @@ export function setupTagFields(scope) {
     otherLabel.append(otherInput); other.append(otherLabel);
     const update = () => {
       const count = runtime.S.forms[key].length;
-      summary.textContent = count ? `${count} ${count === 1 ? 'category' : 'categories'} selected` : 'Select categories…';
+      summary.textContent = count ? `${count} selected` : 'Select categories…';
       inputs.forEach(input => input.checked = runtime.S.forms[key].includes(input.value));
       other.hidden = !runtime.S.forms[key].some(value => /^others?$/i.test(value));
       renderSelections(chips, runtime.S.forms[key], value => {
