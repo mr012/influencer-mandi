@@ -23,7 +23,7 @@ export function setupOnboardingMedia(root, route) {
       media.src = item.url;applyMediaCrop(media,item.crop);
       if (item.video) { media.controls = true; media.preload = 'metadata'; media.playsInline = true; }
       else media.alt = item.name;
-      const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = '×';
+      const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'onboarding-media-remove'; remove.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>';
       remove.setAttribute('aria-label', 'Remove ' + item.name);
       remove.onclick = () => { URL.revokeObjectURL(item.url); items.splice(index, 1); paint(); };
       tile.append(media, remove); row.append(tile);

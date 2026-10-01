@@ -67,3 +67,6 @@
 .cd.grad .cbody{z-index:2;}
 .profile-card-preview{width:min(460px,100%)!important;height:auto!important;aspect-ratio:4/5;}
 .campaign-detail-layout .campaign-status-tag{align-self:flex-start;width:fit-content;}
+.onboarding-media-tile>button.onboarding-media-remove{display:grid;place-items:center;box-sizing:border-box;min-width:32px;width:32px;min-height:32px;height:32px;padding:0;margin:0;line-height:1;right:6px;top:6px;background:#151515;border:1px solid #777;border-radius:50%;box-shadow:0 2px 6px #0006;z-index:3;}
+.onboarding-media-remove svg{display:block;width:18px;height:18px;pointer-events:none;}
+.onboarding-media-tile>button.onboarding-media-remove:hover{background:#3b1919;border-color:#ff6969;color:#ff9696;}
