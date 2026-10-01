@@ -3,7 +3,7 @@ import { openDateRange, rangeLabel } from '../../components/ui/dateRangePicker.j
 import { searchableDropdown } from '../../components/ui/searchableDropdown.js';
 import { runtime } from '../../context/runtime.js';
 import { CAMPAIGNS, ARCHIVED_CAMPAIGNS } from '../../mocks/campaigns.js';
-import { go } from '../../app/routes.js';
+import { go, back } from '../../app/routes.js';
 
 export function setupCampaignForm(root, route) {
   if (!['newcampaign','editcampaign'].includes(route)) return;
@@ -12,11 +12,11 @@ export function setupCampaignForm(root, route) {
   const id = route === 'editcampaign' ? runtime.S.ctx || runtime.S.previewCampaignId || 'c1' : 'new';
   runtime.S.campaignDrafts ||= {};
   const source = [...CAMPAIGNS,...ARCHIVED_CAMPAIGNS].find(c => c.id === id);
-  const draft = runtime.S.campaignDrafts[id] ||= {title:source?.title || '', brief:source?.brief || '', location:source?.loc || '', start:source?.start || '', end:source?.end || '', budget:source?.approxBudget || '', deliverables:source?.del?.join(', ') || '', platforms:source?.plat?.split(/,\s*/) || [], images:source?.images || []};
+  const draft = runtime.S.campaignDrafts[id] ||= {title:source?.title || '', brief:source?.brief || '', location:source?.loc || '', start:source?.start || '', end:source?.end || '', budget:source?.approxBudget || '', deliverables:source?.del?.join(', ') || '', platforms:source?.plat?.split(/,\s*/) || [], images:[...(source?.images || [])]};
   host.replaceChildren(); host.classList.add('campaign-form-host');
   const form = document.createElement('form'); form.className = 'surface campaign-form'; form.innerHTML = '<div class="panel-label">Campaign details</div><div class="campaign-form-grid"></div><p role="status"></p><div class="action-row"><button type="button" class="btn ghost">Cancel</button><button type="submit" class="btn solid"></button></div>';
   form.querySelector('[type=submit]').textContent = route === 'editcampaign' ? 'Save changes' : 'Publish campaign';
-  form.querySelector('[type=button]').onclick = () => go('campaigns');
+  form.querySelector('[type=button]').onclick = () => route === 'editcampaign' && runtime.S.stack.length ? back() : go('campaigns');
   const grid = form.querySelector('.campaign-form-grid');
   const field = (label,key,type='text',full=false) => {
     const wrap = document.createElement('label'); wrap.className = 'fld' + (full?' span-all':'');
@@ -49,7 +49,7 @@ export function setupCampaignForm(root, route) {
     Object.assign(campaign,{title:escape(draft.title),brief:escape(draft.brief),loc:escape(draft.location),start:draft.start,end:draft.end,approxBudget:draft.budget,budget:draft.budget?'₹'+Number(draft.budget).toLocaleString('en-IN'):'Not specified',time:draft.start+' — '+draft.end,window:draft.start+' — '+draft.end,del:draft.deliverables?draft.deliverables.split(',').map(item=>escape(item.trim())):[],plat:draft.platforms.join(', '),images:draft.images});
     if(!source)CAMPAIGNS.push(campaign);
     runtime.S.campaignDrafts[id]=undefined;
-    go('campaigns');
+    if(route==='editcampaign' && runtime.S.stack.length)back();else go('campaigns');
   };
   host.append(form);
 }
