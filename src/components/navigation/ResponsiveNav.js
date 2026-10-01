@@ -5,6 +5,8 @@ import { IC } from "../ui/icons.js";
 import { isWide } from "../../config/breakpoints.js";
 
 export function chrome() {
+  const tagline = runtime.root.querySelector('.side .tagline');
+  if (tagline) tagline.innerHTML = '<div class="rule"></div>Real people.<br>Real stories.<br>Real impact.';
   const tabs = brand() ? TABS_B : TABS_C,
     on = TAB_OF[runtime.S.route];
   const nav = runtime.root.querySelector(".side .nav");
