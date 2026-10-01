@@ -1,4 +1,4 @@
-import { cropMedia, applyMediaCrop } from '../../components/ui/mediaCrop.js';
+import { cropPhotos, applyMediaCrop } from '../../components/ui/mediaCrop.js';
 import { openDateRange, rangeLabel } from '../../components/ui/dateRangePicker.js';
 import { searchableDropdown } from '../../components/ui/searchableDropdown.js';
 import { runtime } from '../../context/runtime.js';
@@ -29,8 +29,35 @@ export function setupCampaignForm(root, route) {
   const uploads=document.createElement('div');uploads.className='span-all campaign-images';
   uploads.innerHTML='<span class="lbl">Campaign images</span><div class="campaign-upload-row"><div class="image-previews"></div><label class="campaign-upload-tile"><span class="campaign-upload-plus" aria-hidden="true">+</span><span>Upload</span><small>Photos · 4:5</small><input type="file" accept="image/*" multiple hidden></label></div>';
   const uploadLabel=uploads.querySelector('label');uploadLabel.tabIndex=0;uploadLabel.setAttribute('role','button');uploadLabel.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();uploads.querySelector('input').click();}};
-  const paint=()=>{const previews=uploads.querySelector('.image-previews');previews.replaceChildren();draft.images.forEach((file,index)=>{const tile=document.createElement('div');const img=document.createElement('img');img.src=file.url;img.alt=file.name;applyMediaCrop(img,file.crop);const remove=document.createElement('button');remove.type='button';remove.textContent='×';remove.setAttribute('aria-label',`Remove ${file.name}`);remove.onclick=()=>{URL.revokeObjectURL(file.url);draft.images.splice(index,1);paint();};tile.append(img,remove);previews.append(tile);});};
-  uploads.querySelector('input').onchange=async e=>{const files=[...e.target.files];e.target.value='';for(const file of files)if(file.type.startsWith('image/')){const result=await cropMedia(file);if(result)draft.images.push(result);}paint();};grid.append(uploads);paint();
+  const editPhotos = async (added = []) => {
+    const previous = draft.images.filter(item => item.original || item.file);
+    const results = await cropPhotos([...previous.map(item => item.original || item.file), ...added], 'campaign', previous.map(item => item.editorState));
+    if (results) {
+      // Published media may still use the previous URLs until this draft is saved.
+      draft.images = results;
+      paint();
+    }
+  };
+  const paint = () => {
+    const previews = uploads.querySelector('.image-previews'); previews.replaceChildren();
+    draft.images.forEach((file, index) => {
+      const tile = document.createElement('div'), img = document.createElement('img');
+      img.src = file.url; img.alt = file.name; applyMediaCrop(img, file.crop);
+      img.tabIndex = 0; img.setAttribute('role', 'button'); img.setAttribute('aria-label', `Edit ${file.name}`);
+      img.onclick = () => editPhotos();
+      img.onkeydown = event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); editPhotos(); } };
+      const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = '×';
+      remove.setAttribute('aria-label', `Remove ${file.name}`);
+      remove.onclick = () => { draft.images.splice(index, 1); paint(); };
+      tile.append(img, remove); previews.append(tile);
+    });
+  };
+  uploads.querySelector('input').onchange = async event => {
+    const photos = [...event.target.files].filter(file => file.type.startsWith('image/'));
+    event.target.value = '';
+    if (photos.length) await editPhotos(photos);
+  };
+  grid.append(uploads); paint();
   field('What you want','brief','textarea',true).required=true;
   const budget=field('Budget approx. (₹)','budget','number');budget.min='0';budget.placeholder='e.g. 20000';
   const timeline=document.createElement('div');timeline.className='fld';timeline.innerHTML='<span class="lbl">Timeline / shoot window</span><button type="button" class="in">Select date range</button>';grid.append(timeline);
