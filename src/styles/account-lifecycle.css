@@ -2,6 +2,14 @@
 .account-lifecycle p,.account-delete-dialog p{font-size:13px;line-height:1.6;margin:12px 0;color:var(--grey)}
 .lifecycle-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
 .lifecycle-actions button{min-height:44px;padding:10px 16px}
+.mock:is([data-route="profile"],[data-route="account"]) .workspace{flex:0 0 auto;min-height:auto;padding-bottom:24px}
+.mock:is([data-route="profile"],[data-route="account"]) .workspace> *{flex:0 0 auto;min-height:auto}
+.account-lifecycle.surface{gap:10px;margin-top:0;flex-shrink:0}
+.account-lifecycle h3{margin:0}
+.account-lifecycle p{margin:0}
+.account-lifecycle .lifecycle-actions{margin-top:8px}
+.lifecycle-actions .account-delete-action{color:#ff6262;border-color:#ff626280;background:#ff62620a}
+.lifecycle-actions .account-delete-action:hover{color:#ff8585;border-color:#ff6262;background:#ff62621a}
 .account-delete-dialog{max-width:440px;width:calc(100% - 32px);background:var(--panel,#141414);color:var(--white,#fff);border:1px solid var(--line2,#444);border-radius:18px;padding:24px}
 .account-delete-dialog::backdrop{background:#0009;backdrop-filter:blur(4px)}
 .account-delete-dialog input{display:block;width:100%;box-sizing:border-box;padding:12px;margin-top:10px;background:var(--ink2,#222);color:inherit;border:1px solid var(--line2,#444);border-radius:8px;letter-spacing:.3em}
