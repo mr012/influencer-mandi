@@ -1,0 +1,4 @@
+/* Only dismiss the incidental ring; editable fields and keyboard focus stay visible. */
+html[data-pointer-dismiss] :focus-visible:not(input):not(textarea):not(select):not([contenteditable]) {
+  outline: none !important;
+}
