@@ -149,3 +149,18 @@
 .range-days button.range-reveal{animation:range-fill-in .22s ease-out both;animation-delay:var(--range-delay,0ms);}
 @media(prefers-reduced-motion:reduce){.onboarding-media-tile,.campaign-images .image-previews>div,.brand-profile-image img,.date-range-dialog[open],.date-range-dialog[open]::backdrop,.range-days button.range-reveal{animation:none!important;}}
 .campaign-category{display:block;color:#999;font-size:11px;margin-top:5px;}
+/* Keep campaign typography and controls aligned with the supplied reference. */
+.campaign-experience .ce-header h2,.campaign-experience .ce-panel-heading h3,.campaign-experience .ce-info h3{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.005em;}
+.campaign-experience .ce-header h2{font-size:clamp(34px,3.4vw,52px);line-height:.98;}
+.campaign-experience .ce-panel-heading h3{font-size:24px;}
+.campaign-experience .ce-card>.cd.front{transform:none!important;}
+.campaign-experience .ce-toolbar .in{display:block;box-sizing:border-box;min-height:44px;border:1px solid #343436;border-radius:12px;background:#0e0e10;color:#f5f3ef;font:400 14px/1.5 'Inter',sans-serif;padding:10px 14px;box-shadow:none;}
+.campaign-experience .ce-toolbar input::placeholder{color:#8e8e8e;}
+.campaign-experience .ce-toolbar select{color-scheme:dark;}
+.campaign-experience :is(button,input,select):focus:not(:focus-visible){outline:none!important;box-shadow:none!important;}
+.campaign-experience .ce-toolbar :is(input,select):focus{outline:none;box-shadow:none;border-color:#555;}
+.ce-icon{width:18px;height:18px;flex:none;vertical-align:middle;}
+.ce-controls .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;}
+.ce-person-meta>span{display:inline-flex;align-items:center;gap:5px;}
+.ce-person-meta .ce-icon{width:15px;height:15px;}
+@media(max-width:1023px){.ce-controls .ce-icon{width:14px;height:14px;}.ce-controls .btn{gap:4px;}}
