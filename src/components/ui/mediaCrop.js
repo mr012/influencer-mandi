@@ -6,15 +6,16 @@ export function applyMediaCrop(media, crop) {
   media.style.transform = `scale(${crop.zoom})`;
 }
 
-export function cropMedia(file) {
+export function cropMedia(file, aspect = '4:5') {
   return new Promise(resolve => {
     const url = URL.createObjectURL(file), video = file.type.startsWith('video/');
     const dialog = document.createElement('dialog'); dialog.className = 'media-crop-dialog';
     dialog.setAttribute('aria-labelledby', 'media-crop-title');
     dialog.innerHTML = '<h3 id="media-crop-title">Crop your media</h3><p>4:5 portrait · Drag to reposition or use the controls.</p><div class="media-crop-frame"></div><p class="crop-error" role="status">Loading preview…</p><div class="crop-controls"></div><div class="crop-actions"><button type="button" data-cancel>Cancel</button><button type="button" data-save disabled>Use crop</button></div>';
     const frame = dialog.querySelector('.media-crop-frame');
+    if(aspect==='1:1'){frame.style.aspectRatio='1 / 1';dialog.querySelector('p').textContent='1:1 square · Drag to reposition or use the controls.';}
     const media = document.createElement(video ? 'video' : 'img');
-    const crop = {aspect: '4:5', x:50, y:50, zoom:1};
+    const crop = {aspect, x:50, y:50, zoom:1};
     media.draggable = false;
     if(video) {media.muted=true;media.loop=true;media.playsInline=true;media.preload='auto';}
     else media.alt='Crop preview';
