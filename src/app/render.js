@@ -1,3 +1,4 @@
+import { setupOnboardingMedia } from '../features/onboarding/mediaUploads.js';
 import { setupAuthFeedback } from '../features/auth/authFeedback.js';
 import {mountScreen, unmountScreen} from './mountScreen.jsx';
 import { runtime } from "../context/runtime.js";
@@ -75,6 +76,7 @@ export function render(anim) {
   setupAuthFeedback(runtime.root, runtime.S.route);
   setupAccountLifecycle(runtime.root, runtime.S.route);
   wire(runtime.root);
+  setupOnboardingMedia(runtime.root, runtime.S.route);
   setupCampaignForm(runtime.root, runtime.S.route);
   const a = reduced ? "none" : anim || "none";
   if (a !== "none") {

@@ -80,6 +80,12 @@ export function discoveryFilterBar(scope) {
   const bar = scope.querySelector('.crow,.filters');
   if (!bar) return;
   const values = filterValues();
+  const clear = document.createElement('button');
+  clear.type = 'button'; clear.className = 'discovery-clear'; clear.textContent = 'Clear filters';
+  clear.dataset.act = 'clearfiltersmain';
+  clear.disabled = !(values.city.length + values.category.length);
+  const clearRow = document.createElement('div'); clearRow.className='discovery-clear-row';
+  clearRow.append(clear); bar.after(clearRow);
   const topbar = scope.querySelector('.main > .topbar');
   const heading = scope.querySelector('.main > .head');
   if (topbar && heading) {

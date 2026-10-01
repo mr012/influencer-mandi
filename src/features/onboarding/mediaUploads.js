@@ -1,0 +1,38 @@
+import { runtime } from '../../context/runtime.js';
+
+export function setupOnboardingMedia(root, route) {
+  if (route !== 'onboard' || root.dataset.side !== 'creator') return;
+  const old = root.querySelector('.upl');
+  if (!old) return;
+  const items = runtime.S.onboardingMedia ||= [];
+  const row = document.createElement('div'); row.className = 'onboarding-media';
+  row.setAttribute('aria-label', 'Portfolio images and videos');
+  const input = document.createElement('input'); input.type = 'file';
+  input.accept = 'image/*,video/*'; input.multiple = true; input.hidden = true;
+  const upload = document.createElement('button'); upload.type = 'button';
+  upload.className = 'onboarding-upload'; upload.innerHTML = '<span aria-hidden="true">+</span><span>Upload</span><small>Photos / videos</small>';
+  upload.onclick = () => input.click();
+  const paint = () => {
+    row.replaceChildren();
+    items.forEach((item, index) => {
+      const tile = document.createElement('div'); tile.className = 'onboarding-media-tile';
+      const media = document.createElement(item.video ? 'video' : 'img');
+      media.src = item.url;
+      if (item.video) { media.controls = true; media.preload = 'metadata'; media.playsInline = true; }
+      else media.alt = item.name;
+      const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = '×';
+      remove.setAttribute('aria-label', 'Remove ' + item.name);
+      remove.onclick = () => { URL.revokeObjectURL(item.url); items.splice(index, 1); paint(); };
+      tile.append(media, remove); row.append(tile);
+    });
+    row.append(upload, input);
+  };
+  input.onchange = () => {
+    for (const file of input.files) {
+      if (/^(image|video)\//.test(file.type)) items.push({name:file.name, url:URL.createObjectURL(file), video:file.type.startsWith('video/')});
+    }
+    input.value = ''; paint();
+    requestAnimationFrame(() => row.scrollTo({left:row.scrollWidth, behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));
+  };
+  old.replaceWith(row); paint();
+}

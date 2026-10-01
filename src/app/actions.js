@@ -144,6 +144,11 @@ export function onClick(e) {
     case "chatfilter":
       runtime.S.chatFilter[side()] = v;
       return render('none');
+    case "clearfiltersmain":
+      runtime.S.filters[side()] = {city:[], category:[]};
+      runtime.filterDraft = {city:[], category:[]};
+      runtime.S.idx[side()] = 0;
+      return render('none');
     case "clearfilters":
       runtime.filterDraft = {
         city: [],
