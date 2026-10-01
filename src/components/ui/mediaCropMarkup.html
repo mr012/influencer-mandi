@@ -1,0 +1,106 @@
+<div class="scrim" id="scrim">
+  <div class="editor" data-mode="creator"  aria-labelledby="edTitle">
+    <header class="ed-head">
+      <h2 id="edTitle">Edit photo</h2>
+      <span class="count" id="edCount"></span>
+      <span class="grow"></span>
+      <button class="icon-btn mobile-only" type="button" id="previewToggle" aria-pressed="false" aria-label="Show card preview">
+        <svg class="i" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M5 14h14"/></svg>
+      </button>
+      <button class="icon-btn" type="button" id="closeBtn" aria-label="Close without saving">
+        <svg class="i" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+
+    <div class="workspace">
+      <div class="stage" id="stage" tabindex="0" aria-label="Crop area. Drag to move, use arrow keys to nudge, plus and minus to zoom.">
+        <canvas id="stageCanvas"></canvas>
+        <div class="qchip" id="qchip" aria-hidden="true"><i></i><span></span></div>
+        <div class="stage-hint" id="hint">Drag to move · pinch or scroll to zoom</div>
+      </div>
+      <div class="tools">
+        <div class="zoom">
+          <button class="icon-btn" type="button" id="zoomOut" aria-label="Zoom out"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+          <input type="range" id="zoom" min="0" max="1000" value="0" aria-label="Zoom">
+          <button class="icon-btn" type="button" id="zoomIn" aria-label="Zoom in"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+          <output id="zoomOut2" for="zoom">100%</output>
+        </div>
+        <span class="sep" aria-hidden="true"></span>
+        <div class="fitfill" role="group" aria-label="Framing">
+          <button type="button" id="fillBtn" aria-pressed="true">Fill</button>
+          <button type="button" id="fitBtn" aria-pressed="false">Fit</button>
+        </div>
+        <div class="bgpick" id="bgpick" role="group" aria-label="Background behind the photo">
+          <button type="button" data-bg="blur" aria-pressed="true">Blur</button>
+          <button type="button" data-bg="#ffffff" aria-pressed="false">White</button>
+          <button type="button" data-bg="#000000" aria-pressed="false">Black</button>
+        </div>
+        <button class="icon-btn" type="button" id="rotateBtn" aria-label="Rotate 90 degrees">
+          <svg class="i" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+        </button>
+        <button class="icon-btn" type="button" id="guideBtn" aria-pressed="true" aria-label="Show where card text sits">
+          <svg class="i" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M5 14h14M8 17h6"/></svg>
+        </button>
+        <button class="icon-btn" type="button" id="resetBtn" aria-label="Reset this photo">
+          <svg class="i" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7M4 4v5h5"/></svg>
+        </button>
+      </div>
+      <div class="strip" id="strip" role="listbox" aria-label="Photos in this upload"></div>
+    </div>
+
+    <aside class="side" id="side" aria-label="Preview and details">
+      <div class="pv pv-campaign">
+        <h3 id="pvCampTitle">On the discovery card</h3>
+        <div class="split-card">
+          <div class="shot"><canvas id="bandCanvas"></canvas></div>
+          <div class="cbody">
+            <div class="bl"><span class="lg" id="campLogo">C</span><b>Chai Point <span class="tick">✓</span></b></div>
+            <div class="ttl">Monsoon menu launch</div><span class="sub">Food &amp; beverage campaign</span>
+            <div class="stats"><div><b>₹20,000</b><span>Budget</span></div><div><b>3 weeks</b><span>Timeline</span></div><div><b>25 Sep</b><span>Apply by</span></div></div>
+          </div>
+        </div>
+        <p class="pv-note" id="pvCampNote">Only the cover shows on the card. All photos show in full in campaign details.</p>
+      </div>
+      <div class="pv pv-logo">
+        <h3>Where it shows</h3>
+        <div class="logo-uses">
+          <div class="split-card" style="aspect-ratio:auto"><div class="cbody"><div class="bl"><span class="lg"><canvas id="logoSmall" width="104" height="104"></canvas></span><b>Chai Point <span class="tick">✓</span></b></div><div class="ttl">Monsoon menu launch</div><span class="sub">On every campaign card</span></div></div>
+          <div class="logo-big"><span class="av"><canvas id="logoBig" width="256" height="256"></canvas></span><div><b>Chai Point</b><small>Brand profile</small></div></div>
+        </div>
+      </div>
+      <div class="pv pv-creator">
+        <h3>On your card</h3>
+        <div class="preview-card">
+          <canvas id="previewCanvas"></canvas>
+          <div class="info" id="previewInfo">
+            <div class="name">Ananya Rao</div>
+            <div class="meta">Mumbai</div>
+            <div class="stats"><div><b>84.2K</b><span>Audience</span></div><div><b>5.1%</b><span>Engagement</span></div><div><b>IG, YT</b><span>Platforms</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="quality" id="quality" aria-live="polite"><span class="dot"></span><div><b>Sharp</b><span></span></div></div>
+      <label class="toggle">
+        <span>Card guide<small id="guideNote">Shade the area the name and stats cover</small></span>
+        <span class="switch"><input type="checkbox" id="guideSwitch" checked><i></i></span>
+      </label>
+      <div class="multi-only">
+        <h3>This photo</h3>
+        <div class="row-btns">
+          <button class="btn" type="button" id="coverBtn">Make cover</button>
+          <button class="btn" type="button" id="removeBtn">Remove</button>
+        </div>
+      </div>
+      <p class="keys"><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd> move &nbsp; <kbd>+</kbd><kbd>−</kbd> zoom &nbsp; <kbd>R</kbd> rotate &nbsp; <kbd>0</kbd> reset &nbsp; <kbd>Enter</kbd> save</p>
+    </aside>
+
+    <footer class="ed-foot"><span id="cropStatus" role="status"></span>
+      <span class="grow" id="footNote">The first photo is your cover. Every photo is saved at 4:5.</span>
+      <button class="btn" type="button" id="cancelBtn">Cancel</button>
+      <button class="btn primary" type="button" id="saveBtn">Save photos</button>
+    </footer>
+  </div>
+</div>
+
+<input class="sr" id="addMore" type="file" accept="image/*" multiple>
+

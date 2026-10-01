@@ -1,9 +1,9 @@
 import { CREATORS } from '../../mocks/creators.js';
-import { cropMedia, applyMediaCrop } from '../../components/ui/mediaCrop.js';
+import { cropMedia, cropPhotos, applyMediaCrop } from '../../components/ui/mediaCrop.js';
 import { runtime } from '../../context/runtime.js';
 
 export function setupOnboardingMedia(root, route) {
-  if (route !== 'onboard') return;
+  if (!['onboard', 'editprofile'].includes(route)) return;
   if(root.dataset.side === 'brand'){setupBrandImage(root);return;}
   const old = root.querySelector('.upl');
   if (!old) return;
@@ -15,6 +15,15 @@ export function setupOnboardingMedia(root, route) {
   const upload = document.createElement('button'); upload.type = 'button';
   upload.className = 'onboarding-upload'; upload.innerHTML = '<span aria-hidden="true">+</span><span>Upload</span><small>Photos / videos</small>';
   upload.onclick = () => input.click();
+  const editPhotos = async (added = []) => {
+    const previous = items.filter(item => !item.video && (item.original || item.file));
+    const results = await cropPhotos([...previous.map(item => item.original || item.file), ...added], 'creator', previous.map(item => item.editorState));
+    if (results) {
+      previous.forEach(item => URL.revokeObjectURL(item.url));
+      const videos = items.filter(item => item.video);
+      items.splice(0, items.length, ...results, ...videos); paint();
+    }
+  };
   const paint = () => {
     CREATORS[0].images=items;
     row.replaceChildren();
@@ -23,7 +32,7 @@ export function setupOnboardingMedia(root, route) {
       const media = document.createElement(item.video ? 'video' : 'img');
       media.src = item.url;applyMediaCrop(media,item.crop);
       if (item.video) { media.controls = true; media.preload = 'metadata'; media.playsInline = true; }
-      else media.alt = item.name;
+      else { media.alt = item.name; media.tabIndex = 0; media.setAttribute('role', 'button'); media.setAttribute('aria-label', 'Edit ' + item.name); media.onclick = () => editPhotos(); media.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); editPhotos(); } }; }
       const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'onboarding-media-remove'; remove.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>';
       remove.setAttribute('aria-label', 'Remove ' + item.name);
       remove.onclick = () => { URL.revokeObjectURL(item.url); items.splice(index, 1); paint(); };
@@ -32,13 +41,16 @@ export function setupOnboardingMedia(root, route) {
     row.append(upload, input);
   };
   input.onchange = async () => {
-    for (const file of [...input.files]) {
-      if (/^(image|video)\//.test(file.type)) {const result=await cropMedia(file);if(result)items.push(result);}
+    const files = [...input.files];
+    const photos = files.filter(file => file.type.startsWith('image/'));
+    if (photos.length) await editPhotos(photos);
+    for (const file of files.filter(file => file.type.startsWith('video/'))) {
+      const result = await cropMedia(file); if (result) items.push(result);
     }
     input.value = ''; paint();
     requestAnimationFrame(() => row.scrollTo({left:row.scrollWidth, behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));
   };
-  old.replaceWith(row); paint();
+  old.replaceWith(row); root.querySelector('.portfolio')?.remove(); paint();
 }
 
 function setupBrandImage(root){
