@@ -27,8 +27,13 @@
 .onboarding-upload>span:first-child{font-size:28px;color:var(--side)}.onboarding-upload small{font-size:10px}
 .onboarding-media-tile img,.onboarding-media-tile video{width:100%;height:100%;object-fit:cover;display:block}
 .onboarding-media-tile>button{position:absolute;right:6px;top:6px;width:28px;height:28px;border-radius:50%;border:1px solid #fff5;background:#111c;color:#fff;cursor:pointer}
-.proto [data-route="discover"] :is(.creator-discovery-tools,.brand-discovery-tools,.discovery-clear-row){width:min(460px,100%);max-width:100%;margin-left:auto;margin-right:auto;box-sizing:border-box;flex-shrink:0}
-.discovery-clear-row{display:flex;justify-content:flex-end;margin-top:3px;margin-bottom:6px}
-.discovery-clear{background:transparent;border:0;color:var(--side);font:inherit;font-size:11px;min-height:28px;padding:3px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-.discovery-clear:disabled{color:var(--dim);cursor:default;text-decoration:none}
-@media(max-width:1023px){.proto [data-route="discover"] :is(.creator-discovery-tools,.brand-discovery-tools,.discovery-clear-row){width:100%}.onboarding-media-tile,.onboarding-upload{flex-basis:112px;width:112px;height:140px}}
+.proto [data-route="discover"] :is(.creator-discovery-tools,.brand-discovery-tools){width:min(460px,100%);max-width:100%;margin-left:auto;margin-right:auto;box-sizing:border-box;flex-shrink:0}
+@media(max-width:1023px){.proto [data-route="discover"] :is(.creator-discovery-tools,.brand-discovery-tools){width:100%}.onboarding-media-tile,.onboarding-upload{flex-basis:112px;width:112px;height:140px}}
+
+.filter-with-clear{position:relative;min-width:0}
+.creator-discovery-tools>.filter-with-clear{width:100%}
+.filter-with-clear>.brand-discovery-filter{width:100%;padding-right:48px}
+.filter-with-clear>.discovery-clear-icon{position:absolute;right:3px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:40px;height:40px;min-height:40px;padding:0;background:transparent;border:0;border-radius:9px;color:var(--grey);cursor:pointer}
+.discovery-clear-icon svg{width:18px;height:18px}
+.filter-with-clear>.discovery-clear-icon:hover{color:var(--side);background:rgba(var(--srgb),.1)}
+.filter-with-clear>.discovery-clear-icon:focus-visible{outline:2px solid var(--side);outline-offset:-3px}

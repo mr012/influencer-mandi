@@ -80,12 +80,15 @@ export function discoveryFilterBar(scope) {
   const bar = scope.querySelector('.crow,.filters');
   if (!bar) return;
   const values = filterValues();
-  const clear = document.createElement('button');
-  clear.type = 'button'; clear.className = 'discovery-clear'; clear.textContent = 'Clear filters';
-  clear.dataset.act = 'clearfiltersmain';
-  clear.disabled = !(values.city.length + values.category.length);
-  const clearRow = document.createElement('div'); clearRow.className='discovery-clear-row';
-  clearRow.append(clear); bar.after(clearRow);
+  const withClear = filters => {
+    if (!(values.city.length + values.category.length)) return filters;
+    const group = document.createElement('div'); group.className = 'filter-with-clear';
+    const clear = document.createElement('button'); clear.type = 'button';
+    clear.className = 'discovery-clear-icon'; clear.dataset.act = 'clearfiltersmain';
+    clear.setAttribute('aria-label', 'Clear filters'); clear.title = 'Clear filters';
+    clear.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>';
+    group.append(filters, clear); return group;
+  };
   const topbar = scope.querySelector('.main > .topbar');
   const heading = scope.querySelector('.main > .head');
   if (topbar && heading) {
@@ -128,7 +131,7 @@ export function discoveryFilterBar(scope) {
     filterCount.textContent = String(selectedCount);
     filters.append(filterIcon(), filterCount);
 
-    bar.append(campaign, filters);
+    bar.append(campaign, withClear(filters));
     return;
   }
 
@@ -160,7 +163,7 @@ export function discoveryFilterBar(scope) {
     }
     filters.append(filterContext, filterPill);
 
-    bar.appendChild(filters);
+    bar.appendChild(withClear(filters));
     return;
   }
 
