@@ -1,9 +1,15 @@
 import { PHOTO, PLAY } from "../ui/icons.js";
 
+const escape = value => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+function uploadedMedia(item) {
+  const style = 'width:100%;height:100%;object-fit:contain;';
+  return item.video ? `<video src="${escape(item.url)}" style="${style}" controls playsinline></video>`
+    : `<img src="${escape(item.url)}" alt="${escape(item.name)}" style="${style}">`;
+}
 export function gallery(media) {
   return `<div class="mgal"><span class="marrow prev" data-act="gal:-1" aria-label="Previous">‹</span><span class="marrow next" data-act="gal:1" aria-label="Next">›</span>
-    <div class="mgal-track">${media.map(m => `<div class="mslide${m.type === "Reel" ? " vid" : ""}" data-type="${m.type}" style="background:linear-gradient(152deg,${m.hue},#101012 66%)">
-      ${m.type === "Reel" ? PLAY : PHOTO}<span class="mcap">${m.cap}</span></div>`).join("")}</div>
+    <div class="mgal-track">${media.map(m => `<div class="mslide${m.type === "Reel" ? " vid" : ""}" data-type="${m.type || (m.video ? "Reel" : "Photo")}" style="background:linear-gradient(152deg,${m.hue},#101012 66%)">
+      ${m.url ? uploadedMedia(m) : `${m.type === "Reel" ? PLAY : PHOTO}<span class="mcap">${m.cap}</span>`}</div>`).join("")}</div>
     <span class="mcount">1 / ${media.length}</span>
     <div class="mdots">${media.map((_, j) => `<i class="${j ? "" : "on"}"></i>`).join("")}</div></div>
     <p class="mswipe">${media.length > 1 ? "ontouchstart" in window ? "Swipe or tap the arrows" : "Use the arrows to see more" : "&nbsp;"}</p>`;
