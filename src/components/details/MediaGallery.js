@@ -12,7 +12,7 @@ export function gallery(media) {
       ${m.url ? uploadedMedia(m) : `${m.type === "Reel" ? PLAY : PHOTO}<span class="mcap">${m.cap}</span>`}</div>`).join("")}</div>
     <span class="mcount">1 / ${media.length}</span>
     <div class="mdots">${media.map((_, j) => `<i class="${j ? "" : "on"}"></i>`).join("")}</div></div>
-    <p class="mswipe">${media.length > 1 ? "ontouchstart" in window ? "Swipe or tap the arrows" : "Use the arrows to see more" : "&nbsp;"}</p>`;
+    `;
 }
 export function bindGallery(scope) {
   const tr = scope.querySelector(".mgal-track");

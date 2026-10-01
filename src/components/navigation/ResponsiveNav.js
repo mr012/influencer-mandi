@@ -6,10 +6,10 @@ import { isWide } from "../../config/breakpoints.js";
 
 export function chrome() {
   const logo=runtime.root.querySelector('.side .logo');
-  if(logo){logo.classList.add('mandi-sidebar-logo');logo.innerHTML='<span class="mandi-monogram" aria-hidden="true"><i>i</i>M</span><span class="mandi-wordmark">INFLUENCER<br><b>MANDI</b></span>';logo.setAttribute('aria-label','Influencer Mandi');}
+  if(logo){logo.classList.add('mandi-sidebar-logo');logo.innerHTML='<svg class="mandi-mark" viewBox="-2 -2 114 104" aria-hidden="true"><rect x="0" y="30" width="22" height="70" fill="var(--side)"/><g fill="var(--side)"><rect x="-1.5" y="7.25" width="25" height="7.5" rx=".8" transform="rotate(45 11 11)"/><rect x="-1.5" y="7.25" width="25" height="7.5" rx=".8" transform="rotate(-45 11 11)"/></g><polygon fill="currentColor" points="30,100 30,0 54,0 70,44 86,0 110,0 110,100 88,100 88,46 76,80 64,80 52,46 52,100"/></svg><span class="mandi-wordmark">INFLUENCER<br><b>MANDI</b></span>';logo.setAttribute('aria-label','Influencer Mandi');}
 
   const tagline = runtime.root.querySelector('.side .tagline');
-  if (tagline) tagline.innerHTML = '<div class="rule"></div>Real people.<br>Real stories.<br>Real impact.';
+  if (tagline) tagline.innerHTML = '<span class="sidebar-creators-tagline">Creators. Brands. Ideas.</span>';
   const tabs = brand() ? TABS_B : TABS_C,
     on = TAB_OF[runtime.S.route];
   const nav = runtime.root.querySelector(".side .nav");
