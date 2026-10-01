@@ -3,8 +3,9 @@ import { cropMedia, applyMediaCrop } from '../../components/ui/mediaCrop.js';
 import { runtime } from '../../context/runtime.js';
 
 export function setupOnboardingMedia(root, route) {
-  if (route !== 'onboard') return;
+  if (!['onboard','editprofile'].includes(route)) return;
   if(root.dataset.side === 'brand'){setupBrandImage(root);return;}
+  if(route!=='onboard')return;
   const old = root.querySelector('.upl');
   if (!old) return;
   const items = runtime.S.onboardingMedia ||= [];

@@ -16,6 +16,7 @@ export function setupTagFields(scope) {
   groups.forEach((group, index) => {
     const key = side() + ':' + runtime.S.route + ':tags:' + index;
     const initial = [...group.querySelectorAll('.chip.on')].map(el => el.textContent.trim());
+    if(!initial.length && brand()){const value=group.querySelector('.in')?.textContent.trim();if(value)initial.push(value);}
     if (!Array.isArray(runtime.S.forms[key])) runtime.S.forms[key] = initial;
     group.replaceChildren();
     group.className = 'fld tag-field';
