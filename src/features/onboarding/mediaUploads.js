@@ -44,11 +44,13 @@ export function setupOnboardingMedia(root, route) {
 function setupBrandImage(root){
  const old=root.querySelector('.upl');if(!old)return;
  const wrap=document.createElement('div');wrap.className='brand-profile-upload';
- const input=document.createElement('input');input.type='file';input.accept='image/*';input.hidden=true;
+ const input=document.createElement('input');input.type='file';input.accept='image/*';input.className='brand-profile-file';input.setAttribute('aria-label','Upload brand profile image');
  const button=document.createElement('button');button.type='button';button.className='brand-profile-image';button.setAttribute('aria-label','Upload brand profile image');
  const caption=document.createElement('span');caption.className='brand-image-caption';
  const paint=()=>{button.replaceChildren();const item=runtime.S.brandProfileImage;if(item){const img=document.createElement('img');img.src=item.url;img.alt='Brand profile image';applyMediaCrop(img,item.crop);button.append(img);caption.textContent='Change image · 1:1';}else{button.textContent='Upload profile image';caption.textContent='One image · 1:1';}};
- button.onclick=()=>input.click();
+ // Native file input covers the tile so touch and mouse open the picker directly.
+ const target=document.createElement('div');target.className='brand-upload-target';target.append(button,input);
+ button.tabIndex=-1;button.setAttribute('aria-hidden','true');
  input.onchange=async()=>{const file=input.files[0];input.value='';if(!file?.type.startsWith('image/'))return;const item=await cropMedia(file,'1:1');if(item){if(runtime.S.brandProfileImage)URL.revokeObjectURL(runtime.S.brandProfileImage.url);runtime.S.brandProfileImage=item;paint();}};
- wrap.append(button,caption,input);old.replaceWith(wrap);paint();
+ wrap.append(target,caption);old.replaceWith(wrap);paint();
 }
