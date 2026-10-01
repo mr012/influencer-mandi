@@ -10,9 +10,11 @@ export function chrome() {
   const tabs = brand() ? TABS_B : TABS_C,
     on = TAB_OF[runtime.S.route];
   const nav = runtime.root.querySelector(".side .nav");
-  if (nav) nav.innerHTML = tabs.map(t => `<span class="${t === on ? "on" : ""}" data-tab="${t}">${IC[t]}${LABEL[t]}</span>`).join("");
+  const sidebarOn = ['billing', 'subscribe', 'refunds'].includes(runtime.S.route) ? 'billing'
+    : ['help', 'contact'].includes(runtime.S.route) ? 'help' : on;
+  if (nav) nav.innerHTML = tabs.map(t => `<span class="${t === sidebarOn ? "on" : ""}" data-tab="${t}"${t === sidebarOn ? ' aria-current="page"' : ''}>${IC[t]}${LABEL[t]}</span>`).join("");
   if (nav) {
-    nav.insertAdjacentHTML('beforeend', `<span data-act="go:billing">${IC.campaigns}Billing</span><span data-act="go:help">${IC.chats}Support</span>`);
+    nav.insertAdjacentHTML('beforeend', `<span class="${sidebarOn === 'billing' ? 'on' : ''}" data-act="go:billing"${sidebarOn === 'billing' ? ' aria-current="page"' : ''}>${IC.campaigns}Billing</span><span class="${sidebarOn === 'help' ? 'on' : ''}" data-act="go:help"${sidebarOn === 'help' ? ' aria-current="page"' : ''}>${IC.chats}Support</span>`);
     runtime.root.querySelector('.side-links')?.remove();
   }
   let tb = runtime.root.querySelector(".tabs");
