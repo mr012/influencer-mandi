@@ -1,12 +1,10 @@
 import { campaignStatus } from '../campaigns/campaignState.js';
-import { searchableDropdown } from "../../components/ui/searchableDropdown.js";
 import { filterDiscovery } from '../../utils/discoveryFilters.js';
 import { runtime } from "../../context/runtime.js";
 import { brand, side } from "../../context/session.js";
 import { openSheet, overlay } from "../../components/ui/overlays.js";
 import { PLACES } from "../../config/locations.js";
 import { categoryOptions } from "../../config/categories.js";
-import { renderSelections } from "../../components/ui/MultiSelect.js";
 import { CREATORS } from "../../mocks/creators.js";
 import { CAMPAIGNS } from "../../mocks/campaigns.js";
 
@@ -19,49 +17,28 @@ export function filterValues() {
   };
 }
 export function openFilters(focusKey) {
-  const f = filterValues();
-  runtime.filterDraft = {
-    city: [...f.city],
-    category: [...f.category]
-  };
-  const group = (key, title) => `<div class="filter-group"><span class="lbl" id="filter-label-${key}">${title}</span><details class="multi-dropdown" id="filter-${key}"><summary aria-labelledby="filter-label-${key}"><span>Select ${key === 'city' ? 'locations' : 'categories'}…</span><span aria-hidden="true">⌄</span></summary><div class="multi-options" role="group" aria-labelledby="filter-label-${key}"></div></details><div class="chips selected-tags" data-selected="${key}" aria-live="polite"></div></div>`;
-  openSheet(`<div class="ttl">Filters</div>${group('city', 'Location')}${group('category', 'Category')}<div class="dt-acts"><button class="btn ghost" data-act="clearfilters">Clear</button><button class="btn solid" data-act="applyfilters">Apply filters</button></div>`, 'filter-sheet');
-  for (const key of ['city', 'category']) {
-    const dropdown = overlay.querySelector('#filter-' + key),
-      options = dropdown.querySelector('.multi-options');
-    (key === 'city' ? PLACES : categoryOptions()).forEach(value => {
-      const label = document.createElement('label');
-      label.className = 'multi-option';
-      const input = document.createElement('input');
-      input.type = 'checkbox';
-      input.value = value;
-      input.checked = runtime.filterDraft[key].includes(value);
-      input.addEventListener('change', () => {
-        runtime.filterDraft[key] = input.checked ? [...runtime.filterDraft[key], value] : runtime.filterDraft[key].filter(v => v !== value);
-        refreshFilterGroup(key);
-      });
-      const text = document.createElement('span');
-      text.textContent = value;
-      label.append(input, text);
-      options.appendChild(label);
-    });
-    searchableDropdown(dropdown, key === 'city' ? 'Search locations…' : 'Search categories…');
-    refreshFilterGroup(key);
-  }
-  if (focusKey) overlay.querySelector('#filter-' + focusKey + ' summary')?.focus({
-    preventScroll: true
-  });
+  const f=filterValues();runtime.filterDraft={city:[...f.city],category:[...f.category]};
+  openSheet('<div class="discovery-menu-content"></div><div class="dt-acts"><button class="btn ghost" data-act="clearfilters">Clear</button><button class="btn solid" data-act="applyfilters">Apply filters</button></div>','filter-sheet discovery-menu');
+  runtime.discoveryFilterField=focusKey||null;
+  paintFilterMenu();
+  const anchor=runtime.root.querySelector('[data-act="filters"]');
+  if(innerWidth>700&&anchor){const rect=anchor.getBoundingClientRect();const sheet=overlay.querySelector('.sheet');sheet.style.position='fixed';sheet.style.width='280px';sheet.style.left=Math.max(12,Math.min(rect.right-280,innerWidth-292))+'px';sheet.style.top=Math.max(12,Math.min(rect.bottom+8,innerHeight-420))+'px';}
 }
-export function refreshFilterGroup(key) {
-  const dropdown = overlay.querySelector('#filter-' + key),
-    tags = overlay.querySelector('[data-selected="' + key + '"]');
-  dropdown.querySelectorAll('input[type=checkbox]').forEach(input => input.checked = runtime.filterDraft[key].includes(input.value));
-  dropdown.querySelector('summary span').textContent = runtime.filterDraft[key].length ? runtime.filterDraft[key].length + ' selected' : key === 'city' ? 'Select locations…' : 'Select categories…';
-  renderSelections(tags, runtime.filterDraft[key], value => {
-    runtime.filterDraft[key] = runtime.filterDraft[key].filter(v => v !== value);
-    refreshFilterGroup(key);
-  });
+function paintFilterMenu(){
+ const host=overlay.querySelector('.discovery-menu-content');if(!host)return;
+ host.replaceChildren();const key=runtime.discoveryFilterField;
+ if(!key){
+  for(const [field,title] of [['category','Category'],['city','Location']]){const button=document.createElement('button');button.className='discovery-field-row';const label=document.createElement('b');label.textContent=title;const value=document.createElement('span');const selected=runtime.filterDraft[field];value.textContent=selected.length?selected.length===1?selected[0]:selected.length+' selected':'Any';const arrow=document.createElement('i');arrow.textContent='›';button.append(label,value,arrow);button.onclick=()=>{runtime.discoveryFilterField=field;paintFilterMenu();};host.append(button);}return;
+ }
+ const back=document.createElement('button');back.className='discovery-field-back';back.textContent='‹  '+(key==='city'?'Location':'Category');back.onclick=()=>{runtime.discoveryFilterField=null;paintFilterMenu();};host.append(back);
+ const search=document.createElement('input');search.type='search';search.className='discovery-option-search';search.placeholder=key==='city'?'Search locations…':'Search categories…';search.setAttribute('aria-label',search.placeholder);host.append(search);
+ const list=document.createElement('div');list.className='discovery-option-list';host.append(list);
+ const options=key==='city'?PLACES:categoryOptions();
+ for(const value of options){const label=document.createElement('label');label.className='discovery-option';const input=document.createElement('input');input.type='checkbox';input.value=value;input.checked=runtime.filterDraft[key].includes(value);input.onchange=()=>{runtime.filterDraft[key]=input.checked?[...runtime.filterDraft[key],value]:runtime.filterDraft[key].filter(v=>v!==value);};const text=document.createElement('span');text.textContent=value;label.append(input,text);list.append(label);}
+ const empty=document.createElement('p');empty.textContent='No matching options';empty.hidden=true;list.append(empty);
+ search.oninput=()=>{let count=0;list.querySelectorAll('label').forEach(label=>{label.hidden=!label.textContent.toLowerCase().includes(search.value.trim().toLowerCase());if(!label.hidden)count++;});empty.hidden=count>0;};
 }
+export function refreshFilterGroup(){paintFilterMenu();}
 function filterIcon() {
   const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   icon.setAttribute('viewBox', '0 0 24 24');
