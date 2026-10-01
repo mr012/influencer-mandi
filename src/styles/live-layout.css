@@ -111,3 +111,4 @@
  .proto .ph[data-route="campaigns"] .campaign-row-actions{width:100%;flex-basis:100%;margin-top:10px;}
  .proto .ph[data-route="campaigns"] .campaign-row-actions>*{display:flex;align-items:center;justify-content:center;min-height:40px;padding:8px;font-size:11px;box-sizing:border-box;}
 }
+.campaign-status-tag.is-live{background:#d5ff4b;color:#111;border-color:#d5ff4b;font-weight:600;}
