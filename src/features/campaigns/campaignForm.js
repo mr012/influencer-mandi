@@ -1,3 +1,4 @@
+import { BRAND_CATEGORIES } from '../../config/categories.js';
 import { cropPhotos, applyMediaCrop } from '../../components/ui/mediaCrop.js';
 import { openDateRange, rangeLabel } from '../../components/ui/dateRangePicker.js';
 import { searchableDropdown } from '../../components/ui/searchableDropdown.js';
@@ -26,7 +27,19 @@ export function setupCampaignForm(root, route) {
     wrap.append(caption,input);grid.append(wrap);return input;
   };
   field('Title','title','text',true).required=true;
-  field('Category','category','text',true).placeholder='e.g. Food & beverage';
+  const category=document.createElement('div');category.className='fld span-all';
+  category.innerHTML='<span class="lbl">Category</span><details class="multi-dropdown"><summary aria-label="Campaign category">Select category</summary><div class="multi-options"></div></details>';
+  grid.append(category);
+  const categoryMenu=category.querySelector('details');
+  const currentCategory=String(draft.category||'').replace(/ campaign$/, '');draft.category=currentCategory;
+  categoryMenu.querySelector('summary').textContent=currentCategory||'Select category';
+  for(const name of [...new Set([...BRAND_CATEGORIES,...(currentCategory?[currentCategory]:[])])]){
+    const label=document.createElement('label');label.className='multi-option';
+    const radio=document.createElement('input');radio.type='radio';radio.name='campaign-category';radio.value=name;radio.checked=currentCategory===name;
+    radio.onchange=()=>{draft.category=name;categoryMenu.querySelector('summary').textContent=name;categoryMenu.open=false;};
+    label.append(radio,document.createTextNode(name));categoryMenu.querySelector('.multi-options').append(label);
+  }
+  searchableDropdown(categoryMenu,'Search categories…');
   const uploads=document.createElement('div');uploads.className='span-all campaign-images';
   uploads.innerHTML='<span class="lbl">Campaign images</span><div class="campaign-upload-row"><div class="image-previews"></div><label class="campaign-upload-tile"><span class="campaign-upload-plus" aria-hidden="true">+</span><span>Upload</span><small>Photos · 4:5</small><input type="file" accept="image/*" multiple hidden></label></div>';
   const uploadLabel=uploads.querySelector('label');uploadLabel.tabIndex=0;uploadLabel.setAttribute('role','button');uploadLabel.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();uploads.querySelector('input').click();}};
