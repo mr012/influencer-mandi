@@ -10,7 +10,7 @@ export function campaignHasChats(campaign) {
   const state=runtime.S;if(!state)return false;
   const linked=state.campaignChats?.[campaign.id]||[];
   const seeded=campaign.id==='c1'?['u1']:campaign.id==='c2'?['u3']:[];
-  return [...linked,...seeded].some(id=>state.matches?.brand?.includes(id)&&state.threads?.[id]!=null);
+  return [...linked,...seeded].some(id=>state.threads?.[id]!=null);
 }
 export function setCampaignStatus(campaign, status) {
   if(status==='Deleted'&&campaignHasChats(campaign))return false;

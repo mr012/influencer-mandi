@@ -252,3 +252,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .lifecycle-actions .account-pause-action{color:#ffd45c;background:#ffd45c0d;border-color:#ffd45c66;}
 .account-delete-dialog.is-pause .lifecycle-actions .confirm{background:#ffd45c;color:#17130a;border-color:#ffd45c;}
 .account-delete-dialog.is-pause .lifecycle-actions .confirm:hover{background:#ffe080;}
+/* Discover cards are swipe targets, not selectable text. */
+[data-route="discover"] .cd,[data-route="discover"] .cd *{-webkit-user-select:none;user-select:none;}
+[data-route="discover"] .cd img{-webkit-user-drag:none;}
