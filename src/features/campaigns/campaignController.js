@@ -62,7 +62,9 @@ export function fill_campaigns() {
   const searchWrap=document.createElement('div');searchWrap.className='campaign-list-search';
   searchWrap.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input type="search" aria-label="Search campaigns" placeholder="Search campaigns, category or location">';
   const list=runtime.root.querySelector('.table-wrap')||rows[0];
-  if(list)list.before(searchWrap);else (runtime.root.querySelector('.workspace,.body')||runtime.root).append(searchWrap);
+  if(list?.classList.contains('table-wrap')){list.classList.add('campaign-list-container');list.prepend(searchWrap);}
+  else if(list){const container=document.createElement('div');container.className='campaign-list-container';list.before(container);container.append(searchWrap,...rows);}
+  else (runtime.root.querySelector('.workspace,.body')||runtime.root).append(searchWrap);
   const emptySearch=document.createElement('p');emptySearch.className='campaign-search-empty';emptySearch.setAttribute('role','status');emptySearch.hidden=true;emptySearch.textContent='No campaigns match your search.';searchWrap.after(emptySearch);
   searchWrap.querySelector('input').oninput=event=>{const query=event.target.value.trim().toLowerCase();let count=0;for(const row of rows){row.hidden=!row.dataset.search.includes(query);if(!row.hidden)count++;}emptySearch.hidden=!query||count>0;};
   const hasCampaigns=!!runtime.root.querySelector('.campaign-list-row');
