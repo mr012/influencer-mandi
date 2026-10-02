@@ -16,6 +16,7 @@ export function chatRestriction(id) {
 export function resumeAccount() { save({...accountState(),status:'Active'}); }
 function dialog(title, description, label, action) {
   const d = document.createElement('dialog'); d.className = 'account-delete-dialog';
+  if(label==='Pause account')d.classList.add('is-pause');
   if(label==='Continue to verification'||label==='Verify & request deletion')d.classList.add('is-destructive');
   d.style.setProperty('--side',side()==='brand'?'#d5ff4b':'#ff4d16');
   d.onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();d.close();}};
@@ -48,7 +49,7 @@ export function setupAccountLifecycle(root,route) {
   section.innerHTML='<h3>Manage account</h3><p class="lifecycle-status"></p><p class="description"></p><div class="lifecycle-actions"></div>';container.append(section);
   section.querySelector('.lifecycle-status').textContent=pending?statusLabel(state):`Account ${state.status.toLowerCase()}`;
   section.querySelector('.description').textContent=pending?(state.deletionStatus==='Under review'?'An unresolved report or dispute requires review before deletion can be completed. Contact support for help.':`${notice} Scheduled date: ${new Date(state.deleteAt).toLocaleDateString()}. Signing in does not cancel your request.`):state.status==='Paused'?'Your profile is hidden. Resume your account to send and receive new messages. Your matches and chat history remain available.':'Pause temporarily, or request deletion after a 90-day waiting period.';
-  const button=(label,fn)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=fn;section.querySelector('.lifecycle-actions').append(b);return b;};
+  const button=(label,fn)=>{const b=document.createElement('button');b.type='button';b.textContent=label;if(label==='Pause account')b.classList.add('account-pause-action');b.onclick=fn;section.querySelector('.lifecycle-actions').append(b);return b;};
   if(pending){button('Cancel deletion request',()=>dialog('Cancel deletion request?','Your account will remain paused if it was paused before the request.','Keep my account',d=>{save({status:state.status,deletionStatus:'Cancelled'});d.close();}));button('Contact support',()=>{}).dataset.act='go:contact';}
   else {button(state.status==='Paused'?'Resume account':'Pause account',state.status==='Paused'?resumeAccount:pause);button('Delete account',requestDelete).classList.add('account-delete-action');}
 }
