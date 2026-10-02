@@ -16,6 +16,7 @@ export function chatRestriction(id) {
 export function resumeAccount() { save({...accountState(),status:'Active'}); }
 function dialog(title, description, label, action) {
   const d = document.createElement('dialog'); d.className = 'account-delete-dialog';
+  if(label==='Continue to verification'||label==='Verify & request deletion')d.classList.add('is-destructive');
   d.style.setProperty('--side',side()==='brand'?'#d5ff4b':'#ff4d16');
   d.onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();d.close();}};
   d.oncancel=e=>{e.preventDefault();d.close();};

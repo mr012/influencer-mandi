@@ -246,3 +246,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .account-delete-dialog .lifecycle-actions .confirm{background:var(--side,#d5ff4b);color:#111;border-color:transparent;font-weight:600;}
 .account-delete-dialog[open]{animation:date-dialog-in .18s ease-out;}
 @media(prefers-reduced-motion:reduce){.account-delete-dialog[open]{animation:none;}}
+.account-delete-dialog input:focus,.account-delete-dialog input:focus-visible{outline:none!important;box-shadow:none!important;border-color:#393939!important;}
+.account-delete-dialog.is-destructive .lifecycle-actions .confirm{background:#b92f36;color:#fff;border:1px solid #d94a50;}
+.account-delete-dialog.is-destructive .lifecycle-actions .confirm:hover{background:#cf3940;}
