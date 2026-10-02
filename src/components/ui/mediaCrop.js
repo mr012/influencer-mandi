@@ -66,12 +66,6 @@ export function cropPhotos(files, mode = 'creator', initialStates = []) {
     paintFramed(g, it, 0, 0, OUT_W, OUT_H);
     return c.toDataURL('image/jpeg', .9);
   }
-  function quality(it) {
-    const r = cropRect(it), px = Math.min(r.width, dims(it).w);
-    if (px >= OUT_W) return { cls: '', title: 'Sharp', text: `Uses ${px} px across. Saved at ${OUT_W} × ${OUT_H}.` };
-    if (px >= OUT_W * .75) return { cls: 'ok', title: 'Good', text: `Uses ${px} px across. A little softer than a full-size photo.` };
-    return { cls: 'soft', title: 'May look blurry', text: `Only ${px} px across. Zoom out or use a larger photo.` };
-  }
 
   // ---------- Editor ----------
   const stage = $('#stage'), sc = $('#stageCanvas'), pc = $('#previewCanvas');
@@ -191,9 +185,6 @@ export function cropPhotos(files, mode = 'creator', initialStates = []) {
       zoomInput.setAttribute('aria-valuetext', Math.round(it.zoom * 100) + ' percent');
       $('#fillBtn').setAttribute('aria-pressed', String(!it.fit));
       $('#fitBtn').setAttribute('aria-pressed', String(it.fit));
-      const q = quality(it), box = $('#quality');
-      box.className = 'quality ' + q.cls;
-      const qc = $('#qchip'); qc.className = 'qchip ' + q.cls + (q.cls ? ' on' : ''); qc.querySelector('span').textContent = q.title; box.querySelector('b').textContent = q.title; box.querySelector('span:not(.dot)').textContent = q.text;
     },
     sync() {
       const n = this.items.length;
