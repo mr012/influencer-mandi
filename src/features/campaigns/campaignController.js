@@ -30,6 +30,7 @@ export function fill_campaigns() {
     row.classList.add("campaign-list-row");
     row.onclick=event=>{if(event.target.closest("button,[data-act]"))return;runtime.S.previewCampaignId=id;go("campaign",id);};
     const status=campaignStatus(campaignPreviews.find(c=>c.id===id));
+    if(status==='Deleted'){row.remove();return;}
     const statusElement=row.matches("tr")?row.querySelector("td:nth-child(2)"):row.querySelector(".badge,.tag,.meta");
     if(statusElement){statusElement.replaceChildren();const badge=document.createElement('span');badge.className='campaign-list-status '+(status==='Live'?'live':status==='Paused'?'paused':'removed');const dot=document.createElement('i');dot.setAttribute('aria-hidden','true');badge.append(dot,document.createTextNode(status));statusElement.append(badge);}
     const title = campaignPreviews.find(campaign => campaign.id === id)?.title || "campaign";
