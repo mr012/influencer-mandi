@@ -62,15 +62,24 @@ sw.addEventListener("click", e => {
 });
 document.addEventListener("click", onClick);
 document.addEventListener("keydown", e => {
+  if(e.key==='Escape') {
+    if(e.defaultPrevented)return;
+    // Native dialogs own Escape; never navigate the page beneath them.
+    if(document.querySelector('dialog[open]'))return;
+    const dropdown=[...document.querySelectorAll('details[open]')].at(-1);
+    if(dropdown){e.preventDefault();dropdown.open=false;return;}
+    if(popEl.classList.contains('on')){e.preventDefault();closePop();return;}
+    if(overlay.classList.contains('on')){e.preventDefault();closeOverlay();return;}
+    if(e.target.closest('input,textarea,select,[contenteditable]'))return;
+    back();return;
+  }
   if (e.target.closest("input,textarea,select,[contenteditable]")) return;
   if ((e.key === "Enter" || e.key === " ") && e.target.matches("[role=button]")) {
     e.preventDefault();
     e.target.click();
     return;
   }
-  if (e.key === "Escape") {
-    if (popEl.classList.contains("on")) closePop();else if (overlay.classList.contains("on")) closeOverlay();else back();
-  }
+
   if (runtime.S.route === "discover" && !overlay.classList.contains("on") && !admin()) {
     if (e.key === "ArrowLeft") swipe("left");
     if (e.key === "ArrowRight") swipe("right");

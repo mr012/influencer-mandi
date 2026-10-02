@@ -64,6 +64,6 @@ export function searchableDropdown(dropdown, placeholder = 'Search options…', 
     }
   });
   dropdown.addEventListener('keydown', event => {
-    if (event.key === 'Escape') { close(); summary.focus(); }
+    if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); close(); summary.focus(); }
   });
 }

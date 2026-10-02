@@ -16,6 +16,9 @@ export function chatRestriction(id) {
 export function resumeAccount() { save({...accountState(),status:'Active'}); }
 function dialog(title, description, label, action) {
   const d = document.createElement('dialog'); d.className = 'account-delete-dialog';
+  d.style.setProperty('--side',side()==='brand'?'#d5ff4b':'#ff4d16');
+  d.onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();d.close();}};
+  d.oncancel=e=>{e.preventDefault();d.close();};
   d.innerHTML = '<form><h3></h3><p class="description"></p><div class="extra"></div><p role="alert"></p><div class="lifecycle-actions"><button type="button" data-cancel>Cancel</button><button type="submit" class="confirm"></button></div></form>';
   d.querySelector('h3').textContent = title; d.querySelector('.description').textContent = description; d.querySelector('.confirm').textContent = label;
   d.querySelector('[data-cancel]').onclick = () => d.close(); d.onclose = () => {clearInterval(d.timer); d.remove();};
