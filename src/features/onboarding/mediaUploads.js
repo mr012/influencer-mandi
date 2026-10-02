@@ -5,10 +5,9 @@ import { runtime } from '../../context/runtime.js';
 export function setupOnboardingMedia(root, route) {
   if (!['onboard', 'editprofile'].includes(route)) return;
   if(root.dataset.side === 'brand'){setupBrandImage(root);return;}
-  if(route!=='onboard')return;
   const old = root.querySelector('.upl');
   if (!old) return;
-  const items = runtime.S.onboardingMedia ||= [];
+  const items = runtime.S.onboardingMedia ||= [...(CREATORS[0].images || [])];
   const row = document.createElement('div'); row.className = 'onboarding-media';
   row.setAttribute('aria-label', 'Portfolio images and videos');
   const input = document.createElement('input'); input.type = 'file';
