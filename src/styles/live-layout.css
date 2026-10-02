@@ -226,3 +226,5 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .campaign-list-search input:focus,.campaign-list-search input:focus-visible{outline:none!important;box-shadow:none!important;}
 .campaign-list-search:focus-within{background:#ffffff03;}
 @media(max-width:1023px){.campaign-list-container{border:1px solid #292929;border-radius:12px;overflow:hidden;margin-top:16px;}.campaign-list-container .campaign-list-row{border:0;border-bottom:1px solid #242424;border-radius:0;margin:0;}.campaign-list-container .campaign-list-row:last-child{border-bottom:0;}}
+.ce-action-icon{display:none;}
+@media(max-width:1023px){.ce-person-actions .btn>span{display:none;}.ce-person-actions .ce-action-icon{display:block;width:18px;height:18px;}.ce-person-actions .btn{display:grid;place-items:center;min-width:40px;width:40px;min-height:40px;padding:0;}.ce-person-actions{gap:6px;}}
