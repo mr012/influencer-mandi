@@ -80,7 +80,10 @@ document.addEventListener("keydown", e => {
     return;
   }
 
+  if(document.querySelector('dialog[open]')||popEl.classList.contains('on')||document.querySelector('details[open]'))return;
+  if(e.key==='ArrowDown'&&overlay.classList.contains('on')&&overlay.classList.contains('detail')){e.preventDefault();closeOverlay();return;}
   if (runtime.S.route === "discover" && !overlay.classList.contains("on") && !admin()) {
+    if(e.key==='ArrowUp'){const card=runtime.root.querySelector('.cd.front[data-id]');if(card){e.preventDefault();openDetail(card.dataset.id,true);}return;}
     if (e.key === "ArrowLeft") swipe("left");
     if (e.key === "ArrowRight") swipe("right");
   }
